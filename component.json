@@ -1,0 +1,8 @@
+{
+  "name": "js-training",
+  "version": "0.0.0",
+  "dependencies": {
+    "prism": "latest",
+    "bootstrap.css": "~2.1.1"
+  }
+}

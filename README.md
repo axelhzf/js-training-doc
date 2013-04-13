@@ -1,2 +1,1 @@
-js-training-doc
-===============
+#JS-Training-doc
