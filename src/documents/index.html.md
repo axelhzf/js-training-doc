@@ -46,7 +46,7 @@ git checkout <HASH>
 * jQuery
 * Programación funcional con Underscore.js
 * Backbone.js
-* Node.js
+* [Node.js](node.html)
 * CoffeeScript
 * grunt.js
 * Mocha.js

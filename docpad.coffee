@@ -1,5 +1,6 @@
 
 docpadConfig =
+    skipUnsupportedPlugins : false
     templateData:
         # Specify some site properties
         site:
@@ -27,12 +28,12 @@ docpadConfig =
 
             # The website's styles
             styles: [
-                '/vendor/normalize.css'
-                '/vendor/h5bp.css'
-                '/components/bootstrap.css/css/bootstrap.min.css'
-                '/styles/flat-ui.css'
-                '/styles/highlight.tomorrow.css'
-                '/styles/js-training.css'
+                'vendor/normalize.css'
+                'vendor/h5bp.css'
+                'components/bootstrap.css/css/bootstrap.min.css'
+                'styles/flat-ui.css'
+                'styles/highlight.tomorrow.css'
+                'styles/js-training.css'
             ]
 
             scripts: []
