@@ -1,49 +1,18 @@
 {
-  "name": "html5-boilerplate.docpad",
-  "version": "0.1.0",
-  "private": true,
-  "description": "HTML5 Boilerplate skeleton for DocPad. Bare essentials for building a modern website with best practices.",
-  "homepage": "https://github.com/docpad/html5-boilerplate.docpad",
-  "keywords": [
-    "docpad-skeleton",
-    "docpad",
-    "website",
-    "skeleton",
-    "html5 boilerplate",
-    "h5bp"
-  ],
-  "author": "Bevry Pty Ltd <us@bevry.me> (http://bevry.me)",
-  "maintainers": [
-    "Benjamin Lupton <b@lupton.cc> (http://balupton.com)"
-  ],
-  "contributors": [
-    "Benjamin Lupton <b@lupton.cc> (http://balupton.com)"
-  ],
-  "bugs": {
-    "url": "https://github.com/docpad/html5-boilerplate.docpad/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "http://github.com/docpad/html5-boilerplate.docpad.git"
-  },
-  "engines": {
-    "node": "0.8.x",
-    "npm": "1.1.x"
-  },
+  "name": "js-trainings-docs",
+  "version": "0.0.1",
   "dependencies": {
-    "docpad": "6.30.3",
-    "docpad-plugin-coffeescript": "2.x",
-    "docpad-plugin-eco": "2.x",
-    "docpad-plugin-partials": "2.x",
-    "docpad-plugin-stylus": "2.x",
-    "docpad-plugin-text": "2.x",
-    "docpad-plugin-less": "~2.1.3",
-    "docpad-plugin-robotskirt": "~2.0.3",
-    "docpad-plugin-highlightjs": "~2.1.2",
-    "docpad-plugin-ghpages": "~2.0.2"
+    "marked": "~0.3.2",
+    "gulp": "~3.5.6",
+    "gulp-clean": "~0.2.4",
+    "gulp-jade": "~0.4.2",
+    "gulp-connect": "~1.0.9",
+    "gulp-sass": "~0.7.1",
+    "gulp-jadeblog": "git://github.com/axelhzf/gulp-jadeblog.git",
+    "node-bourbon": "~1.0.0",
+    "highlight.js": "~8.0.0"
   },
-  "devDependencies": {
-    "docpad-plugin-livereload": "2.x"
-  },
-  "main": "node_modules/docpad/bin/docpad-server"
+  "scripts": {
+    "build": "gulp --require coffee-script/register"
+  }
 }

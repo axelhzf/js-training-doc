@@ -1,7 +1,7 @@
 ---
 layout: default
 title: jQuery
-----
+---
 
 [jQuery](http://jquery.com/) es una librería que permite manipular el DOM, manejar eventos, crear animaciones y realizar peticiones Ajax. Todo esto funcionando en multitud de navegadores. jQuery también permite crear plugins
 

@@ -262,7 +262,7 @@ Existen cuatro patrones de invocación distintos en javascript: Method invocatio
 
 ````js
 var myObject = {
-	increment : function () {
+    increment : function () {
 
     }
 }

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Node.js
-----
+---
 
 # Introducción a Node y NPM
 
@@ -393,16 +393,11 @@ app.get("/", security, function (req, res) {
 ````
 
 ````jade
-extends layout
+    extends layout
 
-block content
-  h1 Welcome to #{username}
-  a(href="/logout") Salir
+    block content
+      h1 Welcome to #{username}
+      a(href="/logout") Salir
 ````
 
 
-# Referencias
-* [http://expressjs.com/](http://expressjs.com/)
-* [http://jade-lang.com/](http://jade-lang.com/)
-* [http://stephensugden.com/middleware_guide/](http://stephensugden.com/middleware_guide/)
-* [http://docs.nodejitsu.com/articles/getting-started/what-is-require](http://docs.nodejitsu.com/articles/getting-started/what-is-require)

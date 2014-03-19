@@ -47,7 +47,8 @@ git checkout <HASH>
 * Programación funcional con Underscore.js
 * Backbone.js
 * [Node.js](node.html)
-* [Testing Node.js applications](node-testing.html)
+* [Testeando aplicaciones Node.js](node-testing.html)
+* [Persistencia con MongoDB](mongo.html)
 * CoffeeScript
 * grunt.js
 * Mocha.js

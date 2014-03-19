@@ -202,7 +202,7 @@ There are four patterns of invocation in JavaScript: the method invocation patte
 
 ### Method invocation pattern
 var myObject = {
-	increment : function () {
+    increment : function () {
   }
 }
 myObject.increment();
