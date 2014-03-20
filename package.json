@@ -6,11 +6,11 @@
     "gulp": "~3.5.6",
     "gulp-clean": "~0.2.4",
     "gulp-jade": "~0.4.2",
-    "gulp-connect": "~1.0.9",
     "gulp-sass": "~0.7.1",
     "gulp-jadeblog": "git://github.com/axelhzf/gulp-jadeblog.git",
     "node-bourbon": "~1.0.0",
-    "highlight.js": "~8.0.0"
+    "highlight.js": "~8.0.0",
+    "gulp-connect": "~1.0.9"
   },
   "scripts": {
     "build": "gulp --require coffee-script/register"

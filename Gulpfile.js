@@ -5,6 +5,7 @@ var connect = require("gulp-connect");
 var sass = require("gulp-sass");
 var marked = require("marked");
 var jadeBlog = require("gulp-jadeblog");
+var changed = require("gulp-changed");
 
 var outPath = "out";
 
@@ -16,11 +17,13 @@ marked.setOptions({
 
 gulp.task("posts", function () {
   gulp.src(["src/documents/**/*.md", "src/documents/**/*.jade"])
+    .pipe(changed(outPath, { extension: '.html' }))
     .pipe(jadeBlog())
     .pipe(jade({
       basedir: __dirname,
       pretty: true
     }))
+    .pipe(connect.reload())
     .pipe(gulp.dest(outPath));
 });
 
@@ -39,7 +42,8 @@ gulp.task("build", ["static", "sass", "posts"]);
 
 gulp.task("connect", connect.server({
   root: [outPath],
-  port: 9000
+  port: 9000,
+  livereload: true
 }));
 
 gulp.task("sass", function () {
@@ -47,7 +51,8 @@ gulp.task("sass", function () {
     .pipe(sass({
       includePaths: [require("node-bourbon").includePaths]
     }))
-    .pipe(gulp.dest(outPath + "/assets/styles"));
+    .pipe(gulp.dest(outPath + "/assets/styles"))
+    .pipe(connect.reload());
 });
 
 gulp.task("watch", ["connect"], function () {
