@@ -29,11 +29,11 @@ https://github.com/axelhzf/js-training/commits/master
 
 Puedes clonar el repositorio y tener una copia local:
 
-````bash
+```bash
 git clone git://github.com/js-training/js-training.git
 git log --oneline
 git checkout <HASH>
-````
+```
 
 ## Contenido
 
@@ -45,7 +45,7 @@ git checkout <HASH>
 * [DOM](dom.html)
 * jQuery
 * Programación funcional con Underscore.js
-* Backbone.js
+* [Backbone.js](backbone.html)
 * [Node.js](node.html)
 * [Testeando aplicaciones Node.js](node-testing.html)
 * [Persistencia con MongoDB](mongo.html)

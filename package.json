@@ -10,7 +10,8 @@
     "gulp-jadeblog": "git://github.com/axelhzf/gulp-jadeblog.git",
     "node-bourbon": "~1.0.0",
     "highlight.js": "~8.0.0",
-    "gulp-connect": "~1.0.9"
+    "gulp-connect": "~1.0.9",
+    "gulp-util": "~2.2.14"
   },
   "scripts": {
     "build": "gulp --require coffee-script/register"
