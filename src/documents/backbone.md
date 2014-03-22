@@ -725,7 +725,9 @@ OS X : `open -a /Applications/Google\ Chrome.app --args --disable-web-security`
 Windows : `chrome.exe --disable-web-security`
 ```
 
+
 # Recursos
 
 * [Developing Backbone.js Applications](http://addyosmani.github.io/backbone-fundamentals/)
 * [Backbone Patterns](http://ricostacruz.com/backbone-patterns/)
+* [Derick Bailey](http://lostechies.com/derickbailey/)
