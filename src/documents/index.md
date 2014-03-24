@@ -46,6 +46,7 @@ git checkout <HASH>
 * jQuery
 * Programación funcional con Underscore.js
 * [Backbone.js](backbone.html)
+* [Angular.js](angular.html)
 * [Node.js](node.html)
 * [Testeando aplicaciones Node.js](node-testing.html)
 * [Persistencia con MongoDB](mongo.html)
