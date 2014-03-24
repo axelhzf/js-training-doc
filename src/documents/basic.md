@@ -403,3 +403,4 @@ function test7 (input) {
 [JavaScript-Garden](http://bonsaiden.github.com/JavaScript-Garden/)
 [MDN: Regular Expressions](https://developer.mozilla.org/en-US/docs/JavaScript/Guide/Regular_Expressions)
 [Chai](http://chaijs.com/api/bdd/)
+[Speakingjs](http://speakingjs.com/es5/)
