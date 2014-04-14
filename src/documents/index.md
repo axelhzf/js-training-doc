@@ -53,7 +53,6 @@ git checkout <HASH>
 * CoffeeScript
 * [Build systems: gulp.js](gulp.html)
 * Mocha.js
-* Optimización
 
 ## Autor: Axel Hernández Ferrera
 
