@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Ninja | js-training</title>
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+  <header>
+    <div class="logo">JS<small>training</small></div>
+  </header>
+  <div class="content"><h1 id="inheritance">Inheritance</h1>
+<p>Patterns of code reuse are extremely important because they have the potential to significantly reduce the cost of software development.</p>
+<h2 id="pseudoclasica">Pseudoclasica</h2>
+<p>The pseudoclassical pattern was intended to look sort of object-oriented, but it is looking quite alien.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> Mammal = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span>
+    <span class="hljs-keyword">this</span>.name = name;
+};
+
+Mammal.prototype.get_name = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(  )</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.name;
+};
+
+Mammal.prototype.says = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(  )</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.saying || <span class="hljs-string">''</span>;
+};
+</code></pre>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> Cat = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span>
+    <span class="hljs-keyword">this</span>.name = name;
+    <span class="hljs-keyword">this</span>.saying = <span class="hljs-string">'meow'</span>;
+};
+
+<span class="hljs-comment">// Replace Cat.prototype with a new instance of Mammal</span>
+
+Cat.prototype = <span class="hljs-keyword">new</span> Mammal(  );
+
+<span class="hljs-comment">// Augment the new prototype with</span>
+<span class="hljs-comment">// purr and get_name methods.</span>
+
+Cat.prototype.purr = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(n)</span> {</span>
+    <span class="hljs-keyword">var</span> i, s = <span class="hljs-string">''</span>;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; n; i += <span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">if</span> (s) {
+            s += <span class="hljs-string">'-'</span>;
+        }
+        s += <span class="hljs-string">'r'</span>;
+    }
+    <span class="hljs-keyword">return</span> s;
+};
+Cat.prototype.get_name = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(  )</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.says(  ) + <span class="hljs-string">' '</span> + <span class="hljs-keyword">this</span>.name +
+            <span class="hljs-string">' '</span> + <span class="hljs-keyword">this</span>.says(  );
+};
+
+<span class="hljs-keyword">var</span> myCat = <span class="hljs-keyword">new</span> Cat(<span class="hljs-string">'Henrietta'</span>);
+<span class="hljs-keyword">var</span> says = myCat.says(  ); <span class="hljs-comment">// 'meow'</span>
+<span class="hljs-keyword">var</span> purr = myCat.purr(<span class="hljs-number">5</span>); <span class="hljs-comment">// 'r-r-r-r-r'</span>
+<span class="hljs-keyword">var</span> name = myCat.get_name(  );
+<span class="hljs-comment">//            'meow Henrietta meow'</span>
+</code></pre>
+<p>There is no privacy; all properties are public. There is no access to super methods.
+The pseudoclassical form can provide comfort to programmers who are unfamiliar with JavaScript, but it also hides the true nature of the language.The classically inspired notation can induce programmers to compose hierarchies that are unnecessarily deep and complicated.
+In classical languages, class inheritance is the only form of code reuse. JavaScript has more and better options.</p>
+<h2 id="object-specifier">Object specifier</h2>
+<p>Parámetros con nombre</p>
+<pre><code class="lang-javascript"><span class="hljs-attribute">var myObject </span>=<span class="hljs-string"> maker(f, l, m, c, s);</span>
+</code></pre>
+<pre><code class="lang-javascript">var myObject = maker({
+    first: f,
+    <span class="hljs-keyword">last</span>: l,
+    <span class="hljs-keyword">state</span>: <span class="hljs-keyword">s</span>,
+    city: c
+});
+</code></pre>
+<h2 id="prototypal">Prototypal</h2>
+<p>differential inheritance</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> myMammal = {
+    name : <span class="hljs-string">'Herb the Mammal'</span>,
+    get_name : <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(  )</span> {</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.name;
+    },
+    says : <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(  )</span> {</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.saying || <span class="hljs-string">''</span>;
+    }
+};
+<span class="hljs-keyword">var</span> myCat = <span class="hljs-built_in">Object</span>.beget(myMammal);
+myCat.name = <span class="hljs-string">'Henrietta'</span>;
+myCat.saying = <span class="hljs-string">'meow'</span>;
+myCat.purr = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(n)</span> {</span>
+    <span class="hljs-keyword">var</span> i, s = <span class="hljs-string">''</span>;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; n; i += <span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">if</span> (s) {
+            s += <span class="hljs-string">'-'</span>;
+        }
+        s += <span class="hljs-string">'r'</span>;
+    }
+    <span class="hljs-keyword">return</span> s;
+};
+myCat.get_name = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(  )</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.says + <span class="hljs-string">' '</span> + <span class="hljs-keyword">this</span>.name + <span class="hljs-string">' '</span> + <span class="hljs-keyword">this</span>.says;
+};
+</code></pre>
+<h2 id="functional">Functional</h2>
+<p>One weakness of the inheritance patterns we have seen so far is that we get no privacy.All properties of an object are visible. We get no private variables and no private methods. Sometimes that doesn&#39;t matter, but sometimes it matters a lot.</p>
+<p>pretend privacy prepending to function name an underscore.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> mammal = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(spec)</span> {</span>
+    <span class="hljs-keyword">var</span> that = {};
+
+    that.get_name = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(  )</span> {</span>
+        <span class="hljs-keyword">return</span> spec.name;
+    };
+
+    that.says = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(  )</span> {</span>
+        <span class="hljs-keyword">return</span> spec.saying || <span class="hljs-string">''</span>;
+    };
+
+    <span class="hljs-keyword">return</span> that;
+};
+
+<span class="hljs-keyword">var</span> myMammal = mammal({name: <span class="hljs-string">'Herb'</span>});
+</code></pre>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> cat = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(spec)</span> {</span>
+    spec.saying = spec.saying || <span class="hljs-string">'meow'</span>;
+    <span class="hljs-keyword">var</span> that = mammal(spec);
+    that.purr = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(n)</span> {</span>
+        <span class="hljs-keyword">var</span> i, s = <span class="hljs-string">''</span>;
+        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; n; i += <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">if</span> (s) {
+                s += <span class="hljs-string">'-'</span>;
+            }
+            s += <span class="hljs-string">'r'</span>;
+        }
+        <span class="hljs-keyword">return</span> s;
+    };
+    that.get_name = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(  )</span> {</span>
+        <span class="hljs-keyword">return</span> that.says(  ) + <span class="hljs-string">' '</span> + spec.name +
+                <span class="hljs-string">' '</span> + that.says(  );
+    <span class="hljs-keyword">return</span> that;
+};
+
+<span class="hljs-keyword">var</span> myCat = cat({name: <span class="hljs-string">'Henrietta'</span>});
+</code></pre>
+<h1 id="parts-or-mixins">Parts or mixins</h1>
+<p>We can compose objects out of sets of parts. For example, we can make a function that can add simple event processing features to any object. It adds an on method, a fire method, and a private event registry</p>
+
+  </div>
+  <footer><a href="http://twitter.com/axelhzf" about="_blank">Twitter</a><a href="http://github.com/axelhzf" about="_blank">Github</a></footer>
+</body>
