@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Ninja | js-training</title>
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+  <header>
+    <div class="logo">JS<small>training</small></div>
+  </header>
+  <div class="content"><h1 id="ninja">Ninja</h1>
+<h2 id="jquery-introduction">Jquery introduction</h2>
+<p>jQuery, which has risen in prominence to be the most ubiquitous JavaScript library in modern use.</p>
+<p>jQuery (<a href="http://jquery.com">http://jquery.com</a>) was created by John Resig and released in January of 2006. jQuery popularized the use of CSS selectors to match DOM content. Among its many capabilities, it provides DOM manipulation, Ajax, event handling, and anima- tion functionality.
+This library has come to dominate the JavaScript library market, being used on hundreds of thousands of websites, and interacted with by millions of users. Through considerable use and feedback, this library has been refined over the years—and con- tinues to evolve—into the optimal code base that it is today.</p>
+<h2 id="understanding-the-javascript-language">Understanding the javascript language</h2>
+<p>JavaScript consists of a close relationship
+between objects, functions, and closures </p>
+<p>Objects &lt;-&gt; Closure &lt;-&gt; Function &lt;-&gt; Objects</p>
+<p>Many JavaScript developers, especially those com-
+ing from an object-oriented background, may pay a
+lot of attention to objects, but at the expense of understanding how functions and clo- sures contribute to the big picture.</p>
+<h2 id="how-to-use-chrome-developer-tools">How to use chrome developer tools</h2>
+<h1 id="history">History</h1>
+<p>TIP For more information on how JavaScript got its name, see <a href="http://en">http://en</a> .wikipedia.org/wiki/JavaScript#History, <a href="http://web.archive.org/web/200709">http://web.archive.org/web/200709</a> 16144913/<a href="http://wp.netscape.com/newsref/pr/newsrelease67.html">http://wp.netscape.com/newsref/pr/newsrelease67.html</a>, and http:// stackoverflow.com/questions/2018731/why-is-javascript-called-javascript-since-it- has-nothing-to-do-with-java. If you follow these links, they indicate that the intent was to identify JavaScript as a complement to Java, rather than something that shared its characteristics.</p>
+<h1 id="functions">Functions</h1>
+<p>the main difference between writing Java- Script code like the average Joe (or Jill) and writing it like a JavaScript ninja is understanding JavaScript as a functional language.</p>
+<p>unctions are first-class objects; that is, they coexist with, and can be treated like, any other JavaScript object.</p>
+<p>We’re willing to bet that nine times out of ten (or perhaps even more), this is a direct consequence of someone trying to use JavaScript as if it were another language that the lamenter is more familiar with, and that they’re frustrated by the fact that it’s not that other language</p>
+<p>Browser event loop</p>
+<ul>
+<li>Set up the user interface</li>
+<li>Enter a loop waiting for events to occur</li>
+<li>Invoke handlers (also called listeners) for those events</li>
+</ul>
+<p>Asynchronous.
+The following types of events can occur, among others:</p>
+<ul>
+<li>Browser events, such as when a page is finished loading or when it’s to be unloaded</li>
+<li>Network events, such as responses to an Ajax request</li>
+<li>User events, such as mouse clicks, mouse moves, or keypresses</li>
+<li>Timer events, such as when a timeout expires or an interval fires</li>
+</ul>
+<p>It’s important to note that the browser event loop is single-threaded. Every event that’s placed into the event queue is handled in the order that it’s placed onto the queue.</p>
+<p>Whenever we set up a function to be called at a later time, whether by the browser or other code, we’re setting up what is termed a <strong>callback</strong>.</p>
+<pre><code class="lang-java">Arrays.sort(values,<span class="hljs-keyword">new</span> Comparator&lt;Integer&gt;(){
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">compare</span>(Integer value1, Integer value2) {
+    <span class="hljs-keyword">return</span> value2 - value1;
+  }
+});
+</code></pre>
+<p>var values = [ 213, 16, 2058, 54, 10, 1965, 57, 9 ];
+values.sort(function(value1,value2){ return value2 - value1; }); </p>
+<h1 id="good-parts">Good Parts</h1>
+<p>No es necesario aprender cada una de las características de un lenguaje. La mayor parte de lenguajes de programación tienen partes buenas y partes malas. Es mejor utilizar únicamente las partes buenas y evitar las malas.</p>
+<p>When Java™ applets failed, JavaScript became the &quot;Language of the Web&quot; by default. JS tiene unas buenas partes maravillosas.</p>
+<h2 id="why-javascript">Why javascript</h2>
+<p>Its association with the browser makes it one of the most popular programming languages in the world</p>
+<p>If you are good in SOME OTHER LANGUAGE and you have to program in an environment that only supports JavaScript, then you are forced to use JavaScript, and that is annoying. Most people in that situation don&#39;t even bother to learn JavaScript first, and then they are surprised when JavaScript turns out to have significant differences from the SOME OTHER LANGUAGE</p>
+<h2 id="analyzing-javascript">Analyzing Javascript</h2>
+<p>Good ideas:</p>
+<ul>
+<li>Functions</li>
+<li>Loose typing</li>
+<li>Dynamic objects</li>
+<li>Expressive object literal notation</li>
+</ul>
+<p>Bad ideas:</p>
+<ul>
+<li>Global variables</li>
+</ul>
+<h3 id="debate-entre-lenguajes-est-ticos-y-din-micos">Debate entre lenguajes estáticos y dinámicos</h3>
+<p>The fashion in most programming languages today demands strong typing. The theory is that strong typing allows a compiler to detect a large class of errors at compile time. The sooner we can detect and repair errors, the less they cost us.
+And I have found in my work that the sorts of errors that strong type checking finds are not the errors I worry about</p>
+<h3 id="json">JSON</h3>
+<p>JavaScript has a very powerful object literal notation. Objects can be created simply by listing their components. This notation was the inspiration for JSON</p>
+<h2 id="prototype">Prototype</h2>
+<p>A controversial feature in JavaScript is prototypal inheritance. JavaScript has a class-free object system in which objects inherit properties directly from other objects. This is really powerful, but it is unfamiliar to classically trained programmers.If you attempt to apply classical design patterns directly to JavaScript, you will be frustrated. But if you learn to work with JavaScript&#39;s prototypal nature, your efforts will be rewarded.</p>
+<h2 id="numbers">Numbers</h2>
+<p>javascript tiene una única representación para números. 64 bits floating point, lo mismo que java double. No hay diferencia entre 1 y 1.0</p>
+<h2 id="string">String</h2>
+<p>JavaScript was built at a time when Unicode was a 16-bit character set, so all characters in JavaScript are 16 bits wide.</p>
+<p>.length</p>
+<h1 id="-">+</h1>
+<p>.toUpperCase</p>
+<h2 id="statements">Statements</h2>
+<p>var</p>
+<h2 id="object-literals">Object literals</h2>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> empty_<span class="hljs-class"><span class="hljs-keyword">object</span> = {</span>};
+
+<span class="hljs-keyword">var</span> stooge = {
+    <span class="hljs-string">"first-name"</span>: <span class="hljs-string">"Jerome"</span>,
+    <span class="hljs-string">"last-name"</span>: <span class="hljs-string">"Howard"</span>
+};
+
+stooge[<span class="hljs-string">"first-name"</span>]     <span class="hljs-comment">// "Joe"</span>
+flight.departure.IATA    <span class="hljs-comment">// "SYD"</span>
+
+flight.status            <span class="hljs-comment">// undefined</span>
+
+<span class="hljs-keyword">var</span> status = flight.status || <span class="hljs-string">"unknown"</span>;
+
+stooge.nickname = <span class="hljs-string">'Curly'</span>;
+</code></pre>
+<h2 id="prototype">Prototype</h2>
+<p>Every object is linked to a prototype object from which it can inherit properties. All objects created from object literals are linked to Object.prototype, an object that comes standard with JavaScript.</p>
+<p>if (typeof Object.beget !== &#39;function&#39;) {
+     Object.beget = function (o) {
+         var F = function () {};
+         F.prototype = o;
+         return new F();
+     };
+}</p>
+<p>If we try to retrieve a property value from an object, and if the object lacks the property name, then JavaScript attempts to retrieve the property value from the prototype object. And if that object is lacking the property, then it goes to its prototype, and so on until the process finally bottoms out with Object.prototype</p>
+<h2 id="reflection">Reflection</h2>
+<p>typeof flight.number      // &#39;number&#39;
+typeof flight.status      // &#39;string&#39;
+typeof flight.arrival     // &#39;object&#39;
+typeof flight.manifest    // &#39;undefined&#39;
+typeof flight.toString    // &#39;function&#39;
+typeof flight.constructor // &#39;function&#39;</p>
+<p>Comprueba si un método tiene una propiedad sin buscar en la cadena de prototype
+flight.hasOwnProperty(&#39;number&#39;) </p>
+<h2 id="enumeration">Enumeration</h2>
+<p>var name;
+for (name in another_stooge) {
+    if (typeof another_stooge[name] !== &#39;function&#39;) {
+        document.writeln(name + &#39;: &#39; + another_stooge[name]);
+    }
+}</p>
+<h2 id="delete">Delete</h2>
+<p>another_stooge.nickname    // &#39;Moe&#39;
+delete another_stooge.nickname;
+another_stooge.nickname    // &#39;Curly&#39; que viene del prototype</p>
+<h2 id="namespace">Namespace</h2>
+<p>var MYAPP = {};
+MYAPP.stooge = {
+    &quot;first-name&quot;: &quot;Joe&quot;,
+    &quot;last-name&quot;: &quot;Howard&quot;
+};</p>
+<h2 id="functions">Functions</h2>
+<p>Functions in JavaScript are objects</p>
+<p>Function objects are linked to Function.prototype (which is itself linked to Object.prototype). Every function is also created with two additional hidden properties: the function&#39;s context and the code that implements the function&#39;s behavior</p>
+<p>var add = function (a, b) {
+    return a + b;
+};</p>
+<p>Invocations</p>
+<p>In addition to the declared parameters, every function receives two additional parameters: this and arguments</p>
+<p>The this parameter is very important in object oriented programming, and its value is determined by the invocation pattern</p>
+<p>There are four patterns of invocation in JavaScript: the method invocation pattern, the function invocation pattern, the constructor invocation pattern, and the apply invocation pattern. The patterns differ in how the bonus parameter this is initialized.</p>
+<h3 id="method-invocation-pattern">Method invocation pattern</h3>
+<p>var myObject = {
+    increment : function () {
+}
+}
+myObject.increment();</p>
+<p>// this == myObject</p>
+<h3 id="function-invocation-pattern">Function Invocation Pattern</h3>
+<p>var sum = add(3, 4);</p>
+<p>// this == global object -&gt; window</p>
+<p>This was a mistake in the design of the language</p>
+<p>Convention, that or self</p>
+<h3 id="constructor-invocation-pattern">Constructor Invocation Pattern</h3>
+<p>JavaScript is a prototypal inheritance language. That means that objects can inherit properties. 
+That means that objects can inherit properties directly from other objects. The language is class-free.</p>
+<p>If a function is invoked with the new prefix, then a new object will be created with a hidden link to the value of the function&#39;s prototype member, and this will be bound to that new object.</p>
+<p>var Quo = function (string) {
+    this.status = string;
+};
+Quo.prototype.get_status = function (  ) {
+    return this.status;
+};
+var myQuo = new Quo(&quot;confused&quot;);</p>
+<p>Functions that are intended to be used with the new prefix are called constructors. By convention, they are kept in variables with a capitalized name.</p>
+<h3 id="apply-invocation-pattern">Apply Invocation Pattern</h3>
+<p>The apply method lets us construct an array of arguments to use to invoke a function. It also lets us choose the value of this</p>
+<p>var parameters = [3, 4];
+var sum = add.apply(null, parameters);
+Quo.prototype.get_status.apply(statusObject, parameters)</p>
+<h1 id="arguments">Arguments</h1>
+<p> It gives the function access to all of the arguments that were supplied with the invocation, including excess arguments that were not assigned to parameters. This makes it possible to write functions that take an unspecified number of parameters.</p>
+<p>Because of a design error, arguments is not really an array. It is an array-like object. arguments has a length property, but it lacks all of the array methods.</p>
+<h1 id="return">Return</h1>
+<p>A function always returns a value. If the return value is not specified, then undefined is returned.
+If the function was invoked with the new prefix and the return value is not an object, then this (the new object) is returned instead.</p>
+<h1 id="exceptions">Exceptions</h1>
+<pre><code class="lang-js"><span class="hljs-keyword">throw</span> {
+    <span class="hljs-attribute">name</span>: <span class="hljs-string">'TypeError'</span>,
+    <span class="hljs-attribute">message</span>: <span class="hljs-string">'add needs numbers'</span>
+    }
+
+<span class="hljs-keyword">try</span> {
+    add(<span class="hljs-string">"seven"</span>);
+} <span class="hljs-keyword">catch</span> (e) {
+    <span class="hljs-built_in">document</span>.writeln(e.name + <span class="hljs-string">': '</span> + e.message);
+}
+</code></pre>
+<h1 id="augmenting-types">Augmenting Types</h1>
+<p>Object.prototype.method = …</p>
+<h1 id="scope">Scope</h1>
+<p>Controls the visibility and lifetimes of variables and parameters. Reduce naming collisions and provides automatic memory management.</p>
+<p>Most languages with C syntax have block scope. All variables defined in a block</p>
+<p>Unfortunately, JavaScript does not have block scope even though its block syntax suggests that it does. This confusion can be a source of errors.</p>
+<p>JavaScript does have function scope. </p>
+<h1 id="closure">Closure</h1>
+<p>The good news about scope is that inner functions get access to the parameters and variables of the functions they are defined within (with the exception of this and arguments).</p>
+<p>A more interesting case is when the inner function has a longer lifetime</p>
+<p>Variables privadas</p>
+<h2 id="callbacks">Callbacks</h2>
+<p>Functions can make it easier to deal with discontinuous events</p>
+<p>código sincrono</p>
+<pre><code class="lang-js"><span class="hljs-built_in">request</span> = prepare_the_request(  );
+<span class="hljs-built_in">response</span> = send_request_synchronously(<span class="hljs-built_in">request</span>);
+display(<span class="hljs-built_in">response</span>);
+</code></pre>
+<p>código asíncrono</p>
+<pre><code class="lang-js">request = prepare_the_request(  );
+send_request_asynchronously(request, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(response)</span> {</span>
+        display(response);
+});
+``
+
+## Module
+
+We can use functions and closure to make modules. A module is a <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">or</span> <span class="hljs-title">object</span> <span class="hljs-title">that</span> <span class="hljs-title">presents</span> <span class="hljs-title">an</span> <span class="hljs-title">interface</span> <span class="hljs-title">but</span> <span class="hljs-title">that</span> <span class="hljs-title">hides</span> <span class="hljs-title">its</span> <span class="hljs-title">state</span> <span class="hljs-title">and</span> <span class="hljs-title">implementation</span>. <span class="hljs-title">By</span> <span class="hljs-title">using</span> <span class="hljs-title">functions</span> <span class="hljs-title">to</span> <span class="hljs-title">produce</span> <span class="hljs-title">modules</span>, <span class="hljs-title">we</span> <span class="hljs-title">can</span> <span class="hljs-title">almost</span> <span class="hljs-title">completely</span> <span class="hljs-title">eliminate</span> <span class="hljs-title">our</span> <span class="hljs-title">use</span> <span class="hljs-title">of</span> <span class="hljs-title">global</span> <span class="hljs-title">variables</span>, <span class="hljs-title">thereby</span> <span class="hljs-title">mitigating</span> <span class="hljs-title">one</span> <span class="hljs-title">of</span> <span class="hljs-title">JavaScript</span>'<span class="hljs-title">s</span> <span class="hljs-title">worst</span> <span class="hljs-title">features</span>.
+
+```<span class="hljs-title">js</span>
+<span class="hljs-title">var</span> <span class="hljs-title">Serial</span> = <span class="hljs-title">function</span> <span class="hljs-params">(  )</span> {</span>
+    <span class="hljs-keyword">var</span> prefix = <span class="hljs-string">''</span>;
+    <span class="hljs-keyword">var</span> seq = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">return</span> {
+        set_prefix: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(p)</span> {</span>
+            prefix = <span class="hljs-built_in">String</span>(p);
+        },
+        set_seq: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(s)</span> {</span>
+            seq = s;
+        },
+        gensym: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(  )</span> {</span>
+            <span class="hljs-keyword">var</span> result = prefix + seq;
+            seq += <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">return</span> result;
+        }
+    };
+}(  );
+</code></pre>
+<h2 id="cascade">Cascade</h2>
+<p>No return value, use this instead</p>
+<pre><code class="lang-javascript"><span class="hljs-function">getElement(<span class="hljs-string">'myBoxDiv'</span>)</span>.
+    <span class="hljs-function">move(<span class="hljs-number">350</span>, <span class="hljs-number">150</span>)</span>.
+    <span class="hljs-function">width(<span class="hljs-number">100</span>)</span>.
+    <span class="hljs-function">height(<span class="hljs-number">100</span>)</span>.
+    <span class="hljs-function">color(<span class="hljs-string">'red'</span>)</span>.
+</code></pre>
+<h2 id="curry">Curry</h2>
+<p>Crear una nueva función a partir de otra fijando algún parámetro</p>
+<pre><code class="lang-javascript"><span class="hljs-built_in">Function</span>.method(<span class="hljs-string">'curry'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(  )</span> {</span>
+    <span class="hljs-keyword">var</span> args = <span class="hljs-built_in">arguments</span>, that = <span class="hljs-keyword">this</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(  )</span> {</span>
+        <span class="hljs-keyword">return</span> that.apply(<span class="hljs-literal">null</span>, args.concat(<span class="hljs-built_in">arguments</span>));
+    };
+});    <span class="hljs-comment">// Something isn't right...</span>
+</code></pre>
+<pre><code class="lang-javascript"><span class="hljs-built_in">Function</span>.method(<span class="hljs-string">'curry'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(  )</span> {</span>
+    <span class="hljs-keyword">var</span> slice = <span class="hljs-built_in">Array</span>.prototype.slice,
+        args = slice.apply(<span class="hljs-built_in">arguments</span>),
+        that = <span class="hljs-keyword">this</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(  )</span> {</span>
+        <span class="hljs-keyword">return</span> that.apply(<span class="hljs-literal">null</span>, args.concat(slice.apply(<span class="hljs-built_in">arguments</span>)));
+    };
+});
+</code></pre>
+<h2 id="memoization">Memoization</h2>
+<p>Functions can use objects to remember the results of previous operations, making it possible to avoid unnecessary work. This optimization is called memoization.</p>
+
+  </div>
+  <footer><a href="http://twitter.com/axelhzf" about="_blank">Twitter</a><a href="http://github.com/axelhzf" about="_blank">Github</a></footer>
+</body>
