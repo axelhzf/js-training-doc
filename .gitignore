@@ -3,3 +3,4 @@ atlassian-ide-plugin.xml
 .idea
 node_modules
 components
+out
