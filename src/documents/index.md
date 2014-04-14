@@ -43,7 +43,7 @@ git checkout <HASH>
 * [Avanzado: ](advanced.html)
 * [OOP](oop.html)
 * [DOM](dom.html)
-* jQuery
+* [jQuery](jquery.html)
 * Programación funcional con Underscore.js
 * [Backbone.js](backbone.html)
 * [Angular.js](angular.html)
@@ -51,7 +51,7 @@ git checkout <HASH>
 * [Testeando aplicaciones Node.js](node-testing.html)
 * [Persistencia con MongoDB](mongo.html)
 * CoffeeScript
-* grunt.js
+* [Build systems: gulp.js](gulp.html)
 * Mocha.js
 * Optimización
 
@@ -60,5 +60,3 @@ git checkout <HASH>
 Email: axelhzf@gmail.com
 Blog: http://axelhzf.com
 Twitter: [@axelhzf](http://www.twitter.com/axelhzf)
-
-
