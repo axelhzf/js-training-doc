@@ -218,59 +218,128 @@ http://jsbin.com/qokir/2/edit
 
 # Eventos
 
-.on("click")
-.off()
-.trigger
+Los eventos nos permite hacer aplicaciones que respondan a la acción del usuario. El funcionamiento es registrar una función para que se ejecute cuando se produzca cierto evento.
 
-click, keydown, keypress, keyup, mouseover, mouseenter, mouseleave, scroll, focus, blur, resize
+````js
+$a.on("click");
+$a.off();
+$a.trigger("click");
+````
 
-namespaced events
+Los métodos básicos son `on` añadir un nuevo listener y `off` para eliminar el listener. Además el método `trigger` nos permite lanzar eventos. En versiones anteriores de jQuery se utilizaban los métodos `bind` y `unbind` pero en las versiones nuvas `on` y `off` son los métodos recomendades.
 
-$( 'li' ).on( 'click', function() {
-  console.log( 'a list item was clicked' );
+Algunos evenetos que se utilizan normalmente son: 
+
+* click
+* keydown
+* keypress 
+* keyup 
+* mouseover
+* mouseenter
+* mouseleave
+* scroll
+* focus
+* blur
+* resize
+
+[Diferencias entre `keydown` y `keypress`](http://www.mkyong.com/jquery/jquery-keyboard-events-example/)
+
+La funciones que actuan como manejador de eventos reciben como parámetros información acerca del evento que se lanzó.
+
+````js
+$a.on("click", function(event) {
+  event.type    // Tipo de evento
+  event.which   // Tecla que se pulsó
+  event.target  // Elemento que lanzó el evento
+  event.currentTarget // Elemento en el que se seteo el listener
+  event.pageX   // Posición X del ratón
+  event.pageY   // Posición Y del ratón
+});
+````
+
+## Namespaces
+
+Podemos definir namespaces a nuestros eventos. De forma que sea más fácil referirnos a un grupo de eventos. Por ejemplo para llamar a la función `off` eliminando únicamente los manejadores que nos interesen.
+
+````js
+$a.on('click', handler1);
+$a.on('click', handler2);
+$a.off('click');
+````
+
+En este caso al llamar a la función `off` esatmos eliminando los dos manejadores.
+
+````js
+$a.on('click.logging', handler1);
+$a.on('click.analytics', handler2);
+$a.off('click.logging');
+````
+
+En este caso estamos eliminando únicamente los eventos dentro del namespace `logging`. 
+
+El uso de namespaces es muy importante a la hora de diseñar un plugin de jQuery. Tenemos que tener en cuenta que nuestro código va a convivir con código del usuario del plugin y no queremos provocar comportamientos indeseados como eliminarle un listener.
+
+## Event delegation and bubling
+
+Cuando un elemento lanza un evento este evento se propaga por todos sus padres hasta llegar a document.
+
+````html
+<div>
+  <h1>
+    <a href="#">
+      <span>Click to buble</span>
+    </a>
+  </h1>
+</div>
+````
+
+El evento `click` que se lanza al pulsar el enlace se propaga hacia sus padres.
+
+http://jsbin.com/kitup/1/edit
+
+En el caso de que queramos parar esta propagación podemos devolver false en el manejador del evento o llamar al método `event.stopPropagation()`. Yo prefiero utilizar esta última forma, me parece que es más clara.
+
+La propagación de los eventos nos permite delegar eventos
+
+````html
+<ul>
+  <li>li 1</li>
+  <li>li 2</li>
+  <li>li 3</li>
+</ul>  
+
+$('ul').on('click', 'li', function( event ) {
+  event.currentTarget
+  event.target
+});
+````
+
+La diferencia es que estamos utilizando el método `on` con 3 parámetros. Estamos añadiendo el listener al `ul` y estamos filtrando los eventos que vienen de los elementos `li`. La principal ventaja de esto es eficiancia: Si tenemos muchos elementos hijos, es más eficiente añadir un único listener en el padre que un listener por cada evento. Además este tipo de eventos son los que en versiones anteriores de javascript se llamaban `live` porque son capaces de escuchar eventos lanzados por elementos creados dinámica mente.
+
+
+````html
+<a href="#">1</a>
+
+$("a").on("click", function (event) {
+  // no se llamará con el elemento creado dinámicamente
+})
+$('body').on('click', 'a', function(event) {
+  // se llamará con el elemento creado dinámicamente
 });
 
-$( 'li' ).on( 'click', function() {
-  registerClick();
-  doSomethingElse();
+$("body").append("<a href='#'>2</a>");
+````
+
+
+No debemos confundir el detener la propagación del evento (`event.stopPropagation()`) con detener la acción por defecto (`event.preventDefeault()`). Por ejemplo, en el caso un enlace, la acción por defecto es redirigir a la página en cuestión. Un patrón muy habitual es:
+
+````html
+<a href="#">Link</a>
+
+$("a").click(function (event) {
+  event.preventDefault();
 });
-
-$( 'li' ).off( 'click' );
-
-
-
-$( 'li' ).on( 'click.logging', function() {
-  console.log( 'a list item was clicked' );
-});
-
-$( 'li' ).on( 'click.analytics', function() {
-  registerClick();
-  doSomethingElse();
-});
-
-event object
-
-$( document ).on( 'click', function( event ) {
-  console.log( event.type );    // The event type, eg. "click"
-  console.log( event.which );   // The button or key that was pressed.
-  console.log( event.target );  // The originating element.
-  console.log( event.pageX );   // The document mouse X coordinate.
-  console.log( event.pageY );   // The document mouse Y coordinate.
-});
-
-
-prevent default action
-
-event.preventDefault();
-
-$( 'li' ).off( 'click.logging' );
-
-
-Event delegation
-
-$( '#my-unordered-list' ).on( 'click', function( event ) {
-  console.log( event.target ); // logs the element that initiated the event
-});
+````
 
 # Efectos
 
