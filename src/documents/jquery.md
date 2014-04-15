@@ -341,24 +341,62 @@ $("a").click(function (event) {
 });
 ````
 
+# Ejercicio: jQuery todo list
+
+En este ejercicio vamos a crear una aplicación de lista de tareas.
+Las funcionalidades básicas que debe tener son:
+
+- Añadir una nueva tarea
+- Marcar una tarea como terminada
+- Editar una tarea
+- Eliminar una tarea
+
+
 # Efectos
 
-An important note about animations: In modern browsers, and especially on mobile devices, it is often much more efficient to achieve animations using CSS rather than JavaScript. The details of doing this are beyond the scope of this guide, but if you are only targeting mobile devices or browsers that support CSS animations, then you should use CSS for animations where possible. You may also want to consider setting jQuery.fx.off to true on low-resource devices; doing so will cause animation methods to immediately set elements to the desired state, rather than animating to that state.
+jQuery provee una api para hacer animar elementos. Tenemos que tener en cuenta que estas animaciones son animaciones JavaScript y no animaciones CSS. Las animaciones JavaScript básicamente es como si modificaramos una propiedad del elemento que estamos animando repetidamente, por ejemplo
+
+````js
+$e.css({opacity: 0});
+$e.css({opacity: 0.1});
+$e.css({opacity: 0.2});
+....
+````
+
+Hasta no mucho, esta era la única forma que teníamos para realizar animaciones hasta que los navegadores empezaron a soportar animaciones CSS. Algo muy importante que tenemos que tener en cuenta es que en los navegadore modernos y especialmente en dispositivos móviles suele más eficiente utilizar animaciones CSS que animaciones JavaScript.
 
 
-.show() Show the selected elements.
-.hide() Hide the selected elements.
-.fadeIn() Animate the opacity of the selected elements to 100%.
-.fadeOut() Animate the opacity of the selected elements to 0%.
-.slideDown() Display the selected elements with a vertical sliding motion.
-.slideUp() Hide the selected elements with a vertical sliding motion.
-.slideToggle() Show or hide the selected elements with a vertical sliding motion, depending on whether the elements are currently visible.
+http://css3.bradshawenterprises.com/blog/jquery-vs-css3-transitions/
+http://css-tricks.com/myth-busting-css-animations-vs-javascript/
 
-$( '.hidden' ).show( 300 );
+Algunos de los métodos que provee jQuery para realizar animaciones son:
 
-$( 'p.old' ).fadeOut( 300, function() {
-  $( this ).remove();
+* $el.show()
+* $el.hide()
+* $el.fadeIn() 
+* $el.fadeOut() 
+* $el.slideDown()
+* $el.slideUp()
+* $el.slideToggle() 
+
+Podemos controlar la velocidad de la animación pasando el número de milisegundo que queremos dure la animación y tenemos un callback que se ejecutará cuando termine la animación:
+
+````js
+$el.show( 300 );
+
+$el.fadeOut(300, function() {
+  $el.hide();
 });
+````
+
+# Ejercicio: Carousel
+
+En este ejercicio vamos a diseñar nuestro propio carousel. Si no sabes lo que es un carousel aquí puedes ver unos ejemplos:
+
+http://getbootstrap.com/javascript/#carousel
+http://vandelaydesign.com/blog/tools/jquery-carousel-plugins/
+
+
 
 
 # $.ajax y Defered
