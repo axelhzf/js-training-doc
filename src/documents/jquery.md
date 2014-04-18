@@ -341,7 +341,7 @@ $("a").click(function (event) {
 });
 ````
 
-# Ejercicio: jQuery todo list
+# Ejercicio: Todo list
 
 En este ejercicio vamos a crear una aplicación de lista de tareas.
 Las funcionalidades básicas que debe tener son:
@@ -574,10 +574,30 @@ ajaxPromise.done(function (result) {
   
 });
 ````
-# Ejercicio: Todo ajax
+# Ejercicio: Todo list ajax
 
-Vamos a modificar aplicación de TODO app que hicimos anteriormente para permitir que guarde la lista de tareas en el servidor.
+Vamos a modificar aplicación de TODO app que hicimos anteriormente para permitir que guarde la lista de tareas en el servidor. La idea es que cada vez que se produzca una acción por parte del usuario se haga una petición al servidor guardar el estado.
 
+Añadí una pequeña aplicación servidor para poder hacer las pruebas. Para ejecutarla
+
+`node server.js`
+
+La API de este servidor es muy sencilla. Se basa en un objeto task
+
+````json
+{
+  "id": "string",
+  "name": "string",
+  "completed": boolean
+}
+````
+
+Los métodos disponibles son
+
+* `GET` /api/tasks
+* `POST` /api/task
+* `PUT` /api/task/:id
+* `DEL /api/task/:id
 
 
 # Referencias
