@@ -27,10 +27,12 @@ $main-width: 700px;
 
 body {
   font-family: Helvetica, arial, freesans, clean, sans-serif;;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.5;
   margin: 0;
   padding: 0;
+  -webkit-font-smoothing: subpixel-antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 header {

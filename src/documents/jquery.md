@@ -366,8 +366,8 @@ $e.css({opacity: 0.2});
 Hasta no mucho, esta era la única forma que teníamos para realizar animaciones hasta que los navegadores empezaron a soportar animaciones CSS. Algo muy importante que tenemos que tener en cuenta es que en los navegadore modernos y especialmente en dispositivos móviles suele más eficiente utilizar animaciones CSS que animaciones JavaScript.
 
 
-http://css3.bradshawenterprises.com/blog/jquery-vs-css3-transitions/
-http://css-tricks.com/myth-busting-css-animations-vs-javascript/
+* http://css3.bradshawenterprises.com/blog/jquery-vs-css3-transitions/
+* http://css-tricks.com/myth-busting-css-animations-vs-javascript/
 
 Algunos de los métodos que provee jQuery para realizar animaciones son:
 
@@ -393,8 +393,17 @@ $el.fadeOut(300, function() {
 
 En este ejercicio vamos a diseñar nuestro propio carousel. Si no sabes lo que es un carousel aquí puedes ver unos ejemplos:
 
-http://getbootstrap.com/javascript/#carousel
-http://vandelaydesign.com/blog/tools/jquery-carousel-plugins/
+* http://getbootstrap.com/javascript/#carousel
+* http://vandelaydesign.com/blog/tools/jquery-carousel-plugins/
+
+Partiremos de un esquema html básico que tendrá las imágenes que aparecen en el carousel y tendremos que conseguir algo como lo que aparece en el esquema.
+
+![](images/jquery-carousel.jpg)
+
+La animación del carousel la obtendremos animando la propiedad `margin-left`. Puedes hacerlo tanto con código jQuery como con animación CSS3.
+
+
+
 
 
 
