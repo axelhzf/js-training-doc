@@ -408,47 +408,176 @@ La animación del carousel la obtendremos animando la propiedad `margin-left`. P
 
 
 
-# $.ajax y Defered
+# $.ajax, JSON y Promises
 
-AJAX -- "asynchronous JavaScript and XML" — is a means of loading data from a server without requiring a page reload. It uses a browser's built-in XMLHttpRequest (XHR) functionality to make a request to the server and then handle the data that the server returns.
+AJAX es el acrónimo de "asynchronous JavaScript and XML" y consiste en que la aplicación cliente pueda enviar y recibir información al servidor de forma asíncrona sin necesidad de actualizar la página. AJAX cambió la forma es que se construyen las aplicaciones web, pasamos de una web estática, en la que toda la lógica se realizaba en el servidor a una web mucha más dinámica en la que se le da mucha importancia al client-side. 
+La evolución fue progresiva, se empezó utilizando para validación y envio de formulario y luego las aplicaciones single page. En las aplicaciones single page el servidor únicamente renderiza una página básica que carga el JavaScript que ejecutará el cliente. El servidor provee una API para que el cliente se pueda comunicar. El principal beneficio de diseñar aplicaciones orientadas a APIs es que podemos ver las aplicaciones web como un cliente más. Una vez diseñada la API podemos diseñar clientes, bien sean webs, aplicaciones móviles u otro tipo de aplicaciones.
 
-jQuery provides the $.ajax method — and several convenience methods — to make it easier to work with XHRs across browsers.
+A pesar del nombre, se suele utilizar más JSON que XML como formato de comunicación.
 
 ## JSON
 
-$.ajax
-$.get
-$.post
+JSON (JavaScript Object Notation) es un formato de intermcabio de datos ligero. Es un subconjunto de JavaScript, pero es un formato independiente. Existen parseadores y generadores en multitud de lenguages.
 
-que es un json
+Los tipos básicos son: 
 
-JSON.parse
-JSON.stringify
+* Number
+* String
+* Boolean
+* Array
+* Object
+* null
+
+Ejemplo
+
+````json
+{
+    "firstName": "John",
+    "lastName": "Smith",
+    "isAlive": true,
+    "age": 25,
+    "height_cm": 167.64,
+    "address": {
+        "streetAddress": "21 2nd Street",
+        "city": "New York",
+        "state": "NY",
+        "postalCode": "10021-3100"
+    },
+    "phoneNumbers": [
+        { "type": "home", "number": "212 555-1234" },
+        { "type": "fax",  "number": "646 555-4567" }
+    ]
+}
+````
+
+Para trabajar en JavaScript con JSON tenemos los métodos `JSON.parse` y `JSON.stringify`. El primero convierte un string en formato JSON a un objeto y el segúndo hace lo inverso.
 
 
-## $.Deferred
+## $.ajax
+
+jQuery provee el método [$.ajax](https://api.jquery.com/jQuery.ajax/) para realizar peticiones ajax.
+
+````js
+$.ajax({
+  type: "POST",
+  url: 'http://server.com',
+  dataType: 'json',
+  data: JSON.stringify(data)
+  })
+````
+
+````js
+$.ajax({
+  type: "GET",
+  url: 'http://server.com/api/users',
+  dataType: 'json'
+  })
+````
+
+El método $.ajax es asíncrono y devuelve una promesa con la que podremos obtener el resultado de la petición al servidor.
+
+## Promises
+
+Las promesas son objetos que representan el estado pendiente de una operación asíncrona. A estos objetos se le pueden asociar callbacks que se invocarán cuando la operación haya terminado. Este mismo concepto aparece en otros lenguajes con terminos como `futures` o `deferreds`.
+
+Supongamos que tenemos un método `ajaxRequest` que nos permite realizar peticiones ajax al servidor pasándole unas opción y un callback que se ejecutará cual el servidor responda. Este sería el código en el caso de que quisieramos realizar dos peticiones:
+
+````js
+  function ajaxRequest(options, cb) {
+    ...
+  }
 
 
-.then
-.done
-.fail
-.always
-.when
+  ajaxRequest({url : "/api/users"}, function (err, result) {
+    users = result;
+  });
+
+  ajaxRequest({url : "/api/posts"}, function (err, result) {
+    posts = result;
+  });
+````
+
+El problema viene cuando por ejemplo queremos ejecutar un código cuando las dos peticiones hayan terminado. Deberíamos hacer algo tipo comprobar en cada una de las peticiones si el resto se han terminado para entonces ejecutar el código. Este es un ejemplo donde las promesas son muy útiles y simplifican el código.
 
 
-function doSomethingLater( fn, time ) {
-  var dfd = $.Deferred();
+````js
 
-  setTimeout(function() {
-    dfd.resolve( fn() );
-  }, time || 0);
+  function ajaxRequest(options) {
+    ...
+    return promise;
+  }
 
-  return dfd.promise();
+  var userPromise = ajaxRequest({url : "/api/users"});
+  var postsPromise = ajaxRequest({url : "/api/posts"});
+
+  var combinedPromise = Promise.all([userPromise, postsPromise]);
+  combinedPromise.then(function (results) {
+
+  });
+````
+Existe construcciones que nos permiten solventar este problema sin tener que recurrir a las promesas. Las veremos en la sección de Node.js.
+
+Las promesas son una nueva funcionalidad que formará parte del lenguaje. La versión beta de Chrome ya las [incorpora](http://blog.chromium.org/2014/04/chrome-35-beta-more-developer-control.html). Mientras todos los navegadores las implementan podemos utilizar alguna de estas librerías:
+
+* [Q](https://github.com/kriskowal/q)
+* [when](https://github.com/cujojs/when)
+* [WinJS](http://msdn.microsoft.com/en-us/library/windows/apps/br211867.aspx)
+* [RSVP.js](https://github.com/tildeio/rsvp.js)
+
+jQuery provee algo similar a las promesas, los Deferred. Sin embargo Deferred no cumple el standard Promise/A+. Es por eso que es [preferible](https://thewayofcode.wordpress.com/tag/jquery-deferred-broken/) utilizar alguna de las librerías anteriores antes que los Deferred de jQuery.
+
+Como estamos viendo la sección de jQuery vamos a ver la [api de Deferred](http://api.jquery.com/category/deferred-object/) que ofrecen.
+
+`jQuery.Deferred()` nos permite crear un deferred que tiene los siguentes métodos.
+
+* resolve
+* resolveWith
+* reject
+* rejectWith
+* promise
+
+Las promesas son donde podremos añadir callbacks
+
+* then
+* done
+* fail
+* always
+* when
+
+
+````js
+function getData() {
+  var deferred = $.Deferred();
+  setTimeout(function () {
+    deferred.resolve(null, [data]);
+  }, 1000); 
+  return deferred.promise();
 }
 
-var promise = doSomethingLater(function() {
-  console.log( 'This function will be called in 100ms' );
-}, 100);
+var dataPromise = getData();
+dataPromise.done(function (data) {
+    
+});
+dataPromise.fail(function () {
+  
+});
+dataPromise.always(function () {
+  
+});
+````
+
+El método $.ajax de jquery devuelve una promesa
+
+````js
+var ajaxPromise = $.ajax(...);
+ajaxPromise.done(function (result) {
+  
+});
+````
+# Ejercicio: Todo ajax
+
+Vamos a modificar aplicación de TODO app que hicimos anteriormente para permitir que guarde la lista de tareas en el servidor.
+
 
 
 # Referencias
@@ -456,3 +585,4 @@ var promise = doSomethingLater(function() {
 * http://api.jquery.com/
 * http://jqfundamentals.com/
 * http://twitter.github.io/bower/
+* http://www.html5rocks.com/en/tutorials/es6/promises/
