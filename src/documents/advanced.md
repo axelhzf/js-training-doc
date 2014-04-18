@@ -3,7 +3,11 @@ layout: default
 title: Avanzado
 ---
 
-Uno de los libros básico que debería leer toda persona que está aprendiendo JavaScript es ["JavaScript: The Good Parts"](http://www.amazon.com/JavaScript-Good-Parts-Douglas-Crockford/dp/0596517742) de [Douglas Crockford](http://en.wikipedia.org/wiki/Douglas_Crockford). En el libro comenta que todos los lenguajes tienen buenas ideas y malas ideas, fallos de diseño que pueden hacer que el programador cometa fallos en sus programas. Es importante conocer las buenas practicas para emplearlas y así evitar posibles problemas. Mucha gente hace incapié en las malas ideas de JavaScript, considerándolo un lenguaje de juguete que no está a la altura de otros, pero no se dan cuentas de que las buenas ideas lo hacen superior a otros lenguajes en muchos aspectos.
+Uno de los libros básico que debería leer toda persona que está aprendiendo JavaScript es ["JavaScript: The Good Parts"](http://www.amazon.com/JavaScript-Good-Parts-Douglas-Crockford/dp/0596517742) de [Douglas Crockford](http://en.wikipedia.org/wiki/Douglas_Crockford). 
+
+![JavaScript Good Parts](images/good-parts.jpg)
+
+En el libro comenta que todos los lenguajes tienen buenas ideas y malas ideas, fallos de diseño que pueden hacer que el programador cometa fallos en sus programas. Es importante conocer las buenas practicas para emplearlas y así evitar posibles problemas. Mucha gente hace incapié en las malas ideas de JavaScript, considerándolo un lenguaje de juguete que no está a la altura de otros, pero no se dan cuentas de que las buenas ideas lo hacen superior a otros lenguajes en muchos aspectos.
 
 Buenas ideas:
 - Funciones de primer orden
