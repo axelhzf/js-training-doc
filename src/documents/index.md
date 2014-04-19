@@ -48,11 +48,10 @@ git checkout <HASH>
 * [Backbone.js](backbone.html)
 * [Angular.js](angular.html)
 * [Node.js](node.html)
-* [Testeando aplicaciones Node.js](node-testing.html)
 * [Persistencia con MongoDB](mongo.html)
-* CoffeeScript
 * [Build systems: gulp.js](gulp.html)
-* Mocha.js
+
+* [Testeando aplicaciones Node.js](node-testing.html)
 
 ## Autor: Axel Hernández Ferrera
 

@@ -6,12 +6,12 @@ title: Node.js
 # Introducción a Node y NPM
 
 
-
 # ¿ Qué vamos a construir?
 
 Para aprender a utilizar Node vamos a crear una aplicación web que permita saber el estado de disponibilidad de las personas en un grupo de trabajo. Supongamos que estamos trabajando en un grupo de programadores en el que las interrupciones son muy habituales: para preguntar dudas, pedir ayuda sobre un bug dificil de solucionar o simplemente para contar un chiste que acaba de leer en twitter. Hay momentos en los que una persona está realizando una tarea importante que necesita concentración y prefiere que no le molesten, por ejemplo cuando está depurando un bug de llamadas asíncronas o cuando está haciendo una migración de datos en producción. Nuestra aplicación permitirá a los programadores fijar un estado entre disponible u ocupado para que el resto del grupo sepa si lo puede interrumpir o no.
 
 Los requisitos son:
+
 - Un usuario se valida con usuairo y contraseña.
 - Un usuario puede cambiar de estado entre disponible/ocupado.
 - Un usuario puede ver el estado de sus compañeros.
@@ -55,7 +55,7 @@ $ npm install express -g
 
 Para crear la aplicación usamos el generador de código de express pasándole el nombre de la aplicación. En este caso `donotdisturb`.
 
-```bash
+````bash
 $ express donotdisturb
 
    create : donotdisturb
@@ -78,7 +78,7 @@ $ express donotdisturb
 
    run the app:
      $ node app
-```
+````
 
 Como vemos en la salida, esto genera una serie de ficheros y además nos da unas instrucciones para instalar las dependencias y lanzar la aplicación. Si seguimos las instrucciones podemos desplegar la aplicación.
 
@@ -373,31 +373,5 @@ module.exports = messages;
 
 Lo único que estamos haciendo es definiendo una función que transforma los mensajes de flash en un array de mensajes con type y text. De forma que nos resulte sencillo renderizarlos en la plantilla. Para renderizarlos en la plantilla
 
-````jade
-for message in messages()
-    div(class="alert alert-#{message.type}") #{message.text}
-````
-
-Podemos ponerlo en la parte superior de nuestro layout.
-
-# Ejercicio
-
-Crea la página de inicio donde aparezca el nombre del usuario logueado y un enlace para desloguearse
-
-# Solución
-
-````js
-app.get("/", security, function (req, res) {
-    res.render('index', {title: "Index", username : req.session.username});
-});
-````
-
-````jade
-    extends layout
-
-    block content
-      h1 Welcome to #{username}
-      a(href="/logout") Salir
-````
 
 
