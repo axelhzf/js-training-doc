@@ -28,7 +28,7 @@ El código de la función actua como constructor de la clase y se invocará cada
 
 ````js
 function Person() {
-	console.log("creating new person");
+    console.log("creating new person");
 }
 var person1 = new Person();
 var person2 = new Person();
@@ -37,7 +37,7 @@ Para definir propiedades de la clase, al igual que en otros lenguajes, se utiliz
 
 ````js
 function Person(name) {
-	this.name = name;
+    this.name = name;
 }
 var person1 = new Person("Pepe");
 var person2 = new Person("Juan");
@@ -49,11 +49,11 @@ Definir métodos de la clase consiste en definir métodos como propiedades del o
 
 ````js
 function Person(name) {
-	this.name = name;
+    this.name = name;
 }
 
 Person.prototype.sayHello = function () {
-	console.log("hello, my name is " + this.name);
+    console.log("hello, my name is " + this.name);
 }
 
 
@@ -67,11 +67,11 @@ Los métodos no son más que funciones asociadas a un objeto o una clase como un
 
 ````js
 function Person(name) {
-	this.name = name;
+    this.name = name;
 }
 
 Person.prototype.sayHello = function () {
-	console.log(this.name);
+    console.log(this.name);
 }
 
 var person1 = new Person("Pepe");
@@ -125,6 +125,9 @@ student1.sayGoodBye();
 alert(student1 instanceof Person); // true 
 alert(student1 instanceof Student); // true
 ````
+
+![Inheritance](images/inheritance.png)
+
 
 El código que hemos visto hasta ahora no nos permite definir variables ni métodos privados. En JavaScript existen convenciones que utilizan algunos programadores como añadir como prefijo "_" para definir variables o métodos privados. En ningún caso estamos restringiendo el acceso a esos atributos, simplemente es una forma de avisar al usuarios de la clase que si modifica atributos privados la clase puede que no se comporte correctamente. En el caso de que si queramos definir variables privadas podemos utilizar el `Module Pattern`. En esta web http://addyosmani.com/resources/essentialjsdesignpatterns/book/#modulepatternjavascript podemos ver algunas variaciones del patrón. Pero básicamente consiste en aprovechar las closures para definir ámbito privado.
 
