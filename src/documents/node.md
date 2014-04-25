@@ -3,237 +3,404 @@ layout: default
 title: Node.js
 ---
 
-# Introducción a Node y NPM
+# Node.js
 
+Node.js es una plataforma software que permite utilizar JavaScript en el lado del servidor, para ello internamente utiliza la máquina virtual V8, la misma que utiliza Google Chrome. Además viene con un conjunto de módulos que nos permiten realizar tareas básicas como trabajar con ficheros, sockets o http. Por lo tanto Node.js son dos cosas, un runtime y una librería. La primera versión de Node.js se publicó en 2011 y desde entonces se ha creado una comunidad de desarrolladores muy importante que han creado un gran ecosistema para desarrollar aplicaciones. 
 
-# ¿ Qué vamos a construir?
+Las aplicaciones Node.js están pensadas para maximimar el rendimiento y la eficiencia utilizando entrada y salida no bloqueantes y eventos asíncronos. Las aplicaciones utilizan un único hilo aunque internamente se utilizan varios hilos para trabajar con ficheros o eventos de red. Dada su naturaleza asíncrona los aplicaciones son muy utilizadas para realizar aplicaciones real time. 
 
-Para aprender a utilizar Node vamos a crear una aplicación web que permita saber el estado de disponibilidad de las personas en un grupo de trabajo. Supongamos que estamos trabajando en un grupo de programadores en el que las interrupciones son muy habituales: para preguntar dudas, pedir ayuda sobre un bug dificil de solucionar o simplemente para contar un chiste que acaba de leer en twitter. Hay momentos en los que una persona está realizando una tarea importante que necesita concentración y prefiere que no le molesten, por ejemplo cuando está depurando un bug de llamadas asíncronas o cuando está haciendo una migración de datos en producción. Nuestra aplicación permitirá a los programadores fijar un estado entre disponible u ocupado para que el resto del grupo sepa si lo puede interrumpir o no.
-
-Los requisitos son:
-
-- Un usuario se valida con usuairo y contraseña.
-- Un usuario puede cambiar de estado entre disponible/ocupado.
-- Un usuario puede ver el estado de sus compañeros.
-
-Vamos a hacer una aplicación muy simple. Si en tu día a día tienes este problema, puedes probar [LiveTeamApp](http://www.liveteamapp.com/).
-
-# Instalación de node y npm
+## Instalación
 
 Para la instalación de node en Mac OSX o Windows puede descargar el instalador en la [página oficial](http://nodejs.org/).
-
-En Mac OSX existe una mejor opción que es instalarlo utilizando [homebrew](http://mxcl.github.io/homebrew/).
-
-````bash
-$ brew install node
-````
-
-Esto instalará node únicamente, para instalar npm ejecutamos el comando
-
-````bash
-$ curl https://npmjs.org/install.sh | sh
-````
-
 En el caso de linux, debemos añadir un repositorio de donde se descargará los paquetes. Puedes seguir [estas instrucciones](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager).
 
-Para comprobar que todo funciona correctamente
+## Hola Mundo
 
-````bash
-$ node --version
-v0.8.6
-````
-
-# Creación del proyecto
-
-[Express](http://expressjs.com/) es un framework para desarrollar aplicaciones web. Es el más extendido en la comunidad de node. El diseño de su API está inspirado en [Sinatra](http://www.sinatrarb.com/). La filosifía de Express es proveer un conjunto de funcionalidades básica y permitir la extensión mediante configuración para añadir nuevas funcionalides.
-
-Normalmente no es una buena práctica instalar paquetes de forma global, pero en el caso de express vamos a hacer una excepción porque viene con un generador de código que nos va a permitir crear un esqueleto de la aplicación. Con la opción `-g` le indicamos a npm que instale el módulo de forma global.
-
-````bash
-$ npm install express -g
-````
-
-Para crear la aplicación usamos el generador de código de express pasándole el nombre de la aplicación. En este caso `donotdisturb`.
-
-````bash
-$ express donotdisturb
-
-   create : donotdisturb
-   create : donotdisturb/package.json
-   create : donotdisturb/app.js
-   create : donotdisturb/public
-   create : donotdisturb/public/javascripts
-   create : donotdisturb/public/images
-   create : donotdisturb/public/stylesheets
-   create : donotdisturb/public/stylesheets/style.css
-   create : donotdisturb/routes
-   create : donotdisturb/routes/index.js
-   create : donotdisturb/routes/user.js
-   create : donotdisturb/views
-   create : donotdisturb/views/layout.jade
-   create : donotdisturb/views/index.jade
-
-   install dependencies:
-     $ cd donotdisturb && npm install
-
-   run the app:
-     $ node app
-````
-
-Como vemos en la salida, esto genera una serie de ficheros y además nos da unas instrucciones para instalar las dependencias y lanzar la aplicación. Si seguimos las instrucciones podemos desplegar la aplicación.
-
-````bash
-$ cd donotdisturb
-$ npm install
-$ node app
-    Express server listening on port 3000
-````
-
-En la dirección [http://localhost:3000/](http://localhost:3000/) está la aplicación levantada.
-
-El comando `npm install` le indica a npm que descargue todas las dependencias de la aplicación. Las dependencias se especifica en el fichero package.json. Por defecto el generador de código de express nos añadió dos dependencias: `express` y `jade`.
-
-[Jade](http://jade-lang.com/) es el sistema de plantillas por defecto que utiliza express, pero se puede utilizar para utilizar otro sistema.
+Crea un fichero hello.js
 
 ````js
-$ cat package.json
+console.log('Hello world')
+````
+
+Para ejecutar la aplicación simplemente ejecuta el comando
+
+````sh
+> node hello.js
+````
+
+Node trae integrados algunos módulos, por ejemplo el módulo `http` que nos permite trabajar con peticiones http.
+Crea un fichero que se llame helloServer.js y copia este contenido
+
+````js
+var http = require('http');
+http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('Hello World\n');
+}).listen(1337, "127.0.0.1");
+console.log('Server running at http://127.0.0.1:1337/');
+````
+
+````sh
+> node helloServer.js
+````
+
+Para comprobar si funciona, abre en un navegador la url http://127.0.0.1:1337/
+
+A diferencia del primer ejemplo, esta vez el programa no termina, sino que se queda a la espera de nuevas peticiones. Como comentamos en la introducción, tenemos que tener en cuenta que nuestro programa se ejecuta en un úncio hilo, pero aún así, es capaz de responder a peticiones simultaneas.
+
+## Non-blocking I/O
+
+Una de las razones que hizo al creador de Node.js inclinarse a utilizar JavaScript es que era un lenguaje que no contaba con una API de entrada y salida. Esto le permitió diseñar la API desde cero haciendola asíncrona por defecto, permitiendo que las aplicaicones escritas en Node.js sean muy eficientes.
+
+La entrada y salida tradicional es algo parecido a esto
+
+````js
+var fileContent = file.read('file.txt');
+// wait 
+process(fileContent);
+otherProcess();
+````
+El problema con la entrada y salida tradicional es la espera. ¿Por qué esperar a ejecutar el método `otherProcess` si no depende del contenido del fichero? Las operaciones de entrada y salida son muy costosas.
+
+
+| | Latencia relativa|
+| --- | --- |
+| Register | 1 |
+| Cache | 10 |
+| Memory | 100 |
+| Harddisk | 10 000 000 |
+
+Utilizando una entrada y salida no bloqueante, el código sería
+
+````js
+file.read('file.txt', function (fileContenet) {
+    process(fileContent);
+});
+otherProcess();
+````
+
+En este caso no hay necesidad de esperar a la lectura de disco para seguir ejecutando el código. A pesar de que el código sea asíncrono tenemos que tener en cuenta que nuestra aplicación se ejecuta en un único hilo
+
+````js
+file.read('file.txt', function () {
+    // este código nunca se va a ejecutar
+});
+
+while(true) {
+    // bloqueo del proceso
+}
+````
+
+## CommonJS modules
+
+CommonJS es el sistema de módulos que incorpora Node.js. Con el sistema de módulos podemos incluir otros ficheros, librerías del sistema o modulos desarrolladores por terceros.
+
+El código para crear un módulo es muy sencillo. Únicamente tenemos que especificar qué métodos queremos exportar.
+
+hello.js
+
+````js
+exports.world = function () {
+    return 'Hello World';
+};
+````
+main.js
+
+````js
+var hello = require('./hello');
+console.log(hello.world());
+````
+En el caso de que queramos exportar un objeto completo, podemos utilizar
+
+````js
+module.exports = function () {
+    return 'Hello World';
+};
+````
+main.js
+
+````js
+var hello = require('./hello');
+console.log(hello());
+````
+
+Para utilizar alguno de los módulos que trae Node por defecto, basta con usar require. En la [documentación](http://nodejs.org/api/) tienes el listado de módulos disponibles.
+
+````js
+var fs = require("fs");
+fs.writeFile('message.txt', 'Hello Node', function (err) {
+  if (err) throw err;
+  console.log('It\'s saved!');
+});
+````
+
+Node.js viene con un gestor de paquetes llamado [NPM](https://www.npmjs.org/) que nos permite gestionar librerías de terceros. El comando para instalar un paquete es
+
+````bash
+npm install nombrePaquete
+````
+
+Por ejemplo, si quisieramos instalar underscore
+
+````bash
+npm install underscore
+````
+Este comando se bajara el módulo con todas sus dependencias dentro de la carpeta `node_modules` y ya lo tendremos disponible para incluir desde nuestro código.
+
+````js
+var _ = require("underscore");
+va result = _.map([1, 2, 3], function(num){ return num * 3; });
+console.log(result);
+````
+Podemos definir los módulos en un fichero .json para que en todo momento sepamos qué modulos y qué versiones utiliza la aplicación. Para ello definimos un fichero `package.json`
+
+````json
 {
-  "name": "application-name",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "start": "node app.js"
-  },
-  "dependencies": {
-    "express": "3.2.1",
-    "jade": "*"
+  "name": "myModule",
+  "dependencies": {}
+}
+````
+
+La proxima vez que instalemos un módulo, utilizaremos la opción `--save` para añadir la dependencies al fichero package.json en la sección dependencies.
+
+````
+npm install underscore --save
+````
+## Ejercicio: node-fs
+
+Escribe una función que devuelva la lista de ficheros de un directorio junto con tamaño, ordenados por nombre.
+
+## Callback hell
+
+La naturaleza asíncrona de Node.js hace que trabajar con funciones asíncronas sea muy común. El uso constante de callbacks se puede complicar cuando queremos encadenar varias tareas una detras de otra y podemos terminar teniendo lo que se denomina un [Callback Hell](http://callbackhell.com/).
+
+````js
+fs.readFile('file1.txt', function (file1) {
+  fs.readFile('file2.txt', function (file2) {
+    fs.readFile('file3.txt', function (file3) {
+      fs.readFile('file4.txt', function (file4) {
+        fs.readFile('file5.txt', function (file5) {
+          process(file1, file2, file3, file4, file5);
+        }
+      }
+    }
   }
 }
 ````
 
-# Creación de la página de login
-
-Para crear la página de login empezaremos por la ruta. Dentro de la carpeta routes crea el fichero `login.js`. Con el siguiente contenido.
+Existen varias fórmulas para este problema. La primera y la más sencilla es no abusar de las funciones anónimas.
 
 ````js
-var login = function (app) {
-    app.get("/login", function (req, res) {
-        res.render('login', { title: 'Login' });
-    });
-};
-
-module.exports = login;
+var process = function (file1, file2) {}
+var readfile2 = function (cb) { fs.readFile('file2.txt', process); }
+var readfile1 = function (cb) { fs.readFile('file1.txt', readfile2);}
+readfile1();
 ````
 
-La funcion login recibe como parámetros la aplicación express y setea una ruta. En este caso, cuando se haga una petición GET a la url /login, se ejecutará el callback. El callback recibe dos parámetros: `request` y `response`. El callback está renderizando la vista `login` pasandole como parámetro `title`.
-
-Node.js utiliza un sistema de módulo basado en CommonJS. [Aquí](http://docs.nodejitsu.com/articles/getting-started/what-is-require) tienes más información de cómo funciona el sistema de módulos. En lo que respecta a este trozo de código, lo que estamos haciendo con la linea `module.exports = login` es permitir que la función login se pueda utilizar desde otro fichero. Para poder utilizarla se utiliza la función `require`.
+Otra posible solución es utilizar promisas
 
 ````js
-var login = require('./routes/login')
+var fs = require("fs");
+var path = require("path");
+var _ = require("underscore");
+
+var Promise = require('es6-promise').Promise;
+
+function readfile(file) {
+  var promise = new Promise(function (resolve, reject) {
+    fs.readFile(file, function (err, content) {
+      if (err) return reject(err);
+      resolve(content.toString());
+    })
+  });
+  return promise;
+}
+
+
+Promise
+  .all([
+    readfile("file1"), 
+    readfile("file2"),
+    readfile("file3")
+  ])
+  .then(function (result) {
+    console.log(result);
+  })
+  .catch(function (err) {
+    console.log(err);
+  });
 ````
 
-Ahora tenemos que indicarle a la aplicación que incluya las rutas que definimos en el login y podemos borrar el resto de rutas que no vamos a utilizar.
+Otra posible solución es utilizar la librería [async](https://github.com/caolan/async) que provee una serie de utilidades para trabajar con funciones asíncronas.
 
 ````js
-require('./app/login')(app);
+async.map(['file1','file2','file3'], fs.stat, function(err, results){
+    
+});
 ````
 
-Si reiniciamos el servidor y abrimos la página http://localhost:3000/login deberemos ver una página de error de express diciendo que no encuentra la vista `login`, eso es porque todavía no la hemos creado.
+## Ejerciocio: node-fs-async
 
-````jade
-extends layout
+Escribe el mismo código del ejercicio anterior utilizando la librería async
 
-block content
-    form(method='POST', class="login-form")
-        .control-group
-            input(type='text', placeholder='username')
-        .control-group
-            input(type='password', placeholder='password')
-        button(type='submit', class='btn btn-primary')
-            | Sign in
+## Express
+
+En uno de los ejemplos anteriores vimos como el módulo http nos permite crear un servidor web simple. Esta es la base para módulos como [express](http://expressjs.com/) que añaden las funcionalidades básicas de cualquier framework web.
+
+Durante el desarrollo del material del curso, express lanzó una nueva versión, la versión 4. En el curso trabajaremos con la versión 3. En el cambio de versión hay algunas cosas que no son compatibles pero la [migración es sencilla](https://github.com/visionmedia/express/wiki/Migrating-from-3.x-to-4.x). Por lo tanto la documentación que seguiremos es la de la [versión 3.x](http://expressjs.com/3x/api.html).
+
+Para instalar una versión concreta de un paquete lo podemos hacer especificándolo en el fichero package.json o desde la consola utilizando el comando
+
+````
+npm install express@3.5.1
 ````
 
-# Añadiendo estilo
+El mismo código de hola mundo del ejemplo anterior, en express sería este código
 
-Para añadir librerias para el front-end vamos a utilizar bower como hemos utilizado hasta ahora. Express tiene una carpeta `public` que es donde añade los recursos estáticos. En este ejemplo vamos a descargar los componentes de bower directamente en esa carpeta. Normalmente un componente de bower viene con mucho ficheros, por ejemplo en el caso de flat-ui, vienen los ficheros de fuentes sass y los ficheros generados .css. Lo ideal sería utilizar grunt, para compilar los ficheros y colocar en la carpeta pública únicamente los ficheros generados. Para simplificar descargaremos los componentes directamente en la carpeta pública. Para cambiar la ruta por defecto donde bower se descarga los componentes crea un fichero `.bowerrc` con el contenido.
+````
+var express = require('express');
+var app = express();
+
+app.get('/', function(req, res){
+  res.send('hello world');
+});
+
+app.listen(3000);
+````
+Para ejecutar la aplicación, simplemente
+
+````
+node app.js
+````
+
+Express utiliza el módulo [debug](https://github.com/visionmedia/debug) internamente para hacer logging. En el caso de que queramos habilitar los logs podemos utilizar el comando
+
+````
+DEBUG=express:* node app.js
+````
+
+La arquitectura de express se basa en el concepto de middleware. Un middleware no es más que una función encargada de manejar peticiones. La aplicación configura una middleware por los que pasaran las peticiones entrantes. Los middlewares se pueden configurar de forma global o por path. El middleware más simple que podemos definir es el siguiente
 
 ````js
-{
-  "directory" : "public/components"
+function uselessMiddleware(req, res, next) { 
+  next();
 }
 ````
 
-Añade la librería flat-ui
-
-````bash
-bower install flat-ui --save
-````
-
-Comprueba que el componente se haya descargado en la carpeta `public/components/flat-ui/`.
-
-El ficheros `view/layout.jade` es la plantilla que se encarga de poner los tags html y body y tiene un bloque de código para que la plantilla que lo incluye añada el contenido. Vamos a modificar este fichero añadiendo los nuevos estilos que vienen con el componente que acabamos de descargar.
-
-````jade
-doctype 5
-html
-  head
-    title= title
-    link(rel='stylesheet', href='/components/flat-ui/css/bootstrap.css')
-    link(rel='stylesheet', href='/components/flat-ui/css/flat-ui.css')
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
-````
-
-En la página de login vamos a referenciar esta plantilla y vamos a añadir algunas clases css para utilizar los estilos que acabamos de descargar.
-
-````jade
-extends layout
-block content
-    form(method='POST')
-        .login-screen
-            .login-icon
-                img(src="/components/flat-ui/images/illustrations/time.png")
-            .login-form
-                h4 Welcome to Do Not Disturb
-                .control-group
-                    input(type='text', placeholder='username', class='login-field')
-                    label(class='login-field-icon fui-man-16')
-                .control-group
-                    input(type='password', placeholder='password', class='login-field')
-                    label(class='login-field-icon fui-lock-16')
-                button(type='submit', class='btn btn-primary btn-large')
-                    | Sign in
-````
-
-Añade también el contenido del fichero stylesheets/style.css
-
-Si todo va bien, deberías tener una página de inicio como esta
-
-![Login](images/node-login.png)
-
-# Auto reload
-
-A diferencia de otros framework web, como podría ser rails o play. Los cambios no se recargan en caliente. Esto no supone mucho problema, la aplicación se levanta muy rápido por lo que no perdemos tiempo reiniciando el servidor. El único tiempo que podemos perder es si realizamos la tarea a mano, por eso vamos a utilizar un paquete que realiza esta tarea de forma automática.
-
-````bash
-npm install node-dev --save
-````
-
-Si nos fijamos en fichero `package.json`, npm añadió la dependencia junto con el resto de dependencias. Esto no es del todo correcto, esta dependencia la vamos a utilizar únicamente cuando estemos desarollando, no queremos que nuestro servidor de producción la descargue.
+Un middleware recibe como parámetro los objetos `req` y `res` que representan la request y la response. La función `next` indica que se ejecute el siguiente middleware dentro de la cadena. Dentro del middleware podemos manejar los objetos `req` y `res` para añadir funcionalidades. Por ejemplo, para mostrar un log por cada una de las peticiones
 
 ````js
-"dependencies" : {
-    "express" : "3.2.1",
-    "jade" : "*"
-},
-"devDependencies" : {
-    "node-dev" : "~2.0.1"
-}
+app.use(function(request, response, next) {
+  console.log("In comes a " + request.method + " to " + request.url);
+  next();
+});
 ````
 
-Para instalar todas las dependencias podemos seguir utilizando el comando `npm install` en el caso de que no queramos instalar las dependencias de desarollo `npm install --production`.
+También podemos especificar un path como primer parámetro
+
+````js
+app.use("/admin", middleware);
+````
+
+Express utiliza internamente [connect](http://www.senchalabs.org/connect/) y expone todos sus middlewares. Por ejemplo, ya existe un [middleware](http://www.senchalabs.org/connect/logger.html) de logging como el que acabamos de crear. Para utilizarlo simplemente
+
+````js
+app.use(express.logger());
+````
+
+Las rutas se comportan de manera similar a los middleware y están asociados a los verbos http(get, post, put, delete)
+
+````js
+app.get("/", function (req, res) {
+  res.send("hello world");
+});
+app.put(/^\/commits\/(\w+)(?:\.\.(\w+))?$/, function (req, res) {
+  
+});
+app.post("/post/:id", function (req, res) {
+  
+})
+````
+
+Las funcionalidades más básicas en un framework web son, parsear los parámetros de las peticiones y generar una respuesta
+
+````js
+app.get("/users/:name", function (req, res) {
+  req.params.name // GET /users/axel
+  req.query.order // GET /users/axel?order=desc
+});
+
+app.use(bodyParser());
+app.post("/users", function () {
+  req.body.users.name  // POST user[name]=tobi&user[email]=tobi@learnboost.com
+  req.body.name // POST { "name": "tobi" }
+});
+
+
+req.param("") // busca en req.params, req.body, req.query
+
+res.redirect('/foo/bar');
+res.send(new Buffer('whoop'));
+res.send({ some: 'json' });
+res.send('some html');
+res.send(404, 'Sorry, we cannot find that!');
+res.send(500, { error: 'something blew up' });
+res.send(200);
+res.json({user: 'tobi'})
+res.jsonp({ user: 'tobi' })
+res.render('index', {name : "Tobi"})
+````
+
+La ultima opción, `res.render` permite a express integrarse con sistema de plantillas. Podemos configurar el sistema de plantillas que vamos a utilizar con
+
+````js
+app.engine('jade', require('jade').__express);
+````
+
+## Ejercicio: Crea la api rest de twitter
+
+En este ejercicio vamos a crear una API rest con funcionalidades parecidas a la de twitter.
+
+````
+GET /tweets
+
+[
+  {id:2, text: "Hi"},
+  {id:1, text: "First tweet"}
+]
+````
+
+````
+GET /tweets/:id
+
+{id:2, text: "Hi"}
+````
+
+````
+POST /tweets
+
+request {text: 'Hi'}
+response {id: 20, text: 'Hi'}
+````
+
+````
+GET /search?q=axel
+[
+  {id:15, {text: "axel is a good teacher"}}
+]
+````
+
+Para simplificar un poco las cosas no vamos a utilizar una base de datos, sino que vamos a guardar los tweets en memoria. Para que puedas comprobar si el ejercicio está correcto cree unos tests de integración que atacan a la api directamente. Para ejecutar lo test, `npm test`.
+
+Una vez tengas lista la aplicación, prueba a desplegarlo en [heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs) o [nodejitsu](https://www.nodejitsu.com/getting-started/).
+
+## Auto reload
+
+A diferencia de otros framework web, como podría ser rails o play. Los cambios no se recargan en caliente. Esto no supone mucho problema, la aplicación se levanta muy rápido por lo que no perdemos tiempo reiniciando el servidor. El único tiempo que podemos perder es si realizamos la tarea a mano, por eso vamos a utilizar un módulo que realiza esta tarea de forma automática.
+
+````bash
+npm install node-dev --save-dev
+````
 
 Para que el auto reload funcione tenemos que arrancar la aplicación con node-dev.
 
@@ -241,137 +408,79 @@ Para que el auto reload funcione tenemos que arrancar la aplicación con node-de
 $ node-dev app.js
 ````
 
-Prueba a hacer algún cambio, por ejemplo el título de la página de login y comprueba que se recarga correctamente.
+Prueba a hacer algún cambio y comprueba cómo se actualizan.
 
-# Middleware: Sesiones y Flash
+## Debugging
 
-Express utiliza [Connect](http://www.senchalabs.org/connect/), una framework de middleware para extender las funcionalidades básica del servidor. Connect fue diseñado para añadir funcionalidades como sesiones, coockies o logging. Podemos entender un middleware como un filtro que se encarga de procesar de alguna manera la request o la response.
+Depurar aplicaciones en JavaScript es bastante sencillo gracias a las herramientas de desarrollo de los navegadores. Depurar aplicaciones node no es tan sencillo.
 
-Para nuestra aplicación vamos a necesitar sesiones, para almacenar quién es el usuario que está logueado. También vamos a utilizar mensajes de flash. Estos mensajes se almacenan en la sesion, pero su tiempo de vida dura únicamente hasta la siguiente petición. Son útiles para enviar mensaje de error o para indicar que una acción se realizó correctamente.
-
-
-Lo primero que necesitamos es añadir soporte para sesiones en el servidor. Para ello, tenemos varias opciones, almacenarlas en memoria, en una cookie o en base de datos. La opción de almacenarla en [memoria](http://www.senchalabs.org/connect/session.html) no escala bien si nuestra aplicación se va a ejecutar en varios servidores a la vez. La opción de almacenarla en [cookie](http://www.senchalabs.org/connect/cookieSession.html) tiene la limitación de que sólo permite almacenar 4k de información. En nuestra caso será más que suficiente. Si queremos almacenar las sesiones en base de datos tenemos varios middleware para distintas base de datos, por ejemplo [mongo](https://github.com/kcbanner/connect-mongo) o [redis](https://github.com/visionmedia/connect-redis).
-
-Para activar el uso de sesiones con cookie, en el fichero `app.js`
+La opción más simple para depurar aplicaciones
 
 ````js
-app.use(express.cookieParser("Super secret"));
-app.use(express.cookieSession());
+console.log("log");
 ````
 
-Con el método `use` configuramos los middleware. Ten en cuenta que el orden en el que se definen los middleware es el mismo orden en el que se van a ejecutar. En este caso, queremos que se ejecuten antes del router de la aplicación.
+Ahora en serio, si queremos poner break points o inspeccionar el valor de las variables en caliente podemos utilizar un IDE como IntelliJIDEA que cuenta con [debugger integrado](http://www.jetbrains.com/idea/webhelp/running-and-debugging-node-js.html). En el caso de que estemos usando un simple editor de texto, podemos usar [node-inspector](https://github.com/node-inspector/node-inspector)
 
-Cuando el usuario haga login, se comprobará su usuario y contraseña. En el caso de que sean correctas se le creará la sesión.
+````
+$ npm install -g node-inspector
+$ node-debug app.js
+````
+
+
+## Websockets
+
+WebSocket es un protocolo que permite comunicación bidireccional entre el cliente el servidor. Inicialmente fue pensada para la comunicación entre navegador y servidor web pero puede ser utilizado con cualquier cliente o servidor de aplicaciones. Esta es la tecnología que permite crear la web en tiempo real. El servidor podrá avisar directamente a los clientes cuando se produzcan eventos nuevos. Los navegadores modernos ya implementan este standard.
+
+http://caniuse.com/websockets
+
+[Socket.io](http://socket.io/#how-to-use) es una librería para construir aplicaciones en tiempo real con Node.js, Webscockets y fallbacks para los navegadores que no lo soportan. Los tispos de transporte que soporta son:
+
+* WebSocket
+* Adobe® Flash® Socket
+* AJAX long polling
+* AJAX multipart streaming
+* Forever Iframe
+* JSONP Polling
+
+Ejemplos de código
 
 ````js
-    app.post('/login', function (req, res) {
-        var username = req.body.username;
-        var password = req.body.password;
-        if (username === 'user1' && password === 'user1') {
-            req.session = {'username' : username};
-            res.redirect("/");
-        } else {
-            res.redirect("/login");
-        }
-    });
+var io = require('socket.io');
 
-    app.get('/logout', function (req, res) {
-        req.session.username = null;
-        res.redirect('/');
-    });
+var server = http.createServer(app);
+io.listen(server);
+server.listen(app.get('port'), function () {
+    console.log('Express server listening on port ' + app.get('port'));
+});
 ````
 
-Por ahora nuestra autenticación es muy sencilla, se está validando únicamente que el usuario y la contraseña sean `user1`. Cuando añadamos la base de datos mejoraremos esta parte.
-
-Ahora lo que vamos a hacer es añadir seguridad a la página de inicio, de forma que cuando un usuario accede, si no está logueado se le haga un redirect a la página de login. Para ello vamos a crear nuestro propio middleware de seguridad, en el fichero `app/security.js`.
+Servidor
 
 ````js
-var security = function (req, res, next) {
-    if(!req.session.username) {
-        res.redirect("/login");
-    }else {
-        next();
-    }
-};
-module.exports = security;
+io.sockets.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+});
 ````
-
-Ahora aplicamos este middleware en la página de inicio
+Cliente
 
 ````js
-var security = require("./security");
-
-var index = function (app) {
-
-    app.get("/", security, function (req, res) {
-        res.send("Hi " + req.session.username);
-    });
-
-};
-
-module.exports = index;
+var socket = io.connect('http://localhost');
+socket.on('news', function (data) {
+    console.log(data);
+    socket.emit('my other event', { my: 'data' });
+});
 ````
 
-Si todo está correcto, cuando vamos a la página de inicio nos debería redirigir al login. Si ponemos las credenciales correcta nos debería redirigir a la página de inicio y mostrar nuestro username en pantalla. Abre las herramientas de desarrollador y comprueba que está la cookie que hemos definido.
+# Ejercicio:
 
-Para los mensajes de flash vamos a utilizar `connect-flash`.
-
-````bash
-$ npm install connect-flash --save
-````
-
-Y lo añadimos a la configuración del servidor
-
-````js
-var flash = require('connect-flash');
-app.use(flash());
-````
-
-Flash require de sesión, por lo tanto colocalo después del middleware de sesión.
-
-Para añadir mensajes, basta con utilizar el código
-
-````js
-req.flash("info", "welcome " + username);
-````
-
-El primer parámetro es el tipo de mensaje, por ejemplo info o error. Para acceder a los mensajes
-
-````js
-req.flash('info'); // Accede a los mensaje de info
-req.flash(); // Accede a todos los mensajes
-````
-Una vez se accede a los mensajes estos se borran.
-
-Añade mensaje cuando al hacer login correcto o incorrecto y al hacer logout.
-
-Para mostrar los mensajes de flash vamos a crear una utilidad que ponga los mensajes de flash en la plantilla. Para ello vamos a utilizar la variable `res.locals`. Todo los que añadas a esta variable estará disponible en todas las plantillas. Para el método vamos a utilizar underscore, así que primero vamos a instalarlo.
-
-````js
-$ npm install underscore --save
-````
-
-El código de la utilidad lo pondremos en el fichero `app/messages.js`
-
-````js
-var _ = require('underscore');
-var messages = function (req, res, next) {
-    res.locals.messages = function () {
-        var flash = req.flash() || {};
-        var allMessages = [];
-        _.each(flash, function (messages, type) {
-            _.each(messages, function (message) {
-                allMessages.push({type : type, text : message});
-            })
-        });
-        return allMessages;
-    }
-    next();
-}
-module.exports = messages;
-````
-
-Lo único que estamos haciendo es definiendo una función que transforma los mensajes de flash en un array de mensajes con type y text. De forma que nos resulte sencillo renderizarlos en la plantilla. Para renderizarlos en la plantilla
+* Revisa el código del servidor de chat, que vimos en la sección de backbone
+* Sigue los pasos de esta [presentación](http://axelhzf.com/node-multiplayer-snake/#/36) para crear un videojuego multijugador en tiempo real
 
 
 
+## Referencias
+* http://www.html5rocks.com/en/tutorials/websockets/basics/

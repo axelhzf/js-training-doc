@@ -5,15 +5,13 @@ title: Hello World
 
 # Primeros pasos
 
-Ya sabemos algo de historia y por qué JavaScript es tán importante en la actualidad, va siendo hora de empezar a escribir algo de código. En esta sección veremos la sintaxis básica, pero antes de eso necesitamos un entorno donde poder hacer pruebas.
+Ya sabemos algo de historia y por qué JavaScript es tán importante en la actualidad, va siendo hora de empezar a escribir algo de código. Antes de empezar con la sintaxis básica tenemos que preparar un entorno donde poder hacer las pruebas.
 
 ## Navegadores
 
-Lo primero que necesitamos es una forma de empezar a probar nuestro código. Lo más sencillo es crear una web y abrirla en el navegador.
+Lo primero que necesitamos es una forma de empezar a probar nuestro código. Lo más sencillo es crear una web y abrirla en el navegador. Durante el curso utilizaremos [Google Chrome](https://www.google.com/intl/en/chrome/browser/) para realizar las pruebas. A día de hoy tiene el motor de JavaScript más rápido y tiene unas herramientas de desarrollo muy buenas.
 
-Durante el curso utilizaremos [Google Chrome](https://www.google.com/intl/en/chrome/browser/) para realizar las pruebas. A día de hoy tiene el motor de JavaScript más rápido y tiene unas herramientas de desarrollo muy buenas. Cuando necesites probar aplicaciones en firefox una extensión indispensable [firebug](http://getfirebug.com/).
-
-Cuando estas desarrollando aplicaciones web es muy importante que la aplicación se comporte correctamente en todos los navegadores. Si sólo funciona bien por ejemplo en Chrome puedes enfadar a muchos usuarios y puedes llegar hasta molestarlos. Durante años, el mayor quebradero de cabeza para los desarrolladores web ha sido dar soporte a navegadores antiguos, en especial IE6, 7, 8. En la actualidad hay un movimiento para dejar de dar soporte a navegadores antiguos, que está potenciado por web importantes. Por ejemplo facebook es compatible con IE8 en adelante o youtube que es compatible con IE7 en adelante. Incluso microsoft quiere [dejar de dar soporte a IE6](http://www.ie6countdown.com/).
+Cuando estas desarrollando aplicaciones web es muy importante que la aplicación se comporte correctamente en todos los navegadores. Durante años, el mayor quebradero de cabeza para los desarrolladores web ha sido dar soporte a navegadores antiguos, en especial IE6, 7, 8. En la actualidad hay un movimiento para dejar de dar soporte a navegadores antiguos que está potenciado por web importantes. Por ejemplo facebook es compatible con IE8 en adelante o youtube que es compatible con IE7 en adelante. Incluso microsoft quiere [dejar de dar soporte a IE6](http://www.ie6countdown.com/).
 
 ## Editores
 
@@ -64,7 +62,7 @@ Otra forma de incluir código es utilizar un fichero externo:
 
 ````javascript
 console.log("hello world");
-`````
+````
 
 Utilizar ficheros externos permite hacer el código más modular y reutilizar el código en distintas páginas. Además de esto tiene la ventaja de que los navegadores pueden cachear los scripts, reduciendo la cantidad de datos que se tienen que bajar haciendo que la página sea más rápida.
 

@@ -3,11 +3,7 @@ layout: default
 title: Introducción
 ---
 
-<div class="hero-unit">
-    <h1>JavaScript Training</h1>
-    <p>From dummy to ninja</p>
-    <a href="why.html" class="btn btn-large btn-primary">Empezar! »</a>
-</div>
+# JavaScript: De principante a experto
 
 ## Objetivo del curso
 
@@ -40,7 +36,7 @@ git checkout <HASH>
 * [¿Por qué JavaScript?](why.html)
 * [Hola mundo](helloWorld.html)
 * [Básico: Sintaxis, Arrays, Objetos y Mocha](basic.html)
-* [Avanzado: ](advanced.html)
+* [Avanzado: Scope, Closure, thiss](advanced.html)
 * [OOP](oop.html)
 * [DOM](dom.html)
 * [jQuery](jquery.html)
@@ -48,13 +44,4 @@ git checkout <HASH>
 * [Backbone.js](backbone.html)
 * [Angular.js](angular.html)
 * [Node.js](node.html)
-* [Persistencia con MongoDB](mongo.html)
-* [Build systems: gulp.js](gulp.html)
-
-* [Testeando aplicaciones Node.js](node-testing.html)
-
-## Autor: Axel Hernández Ferrera
-
-Email: axelhzf@gmail.com
-Blog: http://axelhzf.com
-Twitter: [@axelhzf](http://www.twitter.com/axelhzf)
+* [Build systems](gulp.html)

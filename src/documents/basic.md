@@ -179,8 +179,8 @@ str.split(/\s+/); // ["hello", "world"]
 
 ````javascript
 
-function fn() {}; //define global function
-var fn = function () {}; //define local function
+function fn() {}; 
+var fn = function () {}; 
 
 fn(); //cal a function
 
@@ -248,7 +248,7 @@ En los bloques describe se especifican funcionalidades y en los bloques it se es
 ````js
 describe('MiClass', function(){
     describe('amazing feature', function () {
-        it("should only if it's monday", function () {
+        it("should works only if it's monday", function () {
             //assertions
         });
     }
@@ -263,17 +263,17 @@ describe('MiClass', function(){
 
     })
 
-    it("should should return monday if it's monday", function () {
+    it("should return monday if it's monday", function () {
         //assertions
     });
 
-    it("should should return tuesday if it's tuesday", function () {
+    it("should return tuesday if it's tuesday", function () {
         //assertions
     });
 })
 ````
 
-Para definir las assertions vamos a utilizar chai. Voy a comentar las más utilizados, pero en la [documentación](http://chaijs.com/api/bdd/) están explicados todas las funciones disponibles.
+Para definir las assertions vamos a utilizar chai. Estos son algunos de los métodos disponibles, en la [documentación](http://chaijs.com/api/bdd/) puedes consultar el resto.
 
 ````js
 expect(foo).to.equal('bar');
@@ -286,11 +286,11 @@ expect(undefined).to.be.undefined;
 expect(fn).to.throw(Error);
 ````
 
-Esto es lo básico que nos hace falta para poder empezar a testear el código que vayamos haciendo. Faltan cosas importantes como testear código asíncrono, pero lo iremos viendo más adelante.
+Esto es lo básico que nos hace falta para poder empezar a testear el código que vayamos haciendo.
 
 ## Ejercicios
 
-Los ejercicios van a consistir en una serie de tests y tendras que escribir el código necesaria para hacer pasar el test.
+Los ejercicios van a consistir en una serie de tests para los que tendrás que escribir el código que hace pasar el test.
 
 ````js
 describe("Basic test", function () {
@@ -400,7 +400,7 @@ function test7 (input) {
 
 ## Referencias
 
-[JavaScript-Garden](http://bonsaiden.github.com/JavaScript-Garden/)
-[MDN: Regular Expressions](https://developer.mozilla.org/en-US/docs/JavaScript/Guide/Regular_Expressions)
-[Chai](http://chaijs.com/api/bdd/)
-[Speakingjs](http://speakingjs.com/es5/)
+* [JavaScript-Garden](http://bonsaiden.github.com/JavaScript-Garden/)
+* [MDN: Regular Expressions](https://developer.mozilla.org/en-US/docs/JavaScript/Guide/Regular_Expressions)
+* [Chai](http://chaijs.com/api/bdd/)
+* [Speakingjs](http://speakingjs.com/es5/)

@@ -44,6 +44,16 @@ header {
   font-weight: bold;
   padding: 30px 20px 0px 20px;
 
+  a.logo {
+    color: #323330; 
+    transition: color 0.3s ease-in-out;
+
+    &:hover {
+      color: #fff;
+      text-decoration: none;
+    }
+  }
+
   small {
     font-size: 30px;
     font-weight: normal;
