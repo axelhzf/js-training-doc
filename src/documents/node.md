@@ -5,6 +5,8 @@ title: Node.js
 
 # Node.js
 
+![Trending node](images/node-resume.jpg)
+
 Node.js es una plataforma software que permite utilizar JavaScript en el lado del servidor, para ello internamente utiliza la máquina virtual V8, la misma que utiliza Google Chrome. Además viene con un conjunto de módulos que nos permiten realizar tareas básicas como trabajar con ficheros, sockets o http. Por lo tanto Node.js son dos cosas, un runtime y una librería. La primera versión de Node.js se publicó en 2011 y desde entonces se ha creado una comunidad de desarrolladores muy importante que han creado un gran ecosistema para desarrollar aplicaciones. 
 
 Las aplicaciones Node.js están pensadas para maximimar el rendimiento y la eficiencia utilizando entrada y salida no bloqueantes y eventos asíncronos. Las aplicaciones utilizan un único hilo aunque internamente se utilizan varios hilos para trabajar con ficheros o eventos de red. Dada su naturaleza asíncrona los aplicaciones son muy utilizadas para realizar aplicaciones real time. 
