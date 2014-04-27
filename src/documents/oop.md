@@ -9,7 +9,7 @@ JavaScript es un lenguaje con orientación a objetos, pero no una orientación o
 
 Esto al principio puede confundir a programadores que vienen de lenguajes como Java o C++. Es importante que no intentemos programar orientado a objetos en JavaScript como lo haríamos en esos otros lenguajes. Conseguiremos mejores resultados si interiorizamos la prototype-based programming.
 
-Con la próxima versión de JavaScript, [ES.next se añadirá soporte](http://www.2ality.com/2012/07/esnext-classes.html) para clases. De esto hablaremos más adelante en la sección sobre el futuro de JavaScript. Uno de los principales problemas que en mi opinión ha tenido JavaScript es que el sistema de clases y módulos no se estandarizara antes. Esto ha hecho que cada uno implemente sus propias librerias o incluso sus propios lenguajes (e.g. CoffeeScript) para solucionar cosas básica como la herencia.
+Con la próxima versión de JavaScript, [ES6 se añadirá soporte](http://www.2ality.com/2012/07/esnext-classes.html) para clases. De esto hablaremos más adelante en la sección sobre el futuro de JavaScript. Uno de los principales problemas que en mi opinión ha tenido JavaScript es que el sistema de clases y módulos no se estandarizara antes. Esto ha hecho que cada uno implemente sus propias librerias o incluso sus propios lenguajes (e.g. CoffeeScript) para solucionar cosas básica como la herencia.
 
 Lo primero que nos llama la atención es que no exista una palabra reservada `class`. En lugar de eso JavaScript utiliza funciones como classes. Para definir una clase nueva lo único que debemos hacer es definir un nueva función.
 
