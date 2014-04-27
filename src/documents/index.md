@@ -36,11 +36,11 @@ git checkout <HASH>
 * [¿Por qué JavaScript?](why.html)
 * [Hola mundo](helloWorld.html)
 * [Básico: Sintaxis, Arrays, Objetos y Mocha](basic.html)
-* [Avanzado: Scope, Closure, thiss](advanced.html)
+* [Avanzado: Scope, Closure, this](advanced.html)
 * [OOP](oop.html)
+* [Functional Programming](functional.html)
 * [DOM](dom.html)
 * [jQuery](jquery.html)
-* Programación funcional con Underscore.js
 * [Backbone.js](backbone.html)
 * [Angular.js](angular.html)
 * [Node.js](node.html)
