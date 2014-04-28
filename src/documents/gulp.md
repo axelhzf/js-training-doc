@@ -30,14 +30,10 @@ Vamos a crear un build script que nos permita:
 * [Concat](https://github.com/wearefractal/gulp-concat)
 * LiveReload!
 
-El código de ejemplo lo puedes ver en :
-
-PONER URL DEL REPOSITORIO
-
 Para empezar vamos a instalar las dependencias
 
 ```
-npm install gulp gulp-util gulp-sass gulp-coffee gulp-livereload gulp-clean gulp-concat gulp-connect --save
+npm install gulp gulp-util gulp-sass gulp-coffee gulp-clean gulp-concat gulp-connect --save
 ```
 
 El código del Gulpfile sería el siguiente
@@ -47,7 +43,6 @@ var gulp = require("gulp");
 var gutil = require("gulp-util");
 var coffee = require("gulp-coffee");
 var sass = require("gulp-sass");
-var reload = require("gulp-livereload");
 var clean = require("gulp-clean");
 var concat = require("gulp-concat");
 var connect = require("gulp-connect");

@@ -45,3 +45,4 @@ git checkout <HASH>
 * [Angular.js](angular.html)
 * [Node.js](node.html)
 * [Build systems](gulp.html)
+* [ES6](es6.html)
