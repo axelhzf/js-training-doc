@@ -49,7 +49,7 @@ Data-binding es el mecanismo de sincronización automática de datos entre los m
 
 ![One way binding](images/ng-binding-one.png)
 
-![Two way binding](images/ng-binding-one.png)
+![Two way binding](images/ng-binding-two.png)
 
 
 ```html
@@ -561,7 +561,10 @@ http://jsbin.com/nulux/1/edit?html,js,output
 
 El método $apply es importante cuando estamos integrando código no escrito utilizando angular. Por ejemplo, cuando estamos creando una directiva para envolver un componente de jQuery.
 
-## Ejemplo
+## Ejercicios
+
+* Reimplementa la aplicación de todos utilizando angular
+* 
 
 
 ## Recursos

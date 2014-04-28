@@ -4,22 +4,16 @@ title: Backbone.js
 
 # Backbone.js
 
-
-
-
 ## Introducción
 
-En la actualidad existen muchas librerías MVC para JavaScript: Ember.js, Angular.js, Can.js, Backbone.js, ...
-Es por eso que saber elegir [la librería adecuada para nuestra aplicación es muy importante](http://coding.smashingmagazine.com/2012/07/27/journey-through-the-javascript-mvc-jungle/).
+En la actualidad existen muchas librerías MVC para JavaScript: Ember.js, Angular.js, Can.js, Backbone.js, ... por eso elegir [la librería adecuada para nuestra aplicación es muy importante](http://coding.smashingmagazine.com/2012/07/27/journey-through-the-javascript-mvc-jungle/).
 
 ![MVC battle](images/mvc-battle.jpg)
 
-Backbone es una libreria Java Script que permite estructurar aplicaciones
-web. Provee los componentes básicos **models**, **collections** y **views**
-necesarios para crear aplicaciones web complejos.
+Backbone es una librería JavaScript que permite estructurar aplicaciones
+web utilizando componentes básico: **models**, **collections** y **views**. Estos componentes serán la base para construir aplicaciones web complejas.
 
-Su creador es Jeremy Ashkenas. Trabaja en el desarrollo de noticias interactivas para el NYTimes y en DocumentCloud.
-También es el creador de otras librerías como:
+Su creador es Jeremy Ashkenas (NYTimes y en DocumentCloud) quien también es el creador de otras librerías importantes:
 
 * [Underscore.js](http://underscorejs.org/)
 * [Coffeescript](http://coffeescript.org/)
@@ -29,29 +23,23 @@ Backbone es librería bastante simple y esa es una de sus principales virtudes.
 <blockquote class="twitter-tweet" lang="en"><p>The magic of backbone, IMO is in its lack of magic. Slim, readable, non-magical source, easily extended for custom needs. <a href="https://twitter.com/search?q=%23backboneconf&amp;src=hash">#backboneconf</a></p>&mdash; Henrik Joreteg (@HenrikJoreteg) <a href="https://twitter.com/HenrikJoreteg/statuses/207850077170053120">May 30, 2012</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-Es una librería bastante popular y es utilizada por empresas importantes como Rdio, Hulu o Foursquare entre [otros](http://backbonejs.org/#examples).
-
+Es una librería bastante popular y es utilizada por empresas importantes como [Rdio, Hulu y Foursquare entre otras](http://backbonejs.org/#examples).
 
 ## ¿Por qué utilizar Backbone?
 
-Ya hemos visto como crear aplicaciones útilizando jQuery y mucha gente piensa que con eso es suficiente. Puede que
-para aplicaciones muy simples como una landing page si sea suficiente. El problema es que cuando la
-complejida aumenta necesitamos una estructura que nos permita manejarla, sino terminaremos teniendo
-un código parecido a esto:
+En la sección anterior vimos cómo crear aplicaciones web utilizando jQuery. A pesar de que la aplicación era bastante sencilla el código se estaba complicando. Trabajamos con los datos directamente en el DOM y no había una clara separación de conceptos entre las diferentes capas de la aplicación. Si la aplicación es extremadamente simple, por ejemplo un landing page, esta aproximación podría ser la adecuada. El problema está cuando la complejida aumenta. Necesitamos estructuras que nos permitan manejar esa complejidad o nuestro código se convertirá en un lio imposible de mantener. Algo parecido a la mayoría de plugins jQuery, cuando leo algo de su código, unicamente veo esto:
 
 ![Spaghetti code](images/spaghetti.jpeg)
 
-Aquí es donde Backbone es de mucha utilidad . Backbone.js añade una capa de abstracción
-que permitiendo estructurar la aplicación. El principal objetivo es la separación de conceptos,
-desvincular los datos del DOM para hacer la aplicación más mantenible y testeable.
+Aquí es donde reside la gran utilidad  de Backbone. La librería añade una pequeña capa de abstracción que permite estructurar la aplicación. Los principales objetivo son:
 
-En comparación con Angular o Ember, Backbone es la librería más simple. Provee los recursos básicos
-para que apartir de ahí seamos nosotros mismos los que creemos nuestro propio framework. Es por
-han aparecido muchas librerías para hacer más sencillas las tareas más repetitivas. Otra de las
-ventajas es que no te fuerza a utilizar un sistema de plantillas concreto. Esto puede ser una
-ventaja poco importante, pero permite integrarnos con librerías muy eficientes como
-[React.js](https://github.com/usepropeller/react.backbone) y nos va a permitir [reutilizar las mismas
-plantillas para el servidor y para el cliente](https://github.com/rendrjs/rendr).
+* Separación de conceptos
+* Desvincular los datos del DOM
+* Aplicación más mantenible
+* Aplicaciones más testeable
+
+
+Si comparamos Backbone con otras librerías MVC más modernas como pueden ser Angular o Ember, encontramos que Backbone es una librería mucho más simple. Provee los recursos básicos para que a partir de ahí seamos nosotros mismos los que creemos nuestro propio framework. Es por han aparecido muchas librerías para hacer más sencillas las tareas más repetitivas. Normalmente Backbone no te fuerza una determinada forma de hacer las cosas, por ejemplo es totalmente agnóstico del sistema de plantillas y nos permite que seamos nosotros quienes hagamos la integración con la librería que queramos. Por ejemplo Handlebars o [React.js](https://github.com/usepropeller/react.backbone).
 
 ## Estructura
 
@@ -70,8 +58,7 @@ Model | Model / Collection
 Controller | View / Router
 View | Template
 
-La persistencía por defecto que trae Backbone es RESTFul, pero existen plugins que permite
-utilizar otros mecanismos sin necesidad de modificar nuestro código. Por ejemplo:
+La persistencía por defecto que trae Backbone es RESTFul, pero existen plugins que permiten utilizar otros mecanismos sin necesidad de modificar nuestro código. Por ejemplo:
 
 * [LocalStorage](https://github.com/jeromegn/Backbone.localStorage)
 * [WebSockets](https://github.com/scttnlsn/backbone.io)
@@ -79,11 +66,7 @@ utilizar otros mecanismos sin necesidad de modificar nuestro código. Por ejempl
 
 ### Models
 
-Los modelos son las clases que van a almacenar los datos de la aplicación además de gran parte
-de la lógica que los rodea: converciones, validaciones, valores calculados y control de acceso.
-Utilizar los modelos de Backbone nos va a proporcionar una pieza clave para manejar los cambios
-en la aplicación, los **Eventos**.
-
+Los modelos son las clases que van a almacenar los datos de la aplicación además de gran parte de la lógica que los rodea: converciones, validaciones, valores calculados y control de acceso. Utilizar los modelos de Backbone nos va a proporcionar una pieza clave para manejar los cambios en la aplicación, los **eventos**.
 
 ```javascript
 // constructor por defecto
@@ -114,8 +97,7 @@ book.set("title", "A Scandal in Bohemia");
 
 #### Eventos
 
-Los eventos nos va a permitir detectar los cambios que se producen en los modelos. Esto es
-muy importante para mantener la sincronización entre los datos y las vistas.
+Los eventos nos va a permitir detectar los cambios que se producen en los modelos. Esto es muy importante para mantener la sincronización entre los datos y las vistas.
 
 ```javascript
 book.set('title', '...'); // Se lanza evento "change:title" y "change"
@@ -129,7 +111,7 @@ book.set({title : ''}, {silent : true}); // No lanza eventos
 
 #### Attributes
 
-El atributo `defaults` nos va a permitir asignar valores por defecto a otros atributos
+Con `defaults` podemos asignar valores por defecto a otroso atributos.
 
 ```javascript
 var Meal = Backbone.Model.extend({
@@ -149,10 +131,7 @@ Los atributos se almacenan internamente dentro de `attributes`
 
 ![Backbone internal model object](images/bb-bookObject.png)
 
-No deberíamos acceder directamente a este objeto, porque estaríamos perdiendo el mecanismo
-de detección de cambios. En el caso de que necesitemos acceso a todos los atributos, por ejemplo
-para pasárselos a la vista para que se rendericen, podemos utilizar el método `toJSON`. Este
-método devuelve una copia de los atributos.
+No deberíamos acceder directamente a este objeto, porque estaríamos perdiendo el mecanismo de detección de cambios. En el caso de que necesitemos acceso a todos los atributos, por ejemplo para pasárselos a la vista para que se rendericen, podemos utilizar el método `toJSON`. Este método devuelve una copia de los atributos.
 
 ```javascript
 var artist = new Backbone.Model({
@@ -178,10 +157,9 @@ var Chapter = Backbone.Model.extend({
 
 #### Sincronización
 
-La sincronización nos va a permitir persistir los cambios que hagamos en nuestra en la aplicación.
-Lo más normal en el desarrollo de aplicaciones single app es tener una API rest con la que se comunique
-el cliente web. Es por eso que el mecanimos de sincronización que viene con Backbone es restful.
 
+Mediante la sincronización vamos a persistir los cambios que hagamos en cliente con los datos que tenemos en el servidor. Lo más normal en el desarrollo de aplicaciones single page es tener una API rest con la que se comunique
+el cliente web. Es por eso que el mecanismo de sincronización por defecto es RESTful.
 
 ```javascript
 var Book = Backbone.Model.extend({
@@ -247,20 +225,19 @@ notes.fetch({data: {page: 3}})  //HTTP GET /notes?page=3
 
 ### Router
 
-El router es una parte muy importante de una aplicación. Permite almacenar el estado de una aplicación.
-De forma que cuando el usuario actualice la página o copie y comparta un enlace, la web debería
-ser capaz de recuperar el mismo estado.
+El router es una parte muy importante de una aplicación. Permite almacenar el estado de una aplicación. Cuando un usuario copia o comparte un enlace, espera que la web sea capaz de recuperar el estado.
 
-Existen dos mecanismos que nos permiten modificar la url desde javascript. Por un lado tenemos
-los #hashFragments por ejemplo. Esta es la opción que está soportada por todos los navegadores.
-Los navegadores modernos tinene implementada una nueva API (History API) que permite modificar
-la url sin necesidad de utilizar #hashFragments.
+Existen dos mecanismos que nos permiten modificar la url desde JavaScript:
 
-El router de Backbone es capaz de utilizar un mecanismo u otro dependendiendo del soporte
+- hashFragments
+- History API
+
+Los hashFragments están soportados por todos los navegadores mientras que la History API únicamente está soportada por los navegadores modernos. El router de Backbone es capaz de utilizar un mecanismo u otro dependendiendo del soporte
 del navegador.
 
-Básicamente lo que vamos a hacer en el router es hacer el mapeo entre patrones de url
-y los métodos que se ejecutarán al acceder.
+
+El funcionamiento del router consiste en hacer un mapeo entre patrones de url y métodos que se invocarán cuando un patrón coincida.
+
 
 ```javascript
 var Router = Backbone.Router.extend({
@@ -283,9 +260,7 @@ router.navigate("help", {trigger: true});
 
 ### View
 
-La vistas deberían ser la única parte de nuestra aplicación que esté en contacto con el DOM.
-La vista es la encargada tanto de renderizar la vista cuando alguno de los datos se cambien
-como de responder a los eventos que se produzcan en la vista por la interacción del usuario.
+La vistas son la única parte de nuestra aplicación que esté en contacto con el DOM. Se encargan de renderizar los datos cuando se produzcan cambios en los modelos y de responder a los eventos que se produzcan en el DOM por la interacción del usuario.
 
 ```javascript
 var DocumentView = Backbone.View.extend({
@@ -302,7 +277,7 @@ documentView.render();
 
 #### Templates
 
-Underscore cuenta con la función `template` que es un sistema de plantillas básico.
+Underscore cuenta con la función `_.template` que funciona como un sistema de plantillas muy básico.
 
 ```javascript
     var DocumentView = Backbone.View.extend({
@@ -323,25 +298,24 @@ var list = "<% _.each(people, function(name) { %> <li><%= name %><li> <% }); %>"
 _.template(list, {people : ['moe', 'curly', 'larry']});
 ```
 
-Es por eso que yo recomiendo utilizar otro sistema de plantillas. Por ejemplo uno
-que está bastante extendido, además de ser el que utiliza Ember.js, es
+Es por eso que recomiendo utilizar otro sistema de plantillas. Por ejemplo uno
+que está bastante extendido, además de ser el que utiliza Ember, es
 [Handlebars](http://handlebarsjs.com/)
 
 ![Handlebars logo](images/handlebars.png)
 
 Este sería el mismo código que el ejemplo anterior utilizando Handlebars.
 
-```javascript
+````javascript
 var template = Handlebars.compile(
    "{{#each people}}<li>{{ this }}<li>{{/each}}"
 );
 template({people : ['moe', 'curly', 'larry']});
-```
+````
 
-Para utilizar handlebars des nuestras vistas tenemos varias opciones:
+Para utilizar handlebars desde nuestras vistas tenemos varias opciones:
 
-Podemos compilarlas directamente en la vista.
-Ya sea escribiendo la plantilla inline
+Podemos compilarlas directamente en la vista. Escribiendo la plantilla inline:
 
 ```javascript
 var DocumentView = Backbone.View.extend({
@@ -355,8 +329,7 @@ var DocumentView = Backbone.View.extend({
 });
 ```
 
-O escribiendo la plantilla en un tag script que nos
-permite escribir texto multilinea.
+O escribiendo la plantilla en un tag script para poder escribir texto multilinea.
 
 ```javascript
 <script type="text/html" id="#documentView">
@@ -376,14 +349,12 @@ var DocumentView = Backbone.View.extend({
 </script>
 ```
 
-Pero la opción más recomendada es precompilar las plantillas. Por ejemplo
-tenemos este plugin [gulp-handlebars](https://github.com/lazd/gulp-handlebars) que nos permite
-hacerlo.
+Pero la opción más recomendada es precompilar las plantillas. Por ejemplo utilizando este plugin [gulp-handlebars](https://github.com/lazd/gulp-handlebars).
 
 #### Events
 
-El atributo `events` nos permite asociar los eventos de DOM que se producen en las vistas
-con métodos que se van a ejecutar cuando se produzcan.
+El atributo `events` permite asociar los eventos de DOM que se producen en las vistas
+con métodos que se van a ejecutar cuando se lance el evento.
 
 ```javascript
 var DocumentRow = Backbone.View.extend({
@@ -401,8 +372,7 @@ var DocumentRow = Backbone.View.extend({
 });
 ```
 
-La vista es la encarga de responder tanto a los eventos del DOM como a los eventos que se produzcan
-en los modelos y para los que sea necesario actualizar las vistas.
+La vista es la encargada de responder tanto a los eventos del DOM como a los eventos que se produzcan en los modelos y para los que sea necesario actualizar las vistas.
 
 ```javascript
 model.on("change", view.render);
@@ -411,10 +381,9 @@ view.on("addUser", function (user) {
 });
 ```
 
-
 ## Testing
 
-Aquí tienen un artículo muy bueno que explica como testear cada uno de los componentes
+Aquí tienen un artículo muy bueno que explica cómo testear cada uno de los componentes
 de Backbone.
 
 http://tinnedfruit.com/2011/03/03/testing-backbone-apps-with-jasmine-sinon.html
@@ -436,21 +405,25 @@ describe("TodoView", function() {
 });
 ```
 
+## Ejercicio: backbone-todo
+
+Escribe la aplicación de Todos hicimos con jQuery utilizando Backbone.
+
 ## Aplicación
 
-Como ejercicios vamos a crear una aplicación de chat utilizando Backbone. Esta aplicación cliente se conectará a un servidor que nos permitirá realizar comunicación en tiempo real.
+Como ejercicio vamos a crear una aplicación de chat utilizando Backbone. Esta aplicación cliente se conectará a un servidor que nos permitirá realizar comunicarnos en tiempo real.
 
 Un consejo cuando empiezas a desarrollar una aplicación es analizar los modelos que tendrá la aplicación. Esto nos va ayudar tanto a planificar el código del front como a planificar el código de backend.
 
 Los modelos que vamos a definir son un modelo User que va a mantener la información de los usuarios que estan conectados y otro modelo Message que representará cada uno de los mensaje que se manden.
 
-Una vez tenemos definido nuestro modelo de datos, podemos empezar a hacer un mockup de nuestra aplicación que noes permita identificar las partes de la que está compuesta.
+Una vez tenemos definido nuestro modelo de datos podemos empezar a hacer un mockup de nuestra aplicación para identificar las partes de las que se compone.
 
 ![Chat views](images/bb-chatViews.png)
 
-Una manera de separar las distintas vistas de la aplicación va a ser en termino de las necesidades de renderizado. En nuestro caso tendremos una vista que lista los usuarios, que se va a renderizar cada vez que un usuario se conecte o se desconecte. Tendremos otra vista para mostrar los mensajes que se va a renderizar cada vez que se añada un mensaje nuevo. Por último la vista InputView se actualizará con la interacción del usuario.
+Una forma de identificar las diferentes vistas de la aplicación es analizar las necesidades de actualización. En nuestro caso tendremos una vista que lista los usuarios, que se va a renderizar cada vez que un usuario se conecte o se desconecte. Tendremos otra vista para mostrar los mensajes que se va a renderizar cada vez que se añada un mensaje nuevo. Por último la vista InputView se actualizará con la interacción del usuario.
 
-Un diagram interesante que podemos realizar es un diagrama de eventos que represente los eventos que van a conectar los modelos y las vistas.
+Un diagrama interesante que podemos realizar es un diagrama de eventos que represente los eventos que van a conectar los modelos y las vistas.
 
 ![Events diagram](images/bb-eventsDiagram.png)
 
@@ -470,7 +443,7 @@ App.UsersView = Backbone.View.extend({
 });
 ```
 
-Para probar que el código funciona correctamente prueba este código desde la consola o añadelo en el código de la aplicación (recuerda borrarlo después)
+Para probar que el código funciona correctamente prueba este código desde la consola o añádelo en el código de la aplicación (recuerda borrarlo después).
 
 ```javascript
 App.users.reset([{name : 'user1'}, {name : 'user2'}]);
@@ -486,8 +459,7 @@ App.users.on('add reset', function () {
 App.users.reset([{name : 'user1'}, {name : 'user2'}]);
 ```
 
-En otros casos en los que estemos trabajando con collecciones y vistas, suele ser necesario conectar el evento "remove". En nuestro caso no va a ser necesario porque el usuario nos va a devolver siempre la lista completa de usuarios. El único evento que se va a lanzar es el reset.
-
+En otros casos en los que estemos trabajando con collecciones y vistas, suele ser necesario conectar el evento "remove". En nuestro caso no va a ser necesario porque el servidor va a devolver siempre la lista completa de usuarios. El único evento que se va a lanzar es el reset.
 
 Para la vista de los mensajes vamos a utilizar otra forma de hacer las cosas. En lugar de renderizar el listado completo, nuestra plantilla va a representar un único mensaje.
 
@@ -542,9 +514,9 @@ En este caso tenemos dos eventos distintos porque se llamará a "reset" cuando s
 
 ## Ejercicios
 
-* Cuando se añade un mensaje nuevo has que la vista haga scroll.
-* Diferencia entre los mensaje del propios y los del resto de usuario.
-* Sustitución de smiles
+* Cuando se añade un mensaje nuevo consigue que la vista haga scroll para que siempre se muestre el último mensaje
+* Diferencia entre los mensaje del usuario y los del resto
+* Escribe un código de sustitución de smiles.
 
 
 ## Pistas
@@ -668,7 +640,7 @@ App.Message = Backbone.Model.extend({
 });
 ```
 
-Únicamente en el caso de que el mensaje sea valido, sera cuando lancemos el evento.
+Únicamente lanzaremos el evento en el caso de que mensaje sea válido.
 
 ```javascript
 keypress : function (e) {
