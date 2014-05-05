@@ -216,8 +216,6 @@ Antes de hacer los ejercicios vamos a introducir Mocha. Mocha es un framework de
 
 Mocha es muy flexible y permite utilizar [varias librerias de assertions](http://visionmedia.github.io/mocha/#assertions) en nuestro caso vamos a utilizar [chai](http://chaijs.com/).
 
-Descarga y descomprime este [esqueleto]() que viene con mocha y chai instalados.
-
 ````js
 ├── spec
 │   ├── basic_spec.js
