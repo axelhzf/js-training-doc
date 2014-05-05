@@ -17,7 +17,7 @@ JavaScript es un lenguaje de programación interpretrado, orientado a objetos, b
 
 Fue desarrollado originalmente por Brendan Eich cuando trabaja para Nestcape. Al principio se llamava LiveScript, pero después decidieron cambiarle el nombre por JavaScript, algo que que causó confusión dando la impresión de que ambos lenguajes estaban de alguna forma relacionados. JavaScript tiene una sintaxis similar a Java, tanto como Java tiene una sintaxis similar a la de C. Pero nada más lejos de la realidad, JavaScript no es un subconjunto de Java, son lenguajes totalmente distintos.
 
-JavaScript, como todos los lenguajes, tiene sus problemas de diseño, como la [inserción automática de coma](https://github.com/twbs/bootstrap/issues/3057). Pero estos problemas se solucionan utilizando [herramientas](http://jshint.com/) que controlen el uso de estas [partes del lenguaje](http://www.amazon.com/JavaScript-Good-Parts-Douglas-Crockford/dp/0596517742).
+JavaScript, como todos los lenguajes, tiene sus problemas de diseño, como la [inserción automática de punto y coma](https://github.com/twbs/bootstrap/issues/3057). Pero estos problemas se solucionan utilizando [herramientas](http://jshint.com/) que controlen el uso de estas [partes del lenguaje](http://www.amazon.com/JavaScript-Good-Parts-Douglas-Crockford/dp/0596517742).
 
 ## Evolución
 
