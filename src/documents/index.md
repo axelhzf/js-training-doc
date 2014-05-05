@@ -15,21 +15,16 @@ El curso es principalmente práctico. Está dividido en varios temas y cada uno 
 
 ## Material del curso
 
-La solución a todos los ejercicios propuestos a lo largo del curso están en el repositorio de código:
+La soluciones de los ejercicios propuestos están publicadas en github:
 
-https://github.com/axelhzf/js-training
+https://github.com/axelhzf/js-training-src
 
-Si durante el curso te quedas retrasado y no has terminado un ejercicio que es necesario para seguir avanzando puedes utilizar las soluciones del repositorio. Puedes navegar por el historial de los commits para seleccionar el adecuado:
+Cada uno de los ejercicios tiene dos carpetas, una con el código inicial sobre el que debes trabajar y otra con la solución al ejercicio.
 
-https://github.com/axelhzf/js-training/commits/master
+Para comenzar con el curso descarga el zip que contiene todos los ejercicios sin las soluciones. Las soluciones las iremos explicando a lo largo del curso.
 
-Puedes clonar el repositorio y tener una copia local:
+https://github.com/axelhzf/js-training-src/releases/download/v1.0/js-training-src.zip
 
-```bash
-git clone git://github.com/js-training/js-training.git
-git log --oneline
-git checkout <HASH>
-```
 
 ## Contenido
 
