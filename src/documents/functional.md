@@ -74,9 +74,11 @@ var clients = [
 var result = _.chain(clients)
   .filter(function (client) {
     return client.balance < 0;
-  }).map(function (client) {
+  })
+  .sortBy("balance")
+  .map(function (client) {
     return client.firstName + " " + client.lastName;
-  }).sortBy("balance")
+  })
   .value();
 ````
 
