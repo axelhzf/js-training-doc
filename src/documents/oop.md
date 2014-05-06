@@ -177,7 +177,7 @@ var basketModule = (function () {
 ````
 
 
-Ejercicios
+## Ejercicios
 
 Crea una clase Persona, con atributos `nombre` y `apellido` que tenga un método `nombreCompleto`
 
