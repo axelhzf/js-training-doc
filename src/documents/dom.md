@@ -142,31 +142,6 @@ El ejercicio consiste en añadirle el funcionamiento:
 * Los elementos de la lista son enlaces. Al pulsar el enlace se borra el elemento de la lista.
 
 
-# Solución
-
-````js
-var addBtn = document.getElementById("addBtn");
-var list = document.getElementById("list");
-var todoInput = document.getElementById("todoInput");
-
-addBtn.addEventListener("click", function (e) {
-    e.preventDefault();
-    var item = document.createElement("li");
-    var a = document.createElement('a');
-    a.href = "#";
-    a.appendChild(document.createTextNode(todoInput.value));
-    item.appendChild(a);
-    list.appendChild(item);
-
-    todoInput.value = "";
-});
-
-list.addEventListener("click", function (e) {
-    e.preventDefault();
-    list.removeChild(e.target.parentNode);
-});
-````
-
 # Referencias
 * https://developer.mozilla.org/en-US/docs/DOM/Mozilla_event_reference
 * https://developer.mozilla.org/en-US/docs/DOM/Document.querySelectorAll
