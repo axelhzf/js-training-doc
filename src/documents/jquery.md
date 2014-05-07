@@ -462,7 +462,7 @@ $.ajax({
   type: "POST",
   url: 'http://server.com',
   dataType: 'json',
-  data: JSON.stringify(data)
+  data: data
   })
 ````
 
