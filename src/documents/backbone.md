@@ -531,68 +531,6 @@ En este caso tenemos dos eventos distintos porque se llamará a "reset" cuando s
     var codes  = ["85", "358", "348", "344", "363", "86", "361", "353", "352"];
 
 
-## Solución
-
-Hacer scroll cuando se añade un mensaje nuevo
-
-```javascript
-scrollBottom : function () {
-    this.$el.scrollTop(this.$el.prop('scrollHeight'));
-},
-
-appendMsg : function (msg) {
-    var context = msg.toJSON();
-    this.$el.append(this.msgTemplate(context));
-    this.scrollBottom();
-}
-```
-
-Modificar el color de las burbujas según el usuario
-
-```javascript
-initialize : function (options) {
-    this.config = options.config;
-},
-appendMsg : function (msg) {
-    var context = msg.toJSON();
-    context.color = context.username === this.config.get('username') ? "me" : "other";
-    this.$el.append(this.msgTemplate(context));
-    this.scrollBottom();
-}
-```
-
-```javascript
-<script type="text/html" id="msgTmpl">
-        <div class="chat-bubble {{color}}">
-```
-
-Sustitución de smiles
-
-```javascript
-getHtmlMsg : function (msg) {
-    var smiles = [":)", ":'(", ":P", ";)", ":*", ":D", ":@", "¬¬", "8|"],
-    codes  = ["85", "358", "348", "344", "363", "86", "361", "353", "352"];
-
-    var result = msg;
-    for(var i = 0; i < smiles.length; i++){
-        var smile = smiles[i], code = codes[i];
-        result = result.replace(smile, '<i class="icon-' + code + '"></i>');
-    }
-    return result;
-},
-
-appendMsg : function (msg) {
-    var context = msg.toJSON();
-    context.htmlMsg = this.getHtmlMsg(context.msg);
-...
-```
-
-En Handlebars la triple llave {{{ }}} no escapa las variables.
-
-```javascript
-<p>{{{ htmlMsg }}}</p>
-```
-
 ### InputView
 
 Esta vista va a gestionar la interacción del usuario
