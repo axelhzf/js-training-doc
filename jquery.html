@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>jQuery | js-training</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <header><a href="index.html" class="logo">JS<small>training</small></a></header>
+  <div class="content"><p><a href="http://jquery.com/">jQuery</a> es una librería que permite manipular el DOM, manejar eventos, crear animaciones y realizar peticiones Ajax. Todo esto funcionando en multitud de navegadores. Una de las razones por las que jQuery es tan popular es por la cantidad de plugins que tiene.</p>
+<p>Hace un par de años hubo una batalla entre librerías que ofrecian este tipo de funcionalidades: <a href="http://jquery.com/">jQuery</a>, <a href="http://mootools.net/">Mootols</a>, <a href="http://prototypejs.org/">Prototype</a>. jQuery fue el claro vencedor de la batalla, siendo el más utilizado en la actualidad. Es tán utilizado que un <a href="http://www.sitepoint.com/jquery-used-on-50-percent-of-websites/">estudio</a> dice que el 50% de las webs utilizan jQuery. Y lo que es más sorprendente, el 88.3% de las webs que utilizan JavaScript utilizan jQuery. Esto explica algunos memes que han aparecido como &quot;<a href="http://www.doxdesk.com/img/updates/20091116-so-large.gif">you should definitely use jQuery</a>&quot;.</p>
+<p>La principal ventaja de utilizar jQuery es el <a href="http://jquery.com/browser-support/">soporte multinavegador</a>. Si estamos trabajando en una aplicación que trabaja con el DOM es conveniente utilizar jQuery porque nos ahorra muchos problemas de compatibilidad entre distintos navegadores. jQuery soporta la <a href="http://jquery.com/browser-support/">mayoría de navegadores</a> incluso navegadores obsoletos como IE6. A partir de la <a href="http://blog.jquery.com/2013/04/18/jquery-2-0-released/">versión 2</a> van a dejar de dar soporte a IE6, 7, 8 en un intento de hacer la librería más ligera y forzar a que la gente actualice sus navegadores para que la Web pueda evolucionar.</p>
+<p>jQuery es una librería bastante pesada. Esto puede suponer un problemas cuando estamos trabajando para dispositivos móviles en los que la conexión puede que no sea rápida. Si esto supone un problema existen alternativas como <a href="http://zeptojs.com/">zepto.js</a>, una librería que con una API compatible pero más ligera.</p>
+<p>La versión con la que vamos a trabajar en el curso es la 1.9.1. Para incluir la librería en la web podemos utilizar utilizando un CDN, por ejemplo el de google, o directamente utilizando una versión local.</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"/libs/jquery.min.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+</code></pre>
+<p>En el caso de utilizar una versión local, es recomendable utilizar un gestor de paquetes, como por ejemplo <a href="http://twitter.github.io/bower/">bower</a>.</p>
+<h1 id="-">$</h1>
+<p>Todos los métodos de jQuery están expuestos a través del objeto <code>jQuery</code>. Este objeto a su vez tiene un alias con <code>$</code>. Esto es un claro ejemplo del uso del patrón <a href="http://addyosmani.com/resources/essentialjsdesignpatterns/book/#facadepatternjavascript">Facade</a>.</p>
+<pre><code class="lang-js"><span class="hljs-comment">// Código equivalente</span>
+jQuery(<span class="hljs-string">'.title h1'</span>);
+$(<span class="hljs-string">'.title h1'</span>);
+</code></pre>
+<p>Existen otras librerías como Mootols que también utilizan <code>$</code> para encapsular sus métodos. Mezclar estas dos librerías no es una muy buena idea, pero hay veces en las que es inevitable. En esos casos es necesario utilizar la función <code>noConflict</code>.</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"other$lib.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"jquery.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
+  $.noConflict();
+  $  <span class="hljs-comment">// $ === other lib</span>
+
+  jQuery(<span class="hljs-string">'.title h1'</span>);
+
+  (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($)</span> {</span>
+    $(<span class="hljs-string">'.title h1'</span>); <span class="hljs-comment">// $ == jQuery</span>
+  })(jQuery);
+
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+</code></pre>
+<p>El uso básico de la librería consiste en utilizar un selector para seleccionar varios elementos y luego aplicar una acción sobre los elementos seleccionados.</p>
+<pre><code class="lang-js"><span class="hljs-variable">$(</span><span class="hljs-string">'#content'</span>).show();
+<span class="hljs-variable">$(</span><span class="hljs-string">'.menu li'</span>).addClass(<span class="hljs-string">"active"</span>);
+</code></pre>
+<p>También existen algunas funciones que no se aplican a una selección de elementos del DOM.</p>
+<pre><code class="lang-js">$.<span class="hljs-keyword">get</span>(<span class="hljs-string">'/tweets'</span>);
+</code></pre>
+<p>Pasar una función como parámetro es equivalente a añadir un listener al evento document.ready.</p>
+<pre><code class="lang-js">$(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-comment">// document ready code</span>
+});
+
+<span class="hljs-comment">//similar a</span>
+$(document).ready(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+
+});
+</code></pre>
+<p>El evento document.ready es importante porque no puedes modificar un elemento del DOM si todavía no se ha parseado.
+Este código no va a funcionar porque el div con clase important todavía no se ha definido cuando se ejecuta el JavaScript.</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
+    $(<span class="hljs-string">".important"</span>).text(<span class="hljs-string">"Important text"</span>);
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"importat"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+</code></pre>
+<p>Para solucionar podemos añadir un listener al evento <a href="http://api.jquery.com/ready/">document.ready</a> que se lanza cuando el DOM se ha cargado completamente. Este código si funciona.</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
+    $(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        $(<span class="hljs-string">".important"</span>).text(<span class="hljs-string">"Important text"</span>);
+    });
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"importat"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+</code></pre>
+<p>Otra solución mucho mas sencilla y eficiente hubiera sido poner el bloque de script debajo del div, para que del div.important ya estuviera definido. Esta es una de las razones por las que se recomienda colocar el código JavaScript al final de la página.</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"importat"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
+    $(<span class="hljs-string">".important"</span>).text(<span class="hljs-string">"Important text"</span>);
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+</code></pre>
+<h1 id="selectores">Selectores</h1>
+<p>jQuery utiliza la sintaxis de CSS para seleccionar elementos del DOM.</p>
+<pre><code class="lang-js"><span class="hljs-variable">$(</span><span class="hljs-string">"#content"</span>);
+<span class="hljs-variable">$(</span><span class="hljs-string">".container"</span>);
+<span class="hljs-variable">$(</span><span class="hljs-string">"ul li.active"</span>);
+<span class="hljs-variable">$(</span><span class="hljs-string">"ul &gt; li"</span>);
+<span class="hljs-variable">$(</span><span class="hljs-string">"ul li:first-child"</span>);
+</code></pre>
+<p>Además de los selectores compatibles con CSS, jQuery añade algunos otros selectores</p>
+<pre><code class="lang-js"><span class="hljs-variable">$(</span><span class="hljs-string">"li:eq(2)"</span>);
+<span class="hljs-variable">$(</span><span class="hljs-string">"li:even"</span>);
+<span class="hljs-variable">$(</span><span class="hljs-string">"li:odd"</span>);
+</code></pre>
+<p><a href="http://api.jquery.com/category/selectors/">Lista completa de los selectores disponibles</a>.</p>
+<p>Estos selectores trabajan en el contexto de toda la página. Podemos hacer los selectores más rápidos si reducimos el contexto.</p>
+<pre><code class="lang-js">var <span class="hljs-variable">$content</span> = <span class="hljs-variable">$(</span><span class="hljs-string">'#content'</span>);
+<span class="hljs-variable">$(</span><span class="hljs-string">'li'</span>, <span class="hljs-variable">$content</span>);
+<span class="hljs-variable">$content</span>.find(<span class="hljs-string">'li'</span>);
+</code></pre>
+<p>Todas las operaciones con el DOM son lentas, cuando trabajes con muchos elementos a la vez puedes empezar a notar retardos. Por eso es importante tratar de reducirlas lo máximo posible. Por ejemplo, podemos tratar de reducir el número de selector que hacemos guardando el resultado en una varaible</p>
+<pre><code class="lang-js"><span class="hljs-keyword">for</span> (var <span class="hljs-built_in">i</span> = <span class="hljs-number">0</span>; <span class="hljs-built_in">i</span> &lt; <span class="hljs-number">10000</span>; <span class="hljs-built_in">i</span>++) <span class="hljs-cell">{
+    $(<span class="hljs-string">'#container'</span>).html(i);
+}</span>
+
+var $container = $(<span class="hljs-string">'#container'</span>);
+<span class="hljs-keyword">for</span> (var <span class="hljs-built_in">i</span> = <span class="hljs-number">0</span>; <span class="hljs-built_in">i</span> &lt; <span class="hljs-number">10000</span>; <span class="hljs-built_in">i</span>++) <span class="hljs-cell">{
+    $container.html(i);
+}</span>
+</code></pre>
+<p>Cuando tengamos dudas de rendimieneto de este tipo y queramos ver qué código es más rapido, podemos utilizar la web <a href="http://jsperf.com/">jsperf</a>. Por ejemplo en este jsperf se <a href="http://jsperf.com/caching-jquery-selectors/6">comprueba la velocidad de cachear selectores jQuery</a>.</p>
+<p>Los selectores devuelven un objeto sobre el que podemos aplicar acciones para modificar los elementos. También podemos acceder a los elementos del DOM seleccionados.</p>
+<pre><code class="lang-js"><span class="hljs-variable">$(</span><span class="hljs-string">"li"</span>).<span class="hljs-keyword">hide</span>(); 
+
+<span class="hljs-variable">$(</span><span class="hljs-string">"li"</span>).get(<span class="hljs-number">0</span>); <span class="hljs-comment">// DOM element at 0</span>
+<span class="hljs-variable">$(</span><span class="hljs-string">"li"</span>)[<span class="hljs-number">0</span>];     <span class="hljs-comment">// DOM element at 1</span>
+<span class="hljs-variable">$(</span><span class="hljs-string">"li"</span>).eq(<span class="hljs-number">1</span>);  <span class="hljs-comment">// jQuery object at 1</span>
+</code></pre>
+<h1 id="crear-elementos">Crear elementos</h1>
+<p>El objeto jQuey también permite crear elementos nuevos</p>
+<pre><code class="lang-js">$('&lt;<span class="hljs-keyword">div</span> <span class="hljs-type">class</span>=<span class="hljs-string">"container"</span>&gt;New Element&lt;/<span class="hljs-keyword">div</span>&gt;').appendTo(<span class="hljs-string">"body"</span>);
+</code></pre>
+<p><a href="http://jsbin.com/dikewo/1/">http://jsbin.com/dikewo/1/</a></p>
+<h1 id="getters-setter">Getters &amp; setter</h1>
+<p>Existen funciones que actuan como getters y setters a la vez. En caso de que no le pases parámetros te devolverá el valor actual. Si le pasas un parámetro asignará ese valor.</p>
+<pre><code class="lang-js"><span class="hljs-variable">$(</span><span class="hljs-string">'li'</span>).html();
+<span class="hljs-variable">$(</span><span class="hljs-string">'li'</span>).html(<span class="hljs-string">'New HTML'</span>);
+</code></pre>
+<h1 id="chaining">Chaining</h1>
+<p>jQuery permite encadenar varias llamadas a métodos sobre el mismo selector. De esta forma nos evitamos tener que definir una variable o duplicar el selector.</p>
+<pre><code class="lang-js"><span class="hljs-variable">$(</span><span class="hljs-string">'a'</span>)
+    .addClass(<span class="hljs-string">"btn"</span>)
+    .attr(<span class="hljs-string">'title'</span>, <span class="hljs-string">'Nice link'</span> )
+    .show();
+
+var <span class="hljs-variable">$a</span> = <span class="hljs-variable">$(</span><span class="hljs-string">'a'</span>)
+<span class="hljs-variable">$a</span>.addClass(<span class="hljs-string">"btn"</span>)
+<span class="hljs-variable">$a</span>.attr(<span class="hljs-string">'title'</span>, <span class="hljs-string">'Nice link'</span> )
+<span class="hljs-variable">$a</span>.show();
+</code></pre>
+<h1 id="manipulaci-n-de-elementos">Manipulación de elementos</h1>
+<p><a href="http://api.jquery.com/category/manipulation/">http://api.jquery.com/category/manipulation/</a></p>
+<pre><code class="lang-js"><span class="hljs-variable">$(</span><span class="hljs-string">"a"</span>).html(<span class="hljs-string">"New HTML"</span>);
+<span class="hljs-variable">$(</span><span class="hljs-string">"a"</span>).addClass(<span class="hljs-string">"className"</span>);
+<span class="hljs-variable">$(</span><span class="hljs-string">"a"</span>).removeClass(<span class="hljs-string">"className"</span>);
+<span class="hljs-variable">$(</span><span class="hljs-string">"a"</span>).toggleClass(<span class="hljs-string">"className"</span>);
+
+<span class="hljs-variable">$(</span><span class="hljs-string">"input"</span>).val()
+<span class="hljs-variable">$(</span><span class="hljs-string">"a"</span>).attr(<span class="hljs-string">"href"</span>, <span class="hljs-string">"http://www.google.com"</span>);
+<span class="hljs-variable">$(</span><span class="hljs-string">"a"</span>).css(<span class="hljs-string">"font-size"</span>, <span class="hljs-string">"20px"</span>);
+
+<span class="hljs-variable">$(</span><span class="hljs-string">"a"</span>).appendTo()
+<span class="hljs-variable">$(</span><span class="hljs-string">"a"</span>).append()
+<span class="hljs-variable">$(</span><span class="hljs-string">"a"</span>).remove()
+</code></pre>
+<p><a href="http://jsbin.com/qokir/2/edit">http://jsbin.com/qokir/2/edit</a></p>
+<h1 id="eventos">Eventos</h1>
+<p>Los eventos nos permite hacer aplicaciones que respondan a la acción del usuario. El funcionamiento es registrar una función para que se ejecute cuando se produzca cierto evento.</p>
+<pre><code class="lang-js"><span class="hljs-variable">$a</span>.on(<span class="hljs-string">"click"</span>);
+<span class="hljs-variable">$a</span>.off();
+<span class="hljs-variable">$a</span>.trigger(<span class="hljs-string">"click"</span>);
+</code></pre>
+<p>Los métodos básicos son <code>on</code> añadir un nuevo listener y <code>off</code> para eliminar el listener. Además el método <code>trigger</code> nos permite lanzar eventos. En versiones anteriores de jQuery se utilizaban los métodos <code>bind</code> y <code>unbind</code> pero en las versiones nuvas <code>on</code> y <code>off</code> son los métodos recomendades.</p>
+<p>Algunos evenetos que se utilizan normalmente son: </p>
+<ul>
+<li>click</li>
+<li>keydown</li>
+<li>keypress </li>
+<li>keyup </li>
+<li>mouseover</li>
+<li>mouseenter</li>
+<li>mouseleave</li>
+<li>scroll</li>
+<li>focus</li>
+<li>blur</li>
+<li>resize</li>
+</ul>
+<p><a href="http://www.mkyong.com/jquery/jquery-keyboard-events-example/">Diferencias entre <code>keydown</code> y <code>keypress</code></a></p>
+<p>La funciones que actuan como manejador de eventos reciben como parámetros información acerca del evento que se lanzó.</p>
+<pre><code class="lang-js"><span class="hljs-variable">$a</span>.on(<span class="hljs-string">"click"</span>, function(<span class="hljs-keyword">event</span>) {
+  <span class="hljs-keyword">event</span>.type    <span class="hljs-comment">// Tipo de evento</span>
+  <span class="hljs-keyword">event</span>.which   <span class="hljs-comment">// Tecla que se pulsó</span>
+  <span class="hljs-keyword">event</span>.target  <span class="hljs-comment">// Elemento que lanzó el evento</span>
+  <span class="hljs-keyword">event</span>.currentTarget <span class="hljs-comment">// Elemento en el que se seteo el listener</span>
+  <span class="hljs-keyword">event</span>.pageX   <span class="hljs-comment">// Posición X del ratón</span>
+  <span class="hljs-keyword">event</span>.pageY   <span class="hljs-comment">// Posición Y del ratón</span>
+});
+</code></pre>
+<h2 id="namespaces">Namespaces</h2>
+<p>Podemos definir namespaces a nuestros eventos. De forma que sea más fácil referirnos a un grupo de eventos. Por ejemplo para llamar a la función <code>off</code> eliminando únicamente los manejadores que nos interesen.</p>
+<pre><code class="lang-js"><span class="hljs-variable">$a</span>.on(<span class="hljs-string">'click'</span>, handler1);
+<span class="hljs-variable">$a</span>.on(<span class="hljs-string">'click'</span>, handler2);
+<span class="hljs-variable">$a</span>.off(<span class="hljs-string">'click'</span>);
+</code></pre>
+<p>En este caso al llamar a la función <code>off</code> esatmos eliminando los dos manejadores.</p>
+<pre><code class="lang-js"><span class="hljs-variable">$a</span>.on(<span class="hljs-string">'click.logging'</span>, handler1);
+<span class="hljs-variable">$a</span>.on(<span class="hljs-string">'click.analytics'</span>, handler2);
+<span class="hljs-variable">$a</span>.off(<span class="hljs-string">'click.logging'</span>);
+</code></pre>
+<p>En este caso estamos eliminando únicamente los eventos dentro del namespace <code>logging</code>. </p>
+<p>El uso de namespaces es muy importante a la hora de diseñar un plugin de jQuery. Tenemos que tener en cuenta que nuestro código va a convivir con código del usuario del plugin y no queremos provocar comportamientos indeseados como eliminarle un listener.</p>
+<h2 id="event-delegation-and-bubling">Event delegation and bubling</h2>
+<p>Cuando un elemento lanza un evento este evento se propaga por todos sus padres hasta llegar a document.</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">h1</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">span</span>&gt;</span>Click to buble<span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-title">h1</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+</code></pre>
+<p>El evento <code>click</code> que se lanza al pulsar el enlace se propaga hacia sus padres.</p>
+<p><a href="http://jsbin.com/kitup/1/edit">http://jsbin.com/kitup/1/edit</a></p>
+<p>En el caso de que queramos parar esta propagación podemos devolver false en el manejador del evento o llamar al método <code>event.stopPropagation()</code>. Yo prefiero utilizar esta última forma, me parece que es más clara.</p>
+<p>La propagación de los eventos nos permite delegar eventos</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span>li 1<span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span>li 2<span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span>li 3<span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>  
+
+$('ul').on('click', 'li', function( event ) {
+  event.currentTarget
+  event.target
+});
+</code></pre>
+<p>La diferencia es que estamos utilizando el método <code>on</code> con 3 parámetros. Estamos añadiendo el listener al <code>ul</code> y estamos filtrando los eventos que vienen de los elementos <code>li</code>. La principal ventaja de esto es eficiancia: Si tenemos muchos elementos hijos, es más eficiente añadir un único listener en el padre que un listener por cada evento. Además este tipo de eventos son los que en versiones anteriores de javascript se llamaban <code>live</code> porque son capaces de escuchar eventos lanzados por elementos creados dinámica mente.</p>
+<pre><code class="lang-html">&lt;a href=<span class="hljs-string">"#"</span>&gt;<span class="hljs-number">1</span>&lt;/a&gt;
+
+$(<span class="hljs-string">"a"</span>).on(<span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(event)</span> {</span>
+  <span class="hljs-comment">// no se llamará con el elemento creado dinámicamente</span>
+})
+$(<span class="hljs-string">'body'</span>).on(<span class="hljs-string">'click'</span>, <span class="hljs-string">'a'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event)</span> {</span>
+  <span class="hljs-comment">// se llamará con el elemento creado dinámicamente</span>
+});
+
+$(<span class="hljs-string">"body"</span>).append(<span class="hljs-string">"&lt;a href='#'&gt;2&lt;/a&gt;"</span>);
+</code></pre>
+<p>No debemos confundir el detener la propagación del evento (<code>event.stopPropagation()</code>) con detener la acción por defecto (<code>event.preventDefeault()</code>). Por ejemplo, en el caso un enlace, la acción por defecto es redirigir a la página en cuestión. Un patrón muy habitual es:</p>
+<pre><code class="lang-html">&lt;a href=<span class="hljs-string">"#"</span>&gt;Link&lt;/a&gt;
+
+$(<span class="hljs-string">"a"</span>).click(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(event)</span></span> {
+  event.preventDefault();
+});
+</code></pre>
+<h1 id="ejercicio-todo-list">Ejercicio: Todo list</h1>
+<p>En este ejercicio vamos a crear una aplicación de lista de tareas.
+Las funcionalidades básicas que debe tener son:</p>
+<ul>
+<li>Añadir una nueva tarea</li>
+<li>Marcar una tarea como terminada</li>
+<li>Editar una tarea</li>
+<li>Eliminar una tarea</li>
+</ul>
+<h1 id="efectos">Efectos</h1>
+<p>jQuery provee una api para hacer animar elementos. Tenemos que tener en cuenta que estas animaciones son animaciones JavaScript y no animaciones CSS. Las animaciones JavaScript básicamente es como si modificaramos una propiedad del elemento que estamos animando repetidamente, por ejemplo</p>
+<pre><code class="lang-js">$<span class="hljs-tag">e</span><span class="hljs-class">.css</span>(<span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">opacity</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span></span>});
+$<span class="hljs-tag">e</span><span class="hljs-class">.css</span>(<span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">opacity</span>:<span class="hljs-value"> <span class="hljs-number">0.1</span></span></span></span>});
+$<span class="hljs-tag">e</span><span class="hljs-class">.css</span>(<span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">opacity</span>:<span class="hljs-value"> <span class="hljs-number">0.2</span></span></span></span>});
+....
+</code></pre>
+<p>Hasta no mucho, esta era la única forma que teníamos para realizar animaciones hasta que los navegadores empezaron a soportar animaciones CSS. Algo muy importante que tenemos que tener en cuenta es que en los navegadore modernos y especialmente en dispositivos móviles suele más eficiente utilizar animaciones CSS que animaciones JavaScript.</p>
+<ul>
+<li><a href="http://css3.bradshawenterprises.com/blog/jquery-vs-css3-transitions/">http://css3.bradshawenterprises.com/blog/jquery-vs-css3-transitions/</a></li>
+<li><a href="http://css-tricks.com/myth-busting-css-animations-vs-javascript/">http://css-tricks.com/myth-busting-css-animations-vs-javascript/</a></li>
+</ul>
+<p>Algunos de los métodos que provee jQuery para realizar animaciones son:</p>
+<ul>
+<li>$el.show()</li>
+<li>$el.hide()</li>
+<li>$el.fadeIn() </li>
+<li>$el.fadeOut() </li>
+<li>$el.slideDown()</li>
+<li>$el.slideUp()</li>
+<li>$el.slideToggle() </li>
+</ul>
+<p>Podemos controlar la velocidad de la animación pasando el número de milisegundo que queremos dure la animación y tenemos un callback que se ejecutará cuando termine la animación:</p>
+<pre><code class="lang-js"><span class="hljs-variable">$el</span>.show( <span class="hljs-number">300</span> );
+
+<span class="hljs-variable">$el</span>.fadeOut(<span class="hljs-number">300</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+  <span class="hljs-variable">$el</span>.hide();
+});
+</code></pre>
+<h1 id="ejercicio-carousel">Ejercicio: Carousel</h1>
+<p>En este ejercicio vamos a diseñar nuestro propio carousel. Si no sabes lo que es un carousel aquí puedes ver unos ejemplos:</p>
+<ul>
+<li><a href="http://getbootstrap.com/javascript/#carousel">http://getbootstrap.com/javascript/#carousel</a></li>
+<li><a href="http://vandelaydesign.com/blog/tools/jquery-carousel-plugins/">http://vandelaydesign.com/blog/tools/jquery-carousel-plugins/</a></li>
+</ul>
+<p>Partiremos de un esquema html básico que tendrá las imágenes que aparecen en el carousel y tendremos que conseguir algo como lo que aparece en el esquema.</p>
+<p><img src="images/jquery-carousel.jpg" alt=""></p>
+<p>La animación del carousel la obtendremos animando la propiedad <code>margin-left</code>. Puedes hacerlo tanto con código jQuery como con animación CSS3.</p>
+<h1 id="-ajax-json-y-promises">$.ajax, JSON y Promises</h1>
+<p>AJAX es el acrónimo de &quot;asynchronous JavaScript and XML&quot; y consiste en que la aplicación cliente pueda enviar y recibir información al servidor de forma asíncrona sin necesidad de actualizar la página. AJAX cambió la forma es que se construyen las aplicaciones web, pasamos de una web estática, en la que toda la lógica se realizaba en el servidor a una web mucha más dinámica en la que se le da mucha importancia al client-side. 
+La evolución fue progresiva, se empezó utilizando para validación y envio de formulario y luego las aplicaciones single page. En las aplicaciones single page el servidor únicamente renderiza una página básica que carga el JavaScript que ejecutará el cliente. El servidor provee una API para que el cliente se pueda comunicar. El principal beneficio de diseñar aplicaciones orientadas a APIs es que podemos ver las aplicaciones web como un cliente más. Una vez diseñada la API podemos diseñar clientes, bien sean webs, aplicaciones móviles u otro tipo de aplicaciones.</p>
+<p>A pesar del nombre, se suele utilizar más JSON que XML como formato de comunicación.</p>
+<h2 id="json">JSON</h2>
+<p>JSON (JavaScript Object Notation) es un formato de intermcabio de datos ligero. Es un subconjunto de JavaScript, pero es un formato independiente. Existen parseadores y generadores en multitud de lenguages.</p>
+<p>Los tipos básicos son: </p>
+<ul>
+<li>Number</li>
+<li>String</li>
+<li>Boolean</li>
+<li>Array</li>
+<li>Object</li>
+<li>null</li>
+</ul>
+<p>Ejemplo</p>
+<pre><code class="lang-json">{
+    "<span class="hljs-attribute">firstName</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+    "<span class="hljs-attribute">lastName</span>": <span class="hljs-value"><span class="hljs-string">"Smith"</span></span>,
+    "<span class="hljs-attribute">isAlive</span>": <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+    "<span class="hljs-attribute">age</span>": <span class="hljs-value"><span class="hljs-number">25</span></span>,
+    "<span class="hljs-attribute">height_cm</span>": <span class="hljs-value"><span class="hljs-number">167.64</span></span>,
+    "<span class="hljs-attribute">address</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">streetAddress</span>": <span class="hljs-value"><span class="hljs-string">"21 2nd Street"</span></span>,
+        "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"New York"</span></span>,
+        "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"NY"</span></span>,
+        "<span class="hljs-attribute">postalCode</span>": <span class="hljs-value"><span class="hljs-string">"10021-3100"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">phoneNumbers</span>": <span class="hljs-value">[
+        { "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"home"</span></span>, "<span class="hljs-attribute">number</span>": <span class="hljs-value"><span class="hljs-string">"212 555-1234"</span> </span>},
+        { "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"fax"</span></span>,  "<span class="hljs-attribute">number</span>": <span class="hljs-value"><span class="hljs-string">"646 555-4567"</span> </span>}
+    ]
+</span>}
+</code></pre>
+<p>Para trabajar en JavaScript con JSON tenemos los métodos <code>JSON.parse</code> y <code>JSON.stringify</code>. El primero convierte un string en formato JSON a un objeto y el segúndo hace lo inverso.</p>
+<h2 id="-ajax">$.ajax</h2>
+<p>jQuery provee el método <a href="https://api.jquery.com/jQuery.ajax/">$.ajax</a> para realizar peticiones ajax.</p>
+<pre><code class="lang-js">$<span class="hljs-class">.ajax</span>(<span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">type</span>:<span class="hljs-value"> <span class="hljs-string">"POST"</span>,
+  url: <span class="hljs-string">'http://server.com'</span>,
+  dataType: <span class="hljs-string">'json'</span>,
+  data: data
+  </span></span></span>})
+</code></pre>
+<pre><code class="lang-js">$<span class="hljs-class">.ajax</span>(<span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">type</span>:<span class="hljs-value"> <span class="hljs-string">"GET"</span>,
+  url: <span class="hljs-string">'http://server.com/api/users'</span>,
+  dataType: <span class="hljs-string">'json'</span>
+  </span></span></span>})
+</code></pre>
+<p>El método $.ajax es asíncrono y devuelve una promesa con la que podremos obtener el resultado de la petición al servidor.</p>
+<h2 id="promises">Promises</h2>
+<p>Las promesas son objetos que representan el estado pendiente de una operación asíncrona. A estos objetos se le pueden asociar callbacks que se invocarán cuando la operación haya terminado. Este mismo concepto aparece en otros lenguajes con terminos como <code>futures</code> o <code>deferreds</code>.</p>
+<p>Supongamos que tenemos un método <code>ajaxRequest</code> que nos permite realizar peticiones ajax al servidor pasándole unas opción y un callback que se ejecutará cual el servidor responda. Este sería el código en el caso de que quisieramos realizar dos peticiones:</p>
+<pre><code class="lang-js">  <span class="hljs-keyword">function</span> ajaxRequest(options, cb) {
+    <span class="hljs-keyword">...</span>
+  }
+
+
+  ajaxRequest({url : <span class="hljs-string">"/api/users"</span>}, <span class="hljs-keyword">function</span> (err, result) {
+    users = result;
+  });
+
+  ajaxRequest({url : <span class="hljs-string">"/api/posts"</span>}, <span class="hljs-keyword">function</span> (err, result) {
+    posts = result;
+  });
+</code></pre>
+<p>El problema viene cuando por ejemplo queremos ejecutar un código cuando las dos peticiones hayan terminado. Deberíamos hacer algo tipo comprobar en cada una de las peticiones si el resto se han terminado para entonces ejecutar el código. Este es un ejemplo donde las promesas son muy útiles y simplifican el código.</p>
+<pre><code class="lang-js">
+  <span class="hljs-keyword">function</span> ajaxRequest(options) {
+    <span class="hljs-keyword">...</span>
+    <span class="hljs-keyword">return</span> promise;
+  }
+
+  var userPromise = ajaxRequest({url : <span class="hljs-string">"/api/users"</span>});
+  var postsPromise = ajaxRequest({url : <span class="hljs-string">"/api/posts"</span>});
+
+  var combinedPromise = Promise.all([userPromise, postsPromise]);
+  combinedPromise.then(<span class="hljs-keyword">function</span> (results) {
+
+  });
+</code></pre>
+<p>Existe construcciones que nos permiten solventar este problema sin tener que recurrir a las promesas. Las veremos en la sección de Node.js.</p>
+<p>Las promesas son una nueva funcionalidad que formará parte del lenguaje. La versión beta de Chrome ya las <a href="http://blog.chromium.org/2014/04/chrome-35-beta-more-developer-control.html">incorpora</a>. Mientras todos los navegadores las implementan podemos utilizar alguna de estas librerías:</p>
+<ul>
+<li><a href="https://github.com/kriskowal/q">Q</a></li>
+<li><a href="https://github.com/cujojs/when">when</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/windows/apps/br211867.aspx">WinJS</a></li>
+<li><a href="https://github.com/tildeio/rsvp.js">RSVP.js</a></li>
+</ul>
+<p>jQuery provee algo similar a las promesas, los Deferred. Sin embargo Deferred no cumple el standard Promise/A+. Es por eso que es <a href="https://thewayofcode.wordpress.com/tag/jquery-deferred-broken/">preferible</a> utilizar alguna de las librerías anteriores antes que los Deferred de jQuery.</p>
+<p>Como estamos viendo la sección de jQuery vamos a ver la <a href="http://api.jquery.com/category/deferred-object/">api de Deferred</a> que ofrecen.</p>
+<p><code>jQuery.Deferred()</code> nos permite crear un deferred que tiene los siguentes métodos.</p>
+<ul>
+<li>resolve</li>
+<li>resolveWith</li>
+<li>reject</li>
+<li>rejectWith</li>
+<li>promise</li>
+</ul>
+<p>Las promesas son donde podremos añadir callbacks</p>
+<ul>
+<li>then</li>
+<li>done</li>
+<li>fail</li>
+<li>always</li>
+<li>when</li>
+</ul>
+<pre><code class="lang-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getData</span><span class="hljs-params">()</span> {</span>
+  <span class="hljs-keyword">var</span> deferred = $.Deferred();
+  setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    deferred.resolve(<span class="hljs-literal">null</span>, [data]);
+  }, <span class="hljs-number">1000</span>); 
+  <span class="hljs-keyword">return</span> deferred.promise();
+}
+
+<span class="hljs-keyword">var</span> dataPromise = getData();
+dataPromise.done(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
+
+});
+dataPromise.fail(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+
+});
+dataPromise.always(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+
+});
+</code></pre>
+<p>El método $.ajax de jquery devuelve una promesa</p>
+<pre><code class="lang-js">var ajaxPromise = $.ajax(<span class="hljs-keyword">...</span>);
+ajaxPromise.done(<span class="hljs-keyword">function</span> (result) {
+
+});
+</code></pre>
+<h1 id="ejercicio-todo-list-ajax">Ejercicio: Todo list ajax</h1>
+<p>Vamos a modificar aplicación de TODO app que hicimos anteriormente para permitir que guarde la lista de tareas en el servidor. La idea es que cada vez que se produzca una acción por parte del usuario se haga una petición al servidor guardar el estado.</p>
+<p>Añadí una pequeña aplicación servidor para poder hacer las pruebas. Para ejecutarla</p>
+<p><code>node server.js</code></p>
+<p>La API de este servidor es muy sencilla. Se basa en un objeto task</p>
+<pre><code class="lang-json">{
+  "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-string">"string"</span></span>,
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"string"</span></span>,
+  "<span class="hljs-attribute">completed</span>": <span class="hljs-value">boolean
+</span>}
+</code></pre>
+<p>Los métodos disponibles son</p>
+<ul>
+<li><code>GET</code> /api/tasks</li>
+<li><code>POST</code> /api/task</li>
+<li><code>PUT</code> /api/task/:id</li>
+<li>`DEL /api/task/:id</li>
+</ul>
+<h1 id="referencias">Referencias</h1>
+<ul>
+<li><a href="http://api.jquery.com/">http://api.jquery.com/</a></li>
+<li><a href="http://jqfundamentals.com/">http://jqfundamentals.com/</a></li>
+<li><a href="http://twitter.github.io/bower/">http://twitter.github.io/bower/</a></li>
+<li><a href="http://www.html5rocks.com/en/tutorials/es6/promises/">http://www.html5rocks.com/en/tutorials/es6/promises/</a></li>
+</ul>
+
+  </div>
+  <footer><div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<script type="text/javascript">
+    var disqus_shortname = 'axelhzf';
+    // var disqus_developer = 1;
+    var disqus_script = 'embed.js';
+
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+    <p>Autor:<strong> Axel Hernández Ferrera</strong> (<a href="http://axelhzf.com" target="_blank">blog</a>, <a href="http://twitter.com/axelhzf" target="_blank">twitter</a>, <a href="http://github.com/axelhzf" target="_blank">github</a>)</p>
+  </footer><script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-31904298-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script>
+</body>

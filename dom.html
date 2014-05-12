@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>DOM | js-training</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <header><a href="index.html" class="logo">JS<small>training</small></a></header>
+  <div class="content"><h1 id="-qu-es-el-dom-">¿Qué es el DOM?</h1>
+<p>El DOM (Document Object Model) es una API para trabajar con documentos HTML. Provee una representación de la estructura del documento permitiendo modificarlo. El DOM también provee una interfaz que permite capturar los eventos que se producen por la interacción del usuario con el navegador.</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">h1</span>&gt;</span>title<span class="hljs-tag">&lt;/<span class="hljs-title">h1</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">strong</span>&gt;</span>Text<span class="hljs-tag">&lt;/<span class="hljs-title">strong</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span>
+</code></pre>
+<pre><code class="lang-html">└── html
+    └── <span class="hljs-keyword">body</span>
+        ├── h1
+        │   └── title
+        └── p
+            └── <span class="hljs-keyword">strong</span>
+                └── text
+</code></pre>
+<h3 id="buscando-elementos">Buscando elementos</h3>
+<p>Existen varias funciones que permite buscar elementos en el DOM.</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"message"</span>&gt;</span>Hello World<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">ul</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span>One<span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span>Two<span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"important"</span>&gt;</span>Important!<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+</code></pre>
+<pre><code class="lang-js"><span class="hljs-reserved">var</span> node = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"message"</span>);
+<span class="hljs-reserved">var</span> nodes = <span class="hljs-built_in">document</span>.getElementsByTagName(<span class="hljs-string">"li"</span>);
+<span class="hljs-reserved">var</span> queryNodes = <span class="hljs-built_in">document</span>.querySelectorAll(<span class="hljs-string">".important"</span>);
+</code></pre>
+<h3 id="atributos-de-un-nodo">Atributos de un nodo</h3>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"message"</span>&gt;</span>Hello World<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"list"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span>One<span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span>Two<span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"important"</span>&gt;</span>Important!<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+</code></pre>
+<pre><code class="lang-js">var node = document<span class="hljs-preprocessor">.getElementById</span>(<span class="hljs-string">"message"</span>)<span class="hljs-comment">;</span>
+var ulNode = document<span class="hljs-preprocessor">.querySelectorAll</span>(<span class="hljs-string">"ul"</span>)[<span class="hljs-number">0</span>]<span class="hljs-comment">;</span>
+
+node<span class="hljs-preprocessor">.nodeName</span><span class="hljs-comment">;     // DIV</span>
+node<span class="hljs-preprocessor">.textContent</span><span class="hljs-comment">;  // Hello World</span>
+node<span class="hljs-preprocessor">.parentNode</span><span class="hljs-comment">;   // body</span>
+ulNode<span class="hljs-preprocessor">.children</span><span class="hljs-comment">;     // [&lt;li&gt;One&lt;/li&gt;, &lt;li&gt;Two&lt;/li&gt;]</span>
+ulNode<span class="hljs-preprocessor">.attributes</span><span class="hljs-comment">;</span>
+ulNode<span class="hljs-preprocessor">.attributes</span><span class="hljs-preprocessor">.class</span><span class="hljs-preprocessor">.nodeValue</span><span class="hljs-comment">; // list</span>
+ulNode<span class="hljs-preprocessor">.innerHtml</span><span class="hljs-comment">;</span>
+</code></pre>
+<h3 id="manipulando-el-dom">Manipulando el DOM</h3>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"list"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span>One<span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span>Two<span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+</code></pre>
+<pre><code class="lang-js">var <span class="hljs-type">list</span> = document.getElementById(<span class="hljs-string">"list"</span>);
+
+var <span class="hljs-property">item</span> = document.createElement(<span class="hljs-string">"li"</span>);
+var <span class="hljs-type">text</span> = document.createTextNode(<span class="hljs-string">"Three"</span>);
+<span class="hljs-property">item</span>.appendChild(<span class="hljs-type">text</span>);
+
+<span class="hljs-type">list</span>.appendChild(<span class="hljs-property">item</span>);
+<span class="hljs-type">list</span>.insertBefore(<span class="hljs-property">item</span>, <span class="hljs-type">list</span>.children[<span class="hljs-number">1</span>]);
+
+<span class="hljs-type">list</span>.innerHTML = <span class="hljs-type">list</span>.innerHTML + <span class="hljs-string">"&lt;li&gt;Four&lt;/li&gt;"</span>;
+
+<span class="hljs-type">list</span>.removeChild(<span class="hljs-property">item</span>);
+</code></pre>
+<h3 id="event-handlers">Event Handlers</h3>
+<p>Los eventos permiten capturar la interacción del usuario con el navegador</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"container"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"btn"</span>&gt;</span>Click Me<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+</code></pre>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> btn = document.getElementById(<span class="hljs-string">"btn"</span>);
+btn.addEventListener(<span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(event)</span> {</span>
+    console.log(<span class="hljs-string">"button clicked!"</span>);
+});
+</code></pre>
+<p>Aquí tienes una <a href="https://developer.mozilla.org/en-US/docs/DOM/Mozilla_event_reference">lista con los eventos disponibles</a>.</p>
+<p>En el parámetro del callback tenemos información del evento, por ejemplo <code>event.target</code> es una referencia al elemento que lanzó el evento.</p>
+<p>Supongamos que capturamos el evento click en un enlace y no queremos que el navegador nos rediriga a la url del enlace. Podemos deshabilitar el comportamiento por defecto con la función <code>event.preventDefault()</code>.</p>
+<h1 id="ejercicio">Ejercicio</h1>
+<p>Vamos a implementar una sencilla lista de TODOs.
+El código HTML es este:</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">h1</span>&gt;</span>TODO LIST<span class="hljs-tag">&lt;/<span class="hljs-title">h1</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"list"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-title">form</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"todoInput"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"submit"</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"Add"</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"addBtn"</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">form</span>&gt;</span>
+</code></pre>
+<p>El ejercicio consiste en añadirle el funcionamiento:</p>
+<ul>
+<li>Cuando el usuario pulse el botón Add se añadirá un elemento a la lista con el contenido del input.</li>
+<li>Cuando el usuario pulse el botón Add se borrar el contenido del input.</li>
+<li>Los elementos de la lista son enlaces. Al pulsar el enlace se borra el elemento de la lista.</li>
+</ul>
+<h1 id="referencias">Referencias</h1>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/DOM/Mozilla_event_reference">https://developer.mozilla.org/en-US/docs/DOM/Mozilla_event_reference</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/DOM/Document.querySelectorAll">https://developer.mozilla.org/en-US/docs/DOM/Document.querySelectorAll</a></li>
+</ul>
+
+  </div>
+  <footer><div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<script type="text/javascript">
+    var disqus_shortname = 'axelhzf';
+    // var disqus_developer = 1;
+    var disqus_script = 'embed.js';
+
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+    <p>Autor:<strong> Axel Hernández Ferrera</strong> (<a href="http://axelhzf.com" target="_blank">blog</a>, <a href="http://twitter.com/axelhzf" target="_blank">twitter</a>, <a href="http://github.com/axelhzf" target="_blank">github</a>)</p>
+  </footer><script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-31904298-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script>
+</body>

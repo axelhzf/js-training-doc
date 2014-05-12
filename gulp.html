@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Gulp | js-training</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <header><a href="index.html" class="logo">JS<small>training</small></a></header>
+  <div class="content"><h1 id="build-systems">Build systems</h1>
+<p>El proceso de desarrollar aplicaciones front-end ha cambiado mucho en los últimos años. Atrás quedó la epoca en que era suficiente con un único fichero javascript y un fichero de css. Las aplicaciones son cada vez más complejas y requieren de múltiples pasos para su construcción. Por ejemplo alguna de las tareas más habituales son:</p>
+<ul>
+<li>Detección de errores y convenciones de código (JSHint)</li>
+<li>Minimización de ficheros js</li>
+<li>Uso de algún preprocesador de css (sass, less)</li>
+<li>Optimización de imágenes</li>
+<li>Compilación de plantillas (handlebars, angular)</li>
+<li>Generación de iconfonts</li>
+<li>Ejecución de tests</li>
+</ul>
+<p>Todas estas tareas quitan mucho tiempo y es por eso que surge la necesidad de buscar herramientas que permitan automatizar todo el proceso. Se pueden utilizar <a href="http://dailyjs.com/2011/08/11/framework-75/">herramientas genéricas como <code>make</code></a> o se pueden utilizar herramientas más específicas como <a href="http://gruntjs.com/">grunt</a> o <a href="http://gulpjs.com/">gulp</a>.</p>
+<h1 id="build-wars">Build wars</h1>
+<p><a href="http://markdalgleish.github.io/presentation-build-wars-gulp-vs-grunt">http://markdalgleish.github.io/presentation-build-wars-gulp-vs-grunt</a></p>
+<h1 id="creando-el-primer-gulpfile-js">Creando el primer Gulpfile.js</h1>
+<p>Vamos a crear un build script que nos permita:</p>
+<ul>
+<li><a href="https://github.com/wearefractal/gulp-coffee">Compilar CoffeeScript</a></li>
+<li><a href="https://github.com/dlmanning/gulp-sass">Compilar sass</a></li>
+<li><a href="https://github.com/wearefractal/gulp-concat">Concat</a></li>
+<li>LiveReload!</li>
+</ul>
+<p>Para empezar vamos a instalar las dependencias</p>
+<pre><code>npm install gulp gulp<span class="hljs-attribute">-util</span> gulp<span class="hljs-attribute">-sass</span> gulp<span class="hljs-attribute">-coffee</span> gulp<span class="hljs-attribute">-clean</span> gulp<span class="hljs-attribute">-concat</span> gulp<span class="hljs-attribute">-connect</span> <span class="hljs-subst">--</span>save
+</code></pre><p>El código del Gulpfile sería el siguiente</p>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> gulp = <span class="hljs-built_in">require</span>(<span class="hljs-string">"gulp"</span>);
+<span class="hljs-keyword">var</span> gutil = <span class="hljs-built_in">require</span>(<span class="hljs-string">"gulp-util"</span>);
+<span class="hljs-keyword">var</span> coffee = <span class="hljs-built_in">require</span>(<span class="hljs-string">"gulp-coffee"</span>);
+<span class="hljs-keyword">var</span> sass = <span class="hljs-built_in">require</span>(<span class="hljs-string">"gulp-sass"</span>);
+<span class="hljs-keyword">var</span> clean = <span class="hljs-built_in">require</span>(<span class="hljs-string">"gulp-clean"</span>);
+<span class="hljs-keyword">var</span> concat = <span class="hljs-built_in">require</span>(<span class="hljs-string">"gulp-concat"</span>);
+<span class="hljs-keyword">var</span> connect = <span class="hljs-built_in">require</span>(<span class="hljs-string">"gulp-connect"</span>);
+
+<span class="hljs-keyword">var</span> paths = {
+  html: <span class="hljs-string">"app/*.html"</span>,
+  coffee: <span class="hljs-string">"app/coffee/*.coffee"</span>,
+  sass: <span class="hljs-string">"app/sass/style.scss"</span>,
+  dist: <span class="hljs-string">"dist"</span>
+};
+
+gulp.task(<span class="hljs-string">"clean"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+  <span class="hljs-keyword">return</span> gulp.src(paths.dist, {read: <span class="hljs-literal">false</span>}).pipe(clean());
+});
+
+gulp.task(<span class="hljs-string">"coffee"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+  gulp.src(paths.coffee)
+    .pipe(coffee())
+    .on(<span class="hljs-string">"error"</span>, gutil.log)
+    .pipe(concat(<span class="hljs-string">'main.js'</span>))
+    .pipe(gulp.dest(paths.dist + <span class="hljs-string">"/js"</span>))
+    .pipe(connect.reload());
+});
+
+gulp.task(<span class="hljs-string">"sass"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+  gulp.src(paths.sass)
+    .pipe(sass())
+    .on(<span class="hljs-string">"error"</span>, gutil.log)
+    .pipe(gulp.dest(paths.dist + <span class="hljs-string">"/css"</span>))
+    .pipe(connect.reload());
+});
+
+gulp.task(<span class="hljs-string">"build"</span>, [<span class="hljs-string">"coffee"</span>, <span class="hljs-string">"sass"</span>]);
+
+gulp.task(<span class="hljs-string">"default"</span>, [<span class="hljs-string">"clean"</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+  gulp.start(<span class="hljs-string">"build"</span>);
+});
+
+gulp.task(<span class="hljs-string">'connect'</span>, connect.server({
+  root: [<span class="hljs-string">"app"</span>, <span class="hljs-string">"dist"</span>],
+  port: <span class="hljs-number">3000</span>,
+  livereload: <span class="hljs-literal">true</span>
+}));
+
+gulp.task(<span class="hljs-string">'html'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+  gulp.src(paths.coffee).pipe(connect.reload());
+});
+
+gulp.task(<span class="hljs-string">"watch"</span>, [<span class="hljs-string">"connect"</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+  gulp.watch(paths.coffee, [<span class="hljs-string">"coffee"</span>]);
+  gulp.watch(paths.sass, [<span class="hljs-string">"sass"</span>]);
+  gulp.watch(paths.html, [<span class="hljs-string">"html"</span>]);
+});
+</code></pre>
+<p>Para ejecutar las tareas</p>
+<pre><code>gulp
+gulp watch
+</code></pre><h1 id="ejercicio">Ejercicio</h1>
+<p>Crea un fichero Gulpfile que utilice los siguientes plugins:</p>
+<ul>
+<li>jshint</li>
+<li>sass</li>
+<li>browserify</li>
+<li>closure</li>
+<li>image-min</li>
+<li>livereload</li>
+</ul>
+
+  </div>
+  <footer><div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<script type="text/javascript">
+    var disqus_shortname = 'axelhzf';
+    // var disqus_developer = 1;
+    var disqus_script = 'embed.js';
+
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+    <p>Autor:<strong> Axel Hernández Ferrera</strong> (<a href="http://axelhzf.com" target="_blank">blog</a>, <a href="http://twitter.com/axelhzf" target="_blank">twitter</a>, <a href="http://github.com/axelhzf" target="_blank">github</a>)</p>
+  </footer><script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-31904298-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script>
+</body>

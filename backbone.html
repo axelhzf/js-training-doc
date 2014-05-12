@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Backbone.js | js-training</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <header><a href="index.html" class="logo">JS<small>training</small></a></header>
+  <div class="content"><h1 id="backbone-js">Backbone.js</h1>
+<h2 id="introducci-n">Introducción</h2>
+<p>En la actualidad existen muchas librerías MVC para JavaScript: Ember.js, Angular.js, Can.js, Backbone.js, ... por eso elegir <a href="http://coding.smashingmagazine.com/2012/07/27/journey-through-the-javascript-mvc-jungle/">la librería adecuada para nuestra aplicación es muy importante</a>.</p>
+<p><img src="images/mvc-battle.jpg" alt="MVC battle"></p>
+<p>Backbone es una librería JavaScript que permite estructurar aplicaciones
+web utilizando componentes básico: <strong>models</strong>, <strong>collections</strong> y <strong>views</strong>. Estos componentes serán la base para construir aplicaciones web complejas.</p>
+<p>Su creador es Jeremy Ashkenas (NYTimes y en DocumentCloud) quien también es el creador de otras librerías importantes:</p>
+<ul>
+<li><a href="http://underscorejs.org/">Underscore.js</a></li>
+<li><a href="http://coffeescript.org/">Coffeescript</a></li>
+</ul>
+<p>Backbone es librería bastante simple y esa es una de sus principales virtudes.</p>
+<p><blockquote class="twitter-tweet" lang="en"><p>The magic of backbone, IMO is in its lack of magic. Slim, readable, non-magical source, easily extended for custom needs. <a href="https://twitter.com/search?q=%23backboneconf&amp;src=hash">#backboneconf</a></p>&mdash; Henrik Joreteg (@HenrikJoreteg) <a href="https://twitter.com/HenrikJoreteg/statuses/207850077170053120">May 30, 2012</a></blockquote></p>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>Es una librería bastante popular y es utilizada por empresas importantes como <a href="http://backbonejs.org/#examples">Rdio, Hulu y Foursquare entre otras</a>.</p>
+<h2 id="-por-qu-utilizar-backbone-">¿Por qué utilizar Backbone?</h2>
+<p>En la sección anterior vimos cómo crear aplicaciones web utilizando jQuery. A pesar de que la aplicación era bastante sencilla el código se estaba complicando. Trabajamos con los datos directamente en el DOM y no había una clara separación de conceptos entre las diferentes capas de la aplicación. Si la aplicación es extremadamente simple, por ejemplo un landing page, esta aproximación podría ser la adecuada. El problema está cuando la complejida aumenta. Necesitamos estructuras que nos permitan manejar esa complejidad o nuestro código se convertirá en un lio imposible de mantener. Algo parecido a la mayoría de plugins jQuery, cuando leo algo de su código, unicamente veo esto:</p>
+<p><img src="images/spaghetti.jpeg" alt="Spaghetti code"></p>
+<p>Aquí es donde reside la gran utilidad  de Backbone. La librería añade una pequeña capa de abstracción que permite estructurar la aplicación. Los principales objetivo son:</p>
+<ul>
+<li>Separación de conceptos</li>
+<li>Desvincular los datos del DOM</li>
+<li>Aplicación más mantenible</li>
+<li>Aplicaciones más testeable</li>
+</ul>
+<p>Si comparamos Backbone con otras librerías MVC más modernas como pueden ser Angular o Ember, encontramos que Backbone es una librería mucho más simple. Provee los recursos básicos para que a partir de ahí seamos nosotros mismos los que creemos nuestro propio framework. Es por han aparecido muchas librerías para hacer más sencillas las tareas más repetitivas. Normalmente Backbone no te fuerza una determinada forma de hacer las cosas, por ejemplo es totalmente agnóstico del sistema de plantillas y nos permite que seamos nosotros quienes hagamos la integración con la librería que queramos. Por ejemplo Handlebars o <a href="https://github.com/usepropeller/react.backbone">React.js</a>.</p>
+<h2 id="estructura">Estructura</h2>
+<p>Las clases básicas que provee Backbone son</p>
+<ul>
+<li>Models</li>
+<li>Collections</li>
+<li>View</li>
+<li>Router</li>
+</ul>
+<p>La relación con el modelo MVC tradicional sería:</p>
+<table>
+<thead>
+<tr>
+<th>MVC</th>
+<th>Backbone</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Model</td>
+<td>Model / Collection</td>
+</tr>
+<tr>
+<td>Controller</td>
+<td>View / Router</td>
+</tr>
+<tr>
+<td>View</td>
+<td>Template</td>
+</tr>
+</tbody>
+</table>
+<p>La persistencía por defecto que trae Backbone es RESTFul, pero existen plugins que permiten utilizar otros mecanismos sin necesidad de modificar nuestro código. Por ejemplo:</p>
+<ul>
+<li><a href="https://github.com/jeromegn/Backbone.localStorage">LocalStorage</a></li>
+<li><a href="https://github.com/scttnlsn/backbone.io">WebSockets</a></li>
+</ul>
+<h3 id="models">Models</h3>
+<p>Los modelos son las clases que van a almacenar los datos de la aplicación además de gran parte de la lógica que los rodea: converciones, validaciones, valores calculados y control de acceso. Utilizar los modelos de Backbone nos va a proporcionar una pieza clave para manejar los cambios en la aplicación, los <strong>eventos</strong>.</p>
+<pre><code class="lang-javascript"><span class="hljs-comment">// constructor por defecto</span>
+<span class="hljs-keyword">var</span> Book = Backbone.Model.extend({});
+
+<span class="hljs-keyword">var</span> book = <span class="hljs-keyword">new</span> Book({
+    title: <span class="hljs-string">"One Thousand and One Nights"</span>,
+    author: <span class="hljs-string">"Scheherazade"</span>
+});
+
+<span class="hljs-comment">// extender el constructor</span>
+<span class="hljs-keyword">var</span> Book = Backbone.Model.extend({
+    initialize : <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attributes)</span> {</span>
+        ...
+    }
+});
+
+<span class="hljs-keyword">var</span> book = <span class="hljs-keyword">new</span> Book({
+    title: <span class="hljs-string">"One Thousand and One Nights"</span>,
+    author: <span class="hljs-string">"Scheherazade"</span>
+});
+
+book.<span class="hljs-keyword">get</span>(<span class="hljs-string">'title'</span>); <span class="hljs-comment">//"One Thousand and One Nights"</span>
+
+book.<span class="hljs-keyword">set</span>({title: <span class="hljs-string">"March 20"</span>, content: <span class="hljs-string">"In his eyes she eclipses..."</span>});
+book.<span class="hljs-keyword">set</span>(<span class="hljs-string">"title"</span>, <span class="hljs-string">"A Scandal in Bohemia"</span>);
+</code></pre>
+<h4 id="eventos">Eventos</h4>
+<p>Los eventos nos va a permitir detectar los cambios que se producen en los modelos. Esto es muy importante para mantener la sincronización entre los datos y las vistas.</p>
+<pre><code class="lang-javascript">book.<span class="hljs-keyword">set</span>(<span class="hljs-string">'title'</span>, <span class="hljs-string">'...'</span>); <span class="hljs-comment">// Se lanza evento "change:title" y "change"</span>
+
+book.<span class="hljs-keyword">set</span>({title : <span class="hljs-string">''</span>, content : <span class="hljs-string">''</span>}); <span class="hljs-comment">// Se lanza un evento change</span>
+<span class="hljs-comment">// por cada atributo y un único "change"</span>
+
+book.<span class="hljs-keyword">set</span>({title : <span class="hljs-string">''</span>}, {silent : <span class="hljs-keyword">true</span>}); <span class="hljs-comment">// No lanza eventos</span>
+</code></pre>
+<h4 id="attributes">Attributes</h4>
+<p>Con <code>defaults</code> podemos asignar valores por defecto a otroso atributos.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> Meal = Backbone.Model.extend({
+    defaults: {
+        <span class="hljs-string">"appetizer"</span>: <span class="hljs-string">"caesar salad"</span>,
+        <span class="hljs-string">"entree"</span>: <span class="hljs-string">"ravioli"</span>,
+        <span class="hljs-string">"dessert"</span>: <span class="hljs-string">"cheesecake"</span>
+    }
+});
+<span class="hljs-keyword">var</span> meal = <span class="hljs-keyword">new</span> Meal({dessert : <span class="hljs-string">'ice cream'</span>});
+
+meal.<span class="hljs-keyword">get</span>(<span class="hljs-string">'dessert'</span>); <span class="hljs-comment">// ice cream</span>
+meal.<span class="hljs-keyword">get</span>(<span class="hljs-string">'entree'</span>); <span class="hljs-comment">// ravioli</span>
+</code></pre>
+<p>Los atributos se almacenan internamente dentro de <code>attributes</code></p>
+<p><img src="images/bb-bookObject.png" alt="Backbone internal model object"></p>
+<p>No deberíamos acceder directamente a este objeto, porque estaríamos perdiendo el mecanismo de detección de cambios. En el caso de que necesitemos acceso a todos los atributos, por ejemplo para pasárselos a la vista para que se rendericen, podemos utilizar el método <code>toJSON</code>. Este método devuelve una copia de los atributos.</p>
+<pre><code class="lang-javascript">var artist = new <span class="hljs-filename">Backbone.Model({
+    firstName</span>: <span class="hljs-string">"Wassily"</span>,
+    lastName: <span class="hljs-string">"Kandinsky"</span>
+});
+<span class="hljs-filename">artist.set({birthday</span>: <span class="hljs-string">"December 16, 1866"</span>});
+
+<span class="hljs-filename">artist.toJSON(); // { firstName</span>: <span class="hljs-string">"Wassily"</span>, lastName: <span class="hljs-string">"Kandinsky"</span>, birthday: <span class="hljs-string">"December 16, 1866"</span> }
+</code></pre>
+<p>Las validaciones se realizan en método <code>validate</code>.</p>
+<pre><code class="lang-javascript">var Chapter = <span class="hljs-transposed_variable">Backbone.</span><span class="hljs-transposed_variable">Model.</span>extend({
+    validate: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(attrs)</span> {</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-transposed_variable">attrs.</span><span class="hljs-keyword">end</span> &lt; <span class="hljs-transposed_variable">attrs.</span>start) {
+            <span class="hljs-keyword">return</span> <span class="hljs-string">"can'</span>t <span class="hljs-keyword">end</span> before it starts<span class="hljs-string">";
+        }
+    }
+});</span>
+</code></pre>
+<h4 id="sincronizaci-n">Sincronización</h4>
+<p>Mediante la sincronización vamos a persistir los cambios que hagamos en cliente con los datos que tenemos en el servidor. Lo más normal en el desarrollo de aplicaciones single page es tener una API rest con la que se comunique
+el cliente web. Es por eso que el mecanismo de sincronización por defecto es RESTful.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> Book = Backbone.Model.extend({
+    urlRoot : <span class="hljs-string">'/books'</span>
+});
+
+<span class="hljs-keyword">var</span> book = <span class="hljs-keyword">new</span> Book({
+    title: <span class="hljs-string">"The Rough Riders"</span>,
+    author: <span class="hljs-string">"Theodore Roosevelt"</span>
+});
+
+book.save(); <span class="hljs-comment">// HTTP POST /books</span>
+book.<span class="hljs-keyword">set</span>(<span class="hljs-string">'title'</span>, <span class="hljs-string">'...'</span>);
+book.save({author: <span class="hljs-string">"Teddy"</span>}); <span class="hljs-comment">//HTTP PUT /books/3</span>
+book.fetch(); <span class="hljs-comment">// HTTP GET /books/3</span>
+book.destroy(); <span class="hljs-comment">//HTTP DELETE /books/3</span>
+</code></pre>
+<h3 id="collections">Collections</h3>
+<p>Las colecciones almacenan listas de modelos.</p>
+<pre><code class="lang-javascript">
+var Library = Backbone<span class="hljs-preprocessor">.Collection</span><span class="hljs-preprocessor">.extend</span>({
+    model: Book
+})<span class="hljs-comment">;</span>
+var library = new Library([book1, book2, book3])<span class="hljs-comment">;</span>
+
+
+Collection / modificar
+var ship1 = Backbone<span class="hljs-preprocessor">.Model</span>({name: <span class="hljs-string">"Flying Dutchman"</span>})<span class="hljs-comment">;</span>
+var ship2 = Backbone<span class="hljs-preprocessor">.Model</span>({name: <span class="hljs-string">"Black Pearl"</span>})<span class="hljs-comment">;</span>
+
+var ships = new Backbone<span class="hljs-preprocessor">.Collection</span><span class="hljs-comment">;</span>
+
+//trigger <span class="hljs-string">"add"</span>, <span class="hljs-string">"remove"</span> events
+ships<span class="hljs-preprocessor">.add</span>([ship1, ship2])<span class="hljs-comment">;</span>
+ships<span class="hljs-preprocessor">.remove</span>(ship1)<span class="hljs-comment">;</span>
+ships<span class="hljs-preprocessor">.get</span>(ship2<span class="hljs-preprocessor">.id</span>)<span class="hljs-comment">;</span>
+ships<span class="hljs-preprocessor">.push</span>(ship1)<span class="hljs-comment">;</span>
+ships<span class="hljs-preprocessor">.pop</span>(ship1)<span class="hljs-comment">;</span>
+ships<span class="hljs-preprocessor">.unshift</span>(ship1)<span class="hljs-comment">;</span>
+ships<span class="hljs-preprocessor">.shift</span>(ship1)<span class="hljs-comment">;</span>
+</code></pre>
+<p>Además de estos métodos básico, las colleciones integran <a href="http://backbonejs.org/#Collection-Underscore-Methods">los métodos de underscore.js para
+trabajar con arrays</a>.</p>
+<h4 id="sincronizaci-n">Sincronización</h4>
+<pre><code class="lang-javascript"><span class="hljs-built_in">var</span> Notes <span class="hljs-subst">=</span> Backbone<span class="hljs-built_in">.</span>Collection<span class="hljs-built_in">.</span>extend({
+    url: <span class="hljs-string">'/notes'</span>
+});
+
+<span class="hljs-built_in">var</span> notes <span class="hljs-subst">=</span> <span class="hljs-literal">new</span> Notes();
+notes<span class="hljs-built_in">.</span>fetch(); <span class="hljs-comment">// HTTP GET /notes</span>
+notes<span class="hljs-built_in">.</span>fetch({<span class="hljs-built_in">data</span>: {page: <span class="hljs-number">3</span>}})  <span class="hljs-comment">//HTTP GET /notes?page=3</span>
+</code></pre>
+<h3 id="router">Router</h3>
+<p>El router es una parte muy importante de una aplicación. Permite almacenar el estado de una aplicación. Cuando un usuario copia o comparte un enlace, espera que la web sea capaz de recuperar el estado.</p>
+<p>Existen dos mecanismos que nos permiten modificar la url desde JavaScript:</p>
+<ul>
+<li>hashFragments</li>
+<li>History API</li>
+</ul>
+<p>Los hashFragments están soportados por todos los navegadores mientras que la History API únicamente está soportada por los navegadores modernos. El router de Backbone es capaz de utilizar un mecanismo u otro dependendiendo del soporte
+del navegador.</p>
+<p>El funcionamiento del router consiste en hacer un mapeo entre patrones de url y métodos que se invocarán cuando un patrón coincida.</p>
+<pre><code class="lang-javascript">var Router = Backbone.Router.extend({
+    routes: {
+        <span class="hljs-string">"help"</span>:                 <span class="hljs-string">"help"</span>,    // <span class="hljs-comment">#help</span>
+        <span class="hljs-string">"search/:query"</span>:        <span class="hljs-string">"search"</span>,  // <span class="hljs-comment">#search/kiwis</span>
+        <span class="hljs-string">"search/:query/p:page"</span>: <span class="hljs-string">"search"</span>   // <span class="hljs-comment">#search/kiwis/p7</span>
+    },
+
+    help: <span class="hljs-keyword">function</span>() {<span class="hljs-keyword">...</span>},
+    search: <span class="hljs-keyword">function</span>(query, page) {<span class="hljs-keyword">...</span>}
+
+});
+var router = new Router();
+Backbone.history.start();
+Backbone.history.start({pushState : true});
+
+router.navigate(<span class="hljs-string">"help"</span>, {trigger: true});
+</code></pre>
+<h3 id="view">View</h3>
+<p>La vistas son la única parte de nuestra aplicación que esté en contacto con el DOM. Se encargan de renderizar los datos cuando se produzcan cambios en los modelos y de responder a los eventos que se produzcan en el DOM por la interacción del usuario.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> DocumentView = Backbone.View.extend({
+    render: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">var</span> html = <span class="hljs-keyword">this</span>.template(model.toJSON());
+        <span class="hljs-keyword">this</span>.$el.html(html);
+    }
+});
+
+<span class="hljs-keyword">var</span> document = <span class="hljs-keyword">new</span> Backbone.Model({title : <span class="hljs-string">'title'</span>});
+<span class="hljs-keyword">var</span> documentView = <span class="hljs-keyword">new</span> DocumentView({el : <span class="hljs-string">'#document'</span>, model : document});
+documentView.render();
+</code></pre>
+<h4 id="templates">Templates</h4>
+<p>Underscore cuenta con la función <code>_.template</code> que funciona como un sistema de plantillas muy básico.</p>
+<pre><code class="lang-javascript">    <span class="hljs-keyword">var</span> DocumentView = Backbone.View.extend({
+        template : _.template(<span class="hljs-string">"&lt;strong&gt;Title&lt;strong&gt; : &lt;%= title %&gt;"</span>);
+        render : <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-keyword">var</span> html = <span class="hljs-keyword">this</span>.template(model.toJSON());
+            <span class="hljs-keyword">this</span>.$el.html(html);
+        }
+    });
+</code></pre>
+<p>El principal inconveniente de las plantillas de undescore es el código inline
+necesario para hacer cosas tan sencillas como iterar por una lista de elementos.</p>
+<pre><code class="lang-javascript">var list = "<span class="vbscript">&lt;% _.<span class="hljs-keyword">each</span>(people, <span class="hljs-keyword">function</span>(name) { %&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="vbscript">&lt;%= name %&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span> <span class="vbscript">&lt;% }); %&gt;</span>";
+_.template(list, {people : ['moe', 'curly', 'larry']});
+</code></pre>
+<p>Es por eso que recomiendo utilizar otro sistema de plantillas. Por ejemplo uno
+que está bastante extendido, además de ser el que utiliza Ember, es
+<a href="http://handlebarsjs.com/">Handlebars</a></p>
+<p><img src="images/handlebars.png" alt="Handlebars logo"></p>
+<p>Este sería el mismo código que el ejemplo anterior utilizando Handlebars.</p>
+<pre><code class="lang-javascript"><span class="xml">var template = Handlebars.compile(
+   "</span><span class="hljs-expression">{{<span class="hljs-begin-block">#<span class="hljs-keyword">each</span> people</span>}}</span><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span></span><span class="hljs-expression">{{ <span class="hljs-variable">this</span> }}</span><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-end-block">/<span class="hljs-keyword">each</span></span>}}</span><span class="xml">"
+);
+template({people : ['moe', 'curly', 'larry']});</span>
+</code></pre>
+<p>Para utilizar handlebars desde nuestras vistas tenemos varias opciones:</p>
+<p>Podemos compilarlas directamente en la vista. Escribiendo la plantilla inline:</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> DocumentView = Backbone.View.extend({
+    template : Handlebars.compile(
+        <span class="hljs-string">"&lt;strong&gt;Title&lt;strong&gt; : {{title}}"</span>);
+
+    render : <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">var</span> html = <span class="hljs-keyword">this</span>.template(model.toJSON());
+        <span class="hljs-keyword">this</span>.$el.html(html);
+    }
+});
+</code></pre>
+<p>O escribiendo la plantilla en un tag script para poder escribir texto multilinea.</p>
+<pre><code class="lang-javascript"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/html"</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">"#documentView"</span>&gt;</span><span class="javascript">
+    &lt;ul&gt;
+    </span></span><span class="hljs-expression">{{<span class="hljs-begin-block">#<span class="hljs-keyword">each</span> people</span>}}</span><span class="xml"><span class="javascript">
+        &lt;li&gt;</span></span><span class="hljs-expression">{{ <span class="hljs-variable">name</span> }}</span><span class="xml"><span class="javascript">&lt;<span class="hljs-regexp">/li&gt;
+    </span></span></span><span class="hljs-expression">{{<span class="hljs-end-block">/<span class="hljs-keyword">each</span></span>}}</span><span class="xml"><span class="javascript">
+    &lt;<span class="hljs-regexp">/ul&gt;
+</span></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
+<span class="hljs-keyword">var</span> DocumentView = Backbone.View.extend({
+    template : Handlebars.compile($(<span class="hljs-string">'#documentView'</span>).html()),
+    render : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">this</span>.$el.html(<span class="hljs-keyword">this</span>.template(<span class="hljs-keyword">this</span>.collection.toJSON()));
+    }
+});
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></span>
+</code></pre>
+<p>Pero la opción más recomendada es precompilar las plantillas. Por ejemplo utilizando este plugin <a href="https://github.com/lazd/gulp-handlebars">gulp-handlebars</a>.</p>
+<h4 id="events">Events</h4>
+<p>El atributo <code>events</code> permite asociar los eventos de DOM que se producen en las vistas
+con métodos que se van a ejecutar cuando se lance el evento.</p>
+<pre><code class="lang-javascript">var DocumentRow = Backbone.View.extend({
+
+    events: {
+        <span class="hljs-string">"click .icon"</span>:          <span class="hljs-string">"open"</span>,
+        <span class="hljs-string">"click .button.edit"</span>:   <span class="hljs-string">"openEditDialog"</span>,
+        <span class="hljs-string">"click .button.delete"</span>: <span class="hljs-string">"destroy"</span>
+    },
+
+    render: <span class="hljs-keyword">function</span>() {<span class="hljs-keyword">...</span>},
+    open: <span class="hljs-keyword">function</span>() {<span class="hljs-keyword">...</span>},
+    openEditDialog : <span class="hljs-keyword">function</span>() {<span class="hljs-keyword">...</span>},
+
+});
+</code></pre>
+<p>La vista es la encargada de responder tanto a los eventos del DOM como a los eventos que se produzcan en los modelos y para los que sea necesario actualizar las vistas.</p>
+<pre><code class="lang-javascript">model<span class="hljs-preprocessor">.on</span>(<span class="hljs-string">"change"</span>, view<span class="hljs-preprocessor">.render</span>)<span class="hljs-comment">;</span>
+view<span class="hljs-preprocessor">.on</span>(<span class="hljs-string">"addUser"</span>, function (user) {
+    this<span class="hljs-preprocessor">.collection</span><span class="hljs-preprocessor">.add</span>(user)
+})<span class="hljs-comment">;</span>
+</code></pre>
+<h2 id="testing">Testing</h2>
+<p>Aquí tienen un artículo muy bueno que explica cómo testear cada uno de los componentes
+de Backbone.</p>
+<p><a href="http://tinnedfruit.com/2011/03/03/testing-backbone-apps-with-jasmine-sinon.html">http://tinnedfruit.com/2011/03/03/testing-backbone-apps-with-jasmine-sinon.html</a></p>
+<p>El caso que puede ser más complejo de probar es testear la vistas. La forma más sencillas
+sería comprobar que el HTML generador al renderizar la vista sea el correcto.</p>
+<pre><code class="lang-javascript">describe(<span class="hljs-string">"TodoView"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    beforeEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">this</span>.model = <span class="hljs-keyword">new</span> Backbone.Model({title: <span class="hljs-string">"My Todo"</span>, id: <span class="hljs-number">1</span>});
+        <span class="hljs-keyword">this</span>.view = <span class="hljs-keyword">new</span> TodoView({model:<span class="hljs-keyword">this</span>.model});
+    });
+    it(<span class="hljs-string">"produces the correct HTML"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">this</span>.view.render();
+        expect(<span class="hljs-keyword">this</span>.view.el.innerHTML)
+            .toEqual(<span class="hljs-string">'&lt;a href="#todo/1"&gt;&lt;h2&gt;My Todo&lt;/h2&gt;&lt;/a&gt;'</span>);
+    });
+});
+</code></pre>
+<h2 id="ejercicio-backbone-todo">Ejercicio: backbone-todo</h2>
+<p>Escribe la aplicación de Todos hicimos con jQuery utilizando Backbone.</p>
+<h2 id="aplicaci-n">Aplicación</h2>
+<p>Como ejercicio vamos a crear una aplicación de chat utilizando Backbone. Esta aplicación cliente se conectará a un servidor que nos permitirá realizar comunicarnos en tiempo real.</p>
+<p>Un consejo cuando empiezas a desarrollar una aplicación es analizar los modelos que tendrá la aplicación. Esto nos va ayudar tanto a planificar el código del front como a planificar el código de backend.</p>
+<p>Los modelos que vamos a definir son un modelo User que va a mantener la información de los usuarios que estan conectados y otro modelo Message que representará cada uno de los mensaje que se manden.</p>
+<p>Una vez tenemos definido nuestro modelo de datos podemos empezar a hacer un mockup de nuestra aplicación para identificar las partes de las que se compone.</p>
+<p><img src="images/bb-chatViews.png" alt="Chat views"></p>
+<p>Una forma de identificar las diferentes vistas de la aplicación es analizar las necesidades de actualización. En nuestro caso tendremos una vista que lista los usuarios, que se va a renderizar cada vez que un usuario se conecte o se desconecte. Tendremos otra vista para mostrar los mensajes que se va a renderizar cada vez que se añada un mensaje nuevo. Por último la vista InputView se actualizará con la interacción del usuario.</p>
+<p>Un diagrama interesante que podemos realizar es un diagrama de eventos que represente los eventos que van a conectar los modelos y las vistas.</p>
+<p><img src="images/bb-eventsDiagram.png" alt="Events diagram"></p>
+<p>La primera vista que vamos a definir es la vista de los usuarios. Esta vista es bastante sencilla y se limita únicamente a renderizar la collections de usuarios.</p>
+<pre><code class="lang-javascript">App.UsersView = Backbone.View.extend({
+
+    template : Handlebars.compile($(<span class="hljs-string">'#usersTmpl'</span>).html()),
+
+    render : <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">var</span> context = {
+            users : <span class="hljs-keyword">this</span>.collection.toJSON()
+        };
+        <span class="hljs-keyword">this</span>.$el.html(<span class="hljs-keyword">this</span>.template(context));
+    }
+});
+</code></pre>
+<p>Para probar que el código funciona correctamente prueba este código desde la consola o añádelo en el código de la aplicación (recuerda borrarlo después).</p>
+<pre><code class="lang-javascript"><span class="hljs-filename">App.users.reset([{name </span>: <span class="hljs-string">'user1'</span>}, {<span class="hljs-built_in">name : <span class="hljs-string">'user2'</span>}]);
+App.usersView.render();</span>
+</code></pre>
+<p>Ahora debemos conectar los eventos para mantener la sincronización entre la vista y el modelo.</p>
+<pre><code class="lang-javascript">App.users.on(<span class="hljs-string">'add reset'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    App.usersView.render();
+});
+App.users.reset([{name : <span class="hljs-string">'user1'</span>}, {name : <span class="hljs-string">'user2'</span>}]);
+</code></pre>
+<p>En otros casos en los que estemos trabajando con collecciones y vistas, suele ser necesario conectar el evento &quot;remove&quot;. En nuestro caso no va a ser necesario porque el servidor va a devolver siempre la lista completa de usuarios. El único evento que se va a lanzar es el reset.</p>
+<p>Para la vista de los mensajes vamos a utilizar otra forma de hacer las cosas. En lugar de renderizar el listado completo, nuestra plantilla va a representar un único mensaje.</p>
+<pre><code class="lang-javascript">App.MessagesView = Backbone.View.extend({
+    msgTemplate : Handlebars.compile($(<span class="hljs-string">'#msgTmpl'</span>).html()),
+    render : <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">var</span> view = <span class="hljs-keyword">this</span>;
+        <span class="hljs-keyword">this</span>.collection.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(message)</span> {</span>
+            view.appendMsg(message);
+        });
+    },
+    appendMsg : <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(msg)</span> {</span>
+        <span class="hljs-keyword">var</span> context = msg.toJSON();
+        <span class="hljs-keyword">this</span>.$el.append(<span class="hljs-keyword">this</span>.msgTemplate(context));
+    }
+});
+</code></pre>
+<p>El servidor nos notificará cada vez que se añada un mensaje nuevo, por lo tanto esta implementación nos será más útil porque no tendremos que renderizar la lista completa de nuevo.</p>
+<p>Prueba la vista añadiendo algunos mensajes.</p>
+<pre><code class="lang-javascript"><span class="hljs-filename">App.messages.reset([
+    {username </span>: <span class="hljs-string">'username'</span>, timestamp: <span class="hljs-string">'01-01-2012'</span>, msg : <span class="hljs-string">'hola'</span>},
+    {<span class="hljs-built_in">username : <span class="hljs-string">'username2'</span>, timestamp: <span class="hljs-string">'01-01-2012'</span>, msg : <span class="hljs-string">'mundo'</span></span>}
+]);
+<span class="hljs-filename">App.messagesView.render();</span>
+</code></pre>
+<p>Conectamos los eventos de la nueva vista</p>
+<pre><code class="lang-javascript">App.messages.on(<span class="hljs-string">'add'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(message)</span> {</span>
+    App.messagesView.appendMsg(message);
+});
+App.messages.on(<span class="hljs-string">'reset'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    App.messagesView.render();
+});
+<span class="hljs-keyword">var</span> msg1 = <span class="hljs-keyword">new</span> App.Message(
+  {username : <span class="hljs-string">'username'</span>, timestamp: <span class="hljs-string">'01-01-2012'</span>, msg : <span class="hljs-string">'hola'</span>});
+<span class="hljs-keyword">var</span> msg2 = <span class="hljs-keyword">new</span> App.Message(
+  {username : <span class="hljs-string">'username2'</span>, timestamp: <span class="hljs-string">'01-01-2012'</span>, msg : <span class="hljs-string">'mundo'</span>});
+App.messages.reset([msg1]);
+App.messages.add(msg2);
+</code></pre>
+<p>En este caso tenemos dos eventos distintos porque se llamará a &quot;reset&quot; cuando se conecte al servidor y a &quot;add&quot; cuando llegue un mensaje nuevo</p>
+<h2 id="ejercicios">Ejercicios</h2>
+<ul>
+<li>Cuando se añade un mensaje nuevo consigue que la vista haga scroll para que siempre se muestre el último mensaje</li>
+<li>Diferencia entre los mensaje del usuario y los del resto</li>
+<li>Escribe un código de sustitución de smiles.</li>
+</ul>
+<h2 id="pistas">Pistas</h2>
+<ul>
+<li><code>$el.scrollTop()</code> permite mover el scroll</li>
+<li><code>$el.prop(&#39;scrollHeight&#39;)</code> permite conocer el tamaño actual del scroll</li>
+<li>En el css están preparadas las clases &quot;chat-bubble me&quot; y &quot;chat-bubble other&quot;</li>
+<li>Hay generado un sprite con smiles, algunos códigos son:</li>
+</ul>
+<pre><code><span class="hljs-keyword">var</span> smiles = [<span class="hljs-string">":)"</span>, <span class="hljs-string">":'("</span>, <span class="hljs-string">":P"</span>, <span class="hljs-string">";)"</span>, <span class="hljs-string">":*"</span>, <span class="hljs-string">":D"</span>, <span class="hljs-string">":@"</span>, <span class="hljs-string">"¬¬"</span>, <span class="hljs-string">"8|"</span>];
+<span class="hljs-keyword">var</span> codes  = [<span class="hljs-string">"85"</span>, <span class="hljs-string">"358"</span>, <span class="hljs-string">"348"</span>, <span class="hljs-string">"344"</span>, <span class="hljs-string">"363"</span>, <span class="hljs-string">"86"</span>, <span class="hljs-string">"361"</span>, <span class="hljs-string">"353"</span>, <span class="hljs-string">"352"</span>];
+</code></pre><h3 id="inputview">InputView</h3>
+<p>Esta vista va a gestionar la interacción del usuario</p>
+<pre><code class="lang-javascript">App.InputView = Backbone.View.extend({
+
+    initialize : <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> {</span>
+        <span class="hljs-keyword">this</span>.$input = <span class="hljs-keyword">this</span>.$el.find(<span class="hljs-string">'input'</span>);
+    },
+
+    events : {
+        <span class="hljs-string">"keypress"</span> : <span class="hljs-string">"keypress"</span>
+    },
+
+    keypress : <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+        <span class="hljs-keyword">if</span> (e.which == <span class="hljs-number">13</span>) { <span class="hljs-comment">// enter</span>
+            <span class="hljs-keyword">var</span> val = <span class="hljs-keyword">this</span>.$input.val();
+            <span class="hljs-keyword">this</span>.$input.val(<span class="hljs-string">''</span>);
+
+            <span class="hljs-keyword">var</span> msg = <span class="hljs-keyword">new</span> App.Message({msg : val});
+            <span class="hljs-keyword">this</span>.trigger(<span class="hljs-string">"newMessage"</span>, msg);
+        }
+    }
+});
+</code></pre>
+<p>Conectamos los eventos</p>
+<pre><code class="lang-javascript">App<span class="hljs-preprocessor">.inputView</span><span class="hljs-preprocessor">.on</span>(<span class="hljs-string">"newMessage"</span>, function (msg) {
+    App<span class="hljs-preprocessor">.messages</span><span class="hljs-preprocessor">.add</span>(msg)<span class="hljs-comment">;</span>
+})<span class="hljs-comment">;</span>
+</code></pre>
+<p>Podríamos definir algún tipo de validación, como que los mensajes no deberían estar vacios.</p>
+<pre><code class="lang-javascript">App<span class="hljs-preprocessor">.Message</span> = Backbone<span class="hljs-preprocessor">.Model</span><span class="hljs-preprocessor">.extend</span>({
+    validate : function (attributes) {
+        if(_<span class="hljs-preprocessor">.isUndefined</span>(attributes<span class="hljs-preprocessor">.msg</span>) || attributes<span class="hljs-preprocessor">.msg</span><span class="hljs-preprocessor">.length</span> === <span class="hljs-number">0</span>) {
+            return <span class="hljs-string">"el mensaje debe tener contenido"</span><span class="hljs-comment">;</span>
+        }
+    }
+})<span class="hljs-comment">;</span>
+</code></pre>
+<p>Únicamente lanzaremos el evento en el caso de que mensaje sea válido.</p>
+<pre><code class="lang-javascript">keypress : function (e) {
+    <span class="hljs-keyword">if</span> (e.which == <span class="hljs-number">13</span>) { <span class="hljs-comment">// enter</span>
+        <span class="hljs-keyword">var</span> <span class="hljs-keyword">val</span> = <span class="hljs-keyword">this</span>.$input.<span class="hljs-keyword">val</span>();
+
+        <span class="hljs-keyword">var</span> msg = <span class="hljs-keyword">new</span> App.Message({msg : <span class="hljs-keyword">val</span>});
+        <span class="hljs-keyword">if</span>(msg.isValid()){
+            <span class="hljs-keyword">this</span>.$input.<span class="hljs-keyword">val</span>(<span class="hljs-string">''</span>);
+            <span class="hljs-keyword">this</span>.trigger(<span class="hljs-string">"newMessage"</span>, msg);
+        }
+    }
+}
+</code></pre>
+<h2 id="servidor">Servidor</h2>
+<p>El código del backend utiliza Node.js y socket.io. Todavía no hemos entrado en detalle con Node.js pero lo haremos más adelante. Por ahora podemos echarle un vistazo al código.</p>
+<p><a href="https://github.com/axelhzf/chat/blob/master/server/app.js">https://github.com/axelhzf/chat/blob/master/server/app.js</a></p>
+<h2 id="sincronizaci-n-de-cliente-y-servidor">Sincronización de cliente y servidor</h2>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> socket = io.connect(<span class="hljs-string">'http://chat-tlp2k12.herokuapp.com'</span>);
+socket.on(<span class="hljs-string">'connect'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> username = prompt(<span class="hljs-string">"What's your name?"</span>);
+    App.config.<span class="hljs-keyword">set</span>(<span class="hljs-string">'username'</span>, username);
+    socket.emit(<span class="hljs-string">'adduser'</span>, username);
+});
+socket.on(<span class="hljs-string">"initchat"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(response)</span> {</span>
+    App.messages.reset(response);
+});
+socket.on(<span class="hljs-string">'updatechat'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(message)</span> {</span>
+    App.messages.add(message);
+});
+socket.on(<span class="hljs-string">'updateusers'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
+    <span class="hljs-keyword">var</span> users = _.map(_.keys(data), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> {</span>
+        <span class="hljs-keyword">return</span> {name : name};
+    });
+    App.users.reset(users);
+});
+App.inputView.on(<span class="hljs-string">"newMessage"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(message)</span> {</span>
+    socket.emit(<span class="hljs-string">'sendchat'</span>, message.<span class="hljs-keyword">get</span>(<span class="hljs-string">'msg'</span>));
+});
+</code></pre>
+<p>Al intentar conectarte a un servidor externo el navegador te bloqueará por seguridad. Lo que podemos hacer en estos casos para probar la aplicación es deshabilitar esa medida de seguridad.</p>
+<pre><code>OS X : `<span class="hljs-built_in">open</span> -<span class="hljs-operator">a</span> /Applications/Google\ Chrome.app <span class="hljs-comment">--args --disable-web-security`</span>
+Windows : `chrome.exe <span class="hljs-comment">--disable-web-security`</span>
+</code></pre><h1 id="recursos">Recursos</h1>
+<ul>
+<li><a href="http://addyosmani.github.io/backbone-fundamentals/">Developing Backbone.js Applications</a></li>
+<li><a href="http://ricostacruz.com/backbone-patterns/">Backbone Patterns</a></li>
+<li><a href="http://lostechies.com/derickbailey/">Derick Bailey</a></li>
+</ul>
+
+  </div>
+  <footer><div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<script type="text/javascript">
+    var disqus_shortname = 'axelhzf';
+    // var disqus_developer = 1;
+    var disqus_script = 'embed.js';
+
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+    <p>Autor:<strong> Axel Hernández Ferrera</strong> (<a href="http://axelhzf.com" target="_blank">blog</a>, <a href="http://twitter.com/axelhzf" target="_blank">twitter</a>, <a href="http://github.com/axelhzf" target="_blank">github</a>)</p>
+  </footer><script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-31904298-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script>
+</body>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>OOP | js-training</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <header><a href="index.html" class="logo">JS<small>training</small></a></header>
+  <div class="content"><p>JavaScript es un lenguaje con orientación a objetos, pero no una orientación orientación a objetos tradicional, no encontraremos palabras claves como class, public, private, implements. JavaScript implementa lo que denominan Prototype-based programming, que no es más que un estilo de programación orientada en el que para conseguir la reutilización del comportamiento se clonan objetos a partir de otros objetos que sirven de prototipos. En palabras de Douglas Crockford:</p>
+<blockquote>
+<p>You make prototype objects, and then ... make new instances. Objects are mutable in JavaScript, so we can augment the new instances, giving them new fields and methods. These can then act as prototypes for even newer objects. We don&#39;t need classes to make lots of similar objects....Objects inherit from objects. What could be more object oriented than that?</p>
+</blockquote>
+<p>Esto al principio puede confundir a programadores que vienen de lenguajes como Java o C++. Es importante que no intentemos programar orientado a objetos en JavaScript como lo haríamos en esos otros lenguajes. Conseguiremos mejores resultados si interiorizamos la prototype-based programming.</p>
+<p>Con la próxima versión de JavaScript, <a href="http://www.2ality.com/2012/07/esnext-classes.html">ES6 se añadirá soporte</a> para clases. De esto hablaremos más adelante en la sección sobre el futuro de JavaScript. Uno de los principales problemas que en mi opinión ha tenido JavaScript es que el sistema de clases y módulos no se estandarizara antes. Esto ha hecho que cada uno implemente sus propias librerias o incluso sus propios lenguajes (e.g. CoffeeScript) para solucionar cosas básica como la herencia.</p>
+<p>Lo primero que nos llama la atención es que no exista una palabra reservada <code>class</code>. En lugar de eso JavaScript utiliza funciones como classes. Para definir una clase nueva lo único que debemos hacer es definir un nueva función.</p>
+<pre><code class="lang-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Person</span><span class="hljs-params">()</span> {</span>}
+</code></pre>
+<p>Para crear una nueva instancia de esta clase utilizamos <code>new</code>.</p>
+<pre><code class="lang-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Person</span><span class="hljs-params">()</span> {</span>}
+<span class="hljs-keyword">var</span> person1 = <span class="hljs-keyword">new</span> Person();
+<span class="hljs-keyword">var</span> person2 = <span class="hljs-keyword">new</span> Person();
+</code></pre>
+<p>El código de la función actua como constructor de la clase y se invocará cada vez que se cree una nueva instancia de la clase.</p>
+<pre><code class="lang-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Person</span><span class="hljs-params">()</span> {</span>
+    console.log(<span class="hljs-string">"creating new person"</span>);
+}
+<span class="hljs-keyword">var</span> person1 = <span class="hljs-keyword">new</span> Person();
+<span class="hljs-keyword">var</span> person2 = <span class="hljs-keyword">new</span> Person();
+</code></pre>
+<p>Para definir propiedades de la clase, al igual que en otros lenguajes, se utiliza <code>this</code>.</p>
+<pre><code class="lang-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Person</span><span class="hljs-params">(name)</span> {</span>
+    <span class="hljs-keyword">this</span>.name = name;
+}
+<span class="hljs-keyword">var</span> person1 = <span class="hljs-keyword">new</span> Person(<span class="hljs-string">"Pepe"</span>);
+<span class="hljs-keyword">var</span> person2 = <span class="hljs-keyword">new</span> Person(<span class="hljs-string">"Juan"</span>);
+
+console.log(person1.name);
+</code></pre>
+<p>Definir métodos de la clase consiste en definir métodos como propiedades del objeto <code>prototype</code>.</p>
+<pre><code class="lang-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Person</span><span class="hljs-params">(name)</span> {</span>
+    <span class="hljs-keyword">this</span>.name = name;
+}
+
+Person.prototype.sayHello = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    console.log(<span class="hljs-string">"hello, my name is "</span> + <span class="hljs-keyword">this</span>.name);
+}
+
+
+<span class="hljs-keyword">var</span> person1 = <span class="hljs-keyword">new</span> Person(<span class="hljs-string">"Pepe"</span>);
+<span class="hljs-keyword">var</span> person2 = <span class="hljs-keyword">new</span> Person(<span class="hljs-string">"Juan"</span>);
+
+console.log(person1.sayHello());
+</code></pre>
+<p>Los métodos no son más que funciones asociadas a un objeto o una clase como una propiedad de forma que cuando se invocan tienen asociado un contexto. Podemos invocar estas funciones sin contexto o incluso asociandole un contexto distinto.</p>
+<pre><code class="lang-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Person</span><span class="hljs-params">(name)</span> {</span>
+    <span class="hljs-keyword">this</span>.name = name;
+}
+
+Person.prototype.sayHello = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    console.log(<span class="hljs-keyword">this</span>.name);
+}
+
+<span class="hljs-keyword">var</span> person1 = <span class="hljs-keyword">new</span> Person(<span class="hljs-string">"Pepe"</span>);
+<span class="hljs-keyword">var</span> sayHi = person1.sayHello;
+
+console.log(person1.sayHello()) <span class="hljs-comment">// Pepe</span>
+console.log(sayHi()) <span class="hljs-comment">//undefined</span>
+console.log(sayHi === person1.sayHello); <span class="hljs-comment">//true</span>
+console.log(sayHi === person1.prototype.sayHello); <span class="hljs-comment">//true</span>
+
+sayHi.call(person1) <span class="hljs-comment">// Pepe</span>
+</code></pre>
+<p>Para realizar herencia de clases</p>
+<pre><code class="lang-js"><span class="hljs-comment">// define the Person Class</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Person</span><span class="hljs-params">()</span> {</span>}
+
+Person.prototype.walk = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+  alert (<span class="hljs-string">'I am walking!'</span>);
+};
+Person.prototype.sayHello = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+  alert (<span class="hljs-string">'hello'</span>);
+};
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Student</span><span class="hljs-params">()</span> {</span> 
+  Person.call(<span class="hljs-keyword">this</span>); <span class="hljs-comment">// Call the parent constructor</span>
+};
+Student.prototype = <span class="hljs-keyword">new</span> Person(); <span class="hljs-comment">// inherit Person</span>
+
+<span class="hljs-comment">// correct the constructor pointer because it points to Person</span>
+Student.prototype.constructor = Student;
+
+<span class="hljs-comment">// replace the sayHello method</span>
+Student.prototype.sayHello = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+  alert(<span class="hljs-string">'hi, I am a student'</span>);
+};
+
+<span class="hljs-comment">// add sayGoodBye method</span>
+Student.prototype.sayGoodBye = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+  alert(<span class="hljs-string">'goodBye'</span>);
+};
+
+<span class="hljs-keyword">var</span> student1 = <span class="hljs-keyword">new</span> Student();
+student1.sayHello();
+student1.walk();
+student1.sayGoodBye();
+
+<span class="hljs-comment">// check inheritance</span>
+alert(student1 <span class="hljs-keyword">instanceof</span> Person); <span class="hljs-comment">// true </span>
+alert(student1 <span class="hljs-keyword">instanceof</span> Student); <span class="hljs-comment">// true</span>
+</code></pre>
+<p><img src="images/inheritance.png" alt="Inheritance"></p>
+<p>El código que hemos visto hasta ahora no nos permite definir variables ni métodos privados. En JavaScript existen convenciones que utilizan algunos programadores como añadir como prefijo &quot;_&quot; para definir variables o métodos privados. En ningún caso estamos restringiendo el acceso a esos atributos, simplemente es una forma de avisar al usuarios de la clase que si modifica atributos privados la clase puede que no se comporte correctamente. En el caso de que si queramos definir variables privadas podemos utilizar el <code>Module Pattern</code>. En esta web <a href="http://addyosmani.com/resources/essentialjsdesignpatterns/book/#modulepatternjavascript">http://addyosmani.com/resources/essentialjsdesignpatterns/book/#modulepatternjavascript</a> podemos ver algunas variaciones del patrón. Pero básicamente consiste en aprovechar las closures para definir ámbito privado.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> basketModule = (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+
+  <span class="hljs-comment">// privates </span>
+  <span class="hljs-keyword">var</span> basket = [];
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doSomethingPrivate</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-comment">//...</span>
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doSomethingElsePrivate</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-comment">//...</span>
+  }
+
+  <span class="hljs-comment">// Return an object exposed to the public</span>
+  <span class="hljs-keyword">return</span> {
+
+    <span class="hljs-comment">// Add items to our basket</span>
+    addItem: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( values )</span> {</span>
+      basket.push(values);
+    },
+
+    <span class="hljs-comment">// Get the count of items in the basket</span>
+    getItemCount: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+      <span class="hljs-keyword">return</span> basket.length;
+    },
+
+    <span class="hljs-comment">// Public alias to a  private function</span>
+    doSomething: doSomethingPrivate,
+
+    <span class="hljs-comment">// Get the total value of items in the basket</span>
+    getTotal: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span> 
+      <span class="hljs-keyword">var</span> q = <span class="hljs-keyword">this</span>.getItemCount();
+      <span class="hljs-keyword">var</span> p = <span class="hljs-number">0</span>;
+
+      <span class="hljs-keyword">while</span> (q--) {
+        p += basket[q].price;
+      }
+
+      <span class="hljs-keyword">return</span> p;
+    }
+  };
+})();
+</code></pre>
+<h2 id="ejercicios">Ejercicios</h2>
+<p>Crea una clase Persona, con atributos <code>nombre</code> y <code>apellido</code> que tenga un método <code>nombreCompleto</code></p>
+<pre><code class="lang-js">it(<span class="hljs-string">"Person"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+  <span class="hljs-keyword">var</span> person = <span class="hljs-keyword">new</span> Person(<span class="hljs-string">"Troy"</span>, <span class="hljs-string">"McClure"</span>);
+  expect(person.fullName()).to.equal(<span class="hljs-string">"Troy McClure"</span>);
+});
+</code></pre>
+<p>Un mixin es patrón que permite agrupar un grupo de funcionalidades en una clase y que sean reautilizadas por varias. Podemos entender un mixin como una interfaz con métodos implementados. Para el ejercicio vamos a crear unos mixins para tratar con listas, página y ordenación.</p>
+<pre><code class="lang-js">  <span class="hljs-keyword">it</span>(<span class="hljs-string">"Mixins"</span>, function () {
+    var postItems = [
+      {<span class="hljs-property">id</span>: <span class="hljs-number">3</span>, <span class="hljs-property">name</span>: <span class="hljs-string">"Why JS is better than Java?"</span>},
+      {<span class="hljs-property">id</span>: <span class="hljs-number">2</span>, <span class="hljs-property">name</span>: <span class="hljs-string">"TDD in JavaScript"</span>},
+      {<span class="hljs-property">id</span>: <span class="hljs-number">0</span>, <span class="hljs-property">name</span>: <span class="hljs-string">"How to become a JS guru"</span>},
+      {<span class="hljs-property">id</span>: <span class="hljs-number">1</span>, <span class="hljs-property">name</span>: <span class="hljs-string">"Who is using JS in production?"</span>}
+    ];
+    var posts = new PostList(postItems);
+
+    extend(PostList.prototype, paginationMixin);
+    extend(PostList.prototype, sortMixin);
+
+    posts.sortBy(<span class="hljs-string">"id"</span>);
+    expect(posts.page(<span class="hljs-number">1</span>)).<span class="hljs-keyword">to</span>.eql([
+      {<span class="hljs-property">id</span>: <span class="hljs-number">2</span>, <span class="hljs-property">name</span>: <span class="hljs-string">"TDD in JavaScript"</span>},
+      {<span class="hljs-property">id</span>: <span class="hljs-number">3</span>, <span class="hljs-property">name</span>: <span class="hljs-string">"Why JS is better than Java?"</span>}
+    ]);
+
+  });
+</code></pre>
+<p>Referencias:</p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript</a></li>
+<li><a href="http://addyosmani.com/resources/essentialjsdesignpatterns/book/">http://addyosmani.com/resources/essentialjsdesignpatterns/book/</a></li>
+</ul>
+
+  </div>
+  <footer><div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<script type="text/javascript">
+    var disqus_shortname = 'axelhzf';
+    // var disqus_developer = 1;
+    var disqus_script = 'embed.js';
+
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+    <p>Autor:<strong> Axel Hernández Ferrera</strong> (<a href="http://axelhzf.com" target="_blank">blog</a>, <a href="http://twitter.com/axelhzf" target="_blank">twitter</a>, <a href="http://github.com/axelhzf" target="_blank">github</a>)</p>
+  </footer><script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-31904298-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script>
+</body>

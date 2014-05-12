@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Sintaxis básica, Arrays, Objetos y Mocha | js-training</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <header><a href="index.html" class="logo">JS<small>training</small></a></header>
+  <div class="content"><p>En esta sección veremos la sintaxis básica del lenguaje. Es importante que te queden claros los conceptos básicos porque son la base de todo lo que veremos más adelante.</p>
+<p>Para ir probando los ejemplos de código puedes utilizar el script helloWorld.js que creamos en la sección anterior e ir viendo los resultados en la consola.</p>
+<h3 id="variables">Variables</h3>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Variable definition</span>
+<span class="hljs-keyword">var</span> one = <span class="hljs-number">1</span>; <span class="hljs-comment">// Numeric type</span>
+<span class="hljs-keyword">var</span> two = <span class="hljs-number">2.5</span>; <span class="hljs-comment">// Numeric type</span>
+<span class="hljs-keyword">var</span> hello = <span class="hljs-string">"Hello"</span>; <span class="hljs-comment">// String type</span>
+<span class="hljs-keyword">var</span> world = <span class="hljs-string">"World"</span>;
+<span class="hljs-keyword">var</span> isNiceTraining = <span class="hljs-keyword">true</span>; <span class="hljs-comment">//boolean type</span>
+
+<span class="hljs-comment">// Update variable value</span>
+hello = <span class="hljs-string">"Hola"</span>;
+yes = <span class="hljs-keyword">false</span>;
+</code></pre>
+<h3 id="commentarios">Commentarios</h3>
+<pre><code class="lang-javascript"><span class="hljs-comment">// Single line comment</span>
+<span class="hljs-comment">/*
+  Multiline comment
+*/</span>
+</code></pre>
+<h3 id="if">If</h3>
+<pre><code class="lang-javascript">var resultado;
+var n = <span class="hljs-number">3</span>;
+<span class="hljs-keyword">if</span> (n === <span class="hljs-number">3</span>) <span class="hljs-cell">{
+    resultado = <span class="hljs-number">0</span>;
+}</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(n &lt; <span class="hljs-number">3</span>) <span class="hljs-cell">{
+    resultado = -<span class="hljs-number">1</span>;
+}</span> <span class="hljs-keyword">else</span> <span class="hljs-cell">{
+    resultado = <span class="hljs-number">1</span>;
+}</span>
+<span class="hljs-transposed_variable">console.</span><span class="hljs-built_in">log</span>(resultado);
+</code></pre>
+<h3 id="for">For</h3>
+<pre><code class="lang-javascript"><span class="hljs-built_in">var</span> <span class="hljs-keyword">sum</span> <span class="hljs-subst">=</span> <span class="hljs-number">0</span>;
+for(<span class="hljs-built_in">var</span> i <span class="hljs-subst">=</span> <span class="hljs-number">0</span>; i <span class="hljs-subst">&lt;</span> <span class="hljs-number">10</span>; i<span class="hljs-subst">++</span>){
+    <span class="hljs-keyword">sum</span> <span class="hljs-subst">=</span> <span class="hljs-keyword">sum</span> <span class="hljs-subst">+</span> i;
+}
+console<span class="hljs-built_in">.</span><span class="hljs-keyword">log</span>(<span class="hljs-keyword">sum</span> <span class="hljs-subst">===</span> <span class="hljs-number">45</span>);
+</code></pre>
+<h3 id="string">String</h3>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> hello = <span class="hljs-string">"Hello"</span>;
+<span class="hljs-keyword">var</span> world = <span class="hljs-string">"World"</span>;
+<span class="hljs-keyword">var</span> helloWorld = hello + <span class="hljs-string">" "</span> + world;
+
+helloWorld.length;
+helloWorld.substring(<span class="hljs-number">6</span>, <span class="hljs-number">8</span>); <span class="hljs-comment">//Wo</span>
+helloWorld.toUpperCase();
+helloWorld.toLowerCase();
+helloWorld.charAt(<span class="hljs-number">0</span>); <span class="hljs-comment">// "H"</span>
+helloWorld.indexOf(<span class="hljs-string">"ello"</span>); <span class="hljs-comment">// 1</span>
+</code></pre>
+<h3 id="number">Number</h3>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> num = <span class="hljs-number">5.56789</span>;
+num.toString();
+num.toFixed(<span class="hljs-number">2</span>); <span class="hljs-comment">//5.57</span>
+
+<span class="hljs-built_in">Number</span>.MAX_VALUE;
+<span class="hljs-built_in">Number</span>.MIN_VALUE;
+
+<span class="hljs-built_in">Math</span>.abs(num);
+<span class="hljs-built_in">Math</span>.ceil(num);
+<span class="hljs-built_in">Math</span>.floor(num);
+<span class="hljs-built_in">Math</span>.round(num);
+<span class="hljs-built_in">Math</span>.pow(<span class="hljs-number">2</span>, <span class="hljs-number">6</span>);
+<span class="hljs-built_in">Math</span>.max(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>);
+<span class="hljs-built_in">Math</span>.min(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>);
+</code></pre>
+<h3 id="array">Array</h3>
+<pre><code class="lang-javascript">var numbers = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]<span class="hljs-comment">;</span>
+numbers<span class="hljs-preprocessor">.length</span><span class="hljs-comment">;</span>
+
+numbers[<span class="hljs-number">0</span>] // <span class="hljs-number">1</span>
+numbers[<span class="hljs-number">50</span>] // undefined
+
+numbers<span class="hljs-preprocessor">.push</span>(<span class="hljs-number">6</span>)<span class="hljs-comment">;</span>
+numbers<span class="hljs-preprocessor">.pop</span>()<span class="hljs-comment">;</span>
+numbers<span class="hljs-preprocessor">.unshift</span>(<span class="hljs-number">0</span>)<span class="hljs-comment">;</span>
+numbers<span class="hljs-preprocessor">.shift</span>()<span class="hljs-comment">;</span>
+numbers<span class="hljs-preprocessor">.concat</span>([<span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>])<span class="hljs-comment">;</span>
+
+numbers<span class="hljs-preprocessor">.indexOf</span>(<span class="hljs-number">2</span>)<span class="hljs-comment">;</span>
+numbers<span class="hljs-preprocessor">.lastIndexOf</span>(<span class="hljs-number">4</span>)<span class="hljs-comment">;</span>
+
+numbers<span class="hljs-preprocessor">.reverse</span>()<span class="hljs-comment">;</span>
+numbers<span class="hljs-preprocessor">.sort</span>()<span class="hljs-comment">;</span>
+
+numbers<span class="hljs-preprocessor">.join</span>(<span class="hljs-string">", "</span>)<span class="hljs-comment">;</span>
+
+numbers<span class="hljs-preprocessor">.slice</span>(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>)<span class="hljs-comment">; // [2, 3]</span>
+
+//numbers<span class="hljs-preprocessor">.splice</span>(index, howManyToRemove, items, to, <span class="hljs-keyword">add</span>)<span class="hljs-comment">;</span>
+numbers<span class="hljs-preprocessor">.splice</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-string">"two"</span>, <span class="hljs-string">"three"</span>)<span class="hljs-comment">;</span>
+
+//Iterate the array
+for (var i = <span class="hljs-number">0</span><span class="hljs-comment">; i &lt; numbers.length; i += 1) {</span>
+    console<span class="hljs-preprocessor">.log</span>(numbers[i])<span class="hljs-comment">;</span>
+}
+
+//Matrix
+var matrix = [
+    [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+    [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>],
+    [<span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>]
+]<span class="hljs-comment">;</span>
+matrix[<span class="hljs-number">2</span>][<span class="hljs-number">1</span>]    // <span class="hljs-number">7</span>
+</code></pre>
+<h3 id="objects">Objects</h3>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> obj = {
+    one : <span class="hljs-number">1</span>, key2 : <span class="hljs-string">"two"</span>,
+    <span class="hljs-string">"long-key"</span> : <span class="hljs-string">"longKey"</span>
+    arr : [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>],
+    obj : {
+        a : <span class="hljs-string">"a"</span>, b : <span class="hljs-string">"b"</span>
+    }
+};
+
+obj.one;
+obj[<span class="hljs-string">"one"</span>];
+obj.obj.a;
+
+obj.one = <span class="hljs-string">"one"</span>;
+<span class="hljs-keyword">delete</span> obj.one;
+
+<span class="hljs-comment">//Iterate</span>
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i <span class="hljs-keyword">in</span> obj) {
+    <span class="hljs-keyword">if</span> (obj.hasOwnProperty(i)) {
+        console.log(i, <span class="hljs-string">''</span> + obj[i]);
+    }
+}
+</code></pre>
+<h3 id="expresiones-regulares">Expresiones regulares</h3>
+<pre><code class="lang-javascript">var regex = <span class="hljs-regexp">/\w+/g</span>;
+var str = <span class="hljs-string">"hello world"</span>;
+
+regex.test(str); <span class="hljs-regexp">//</span> <span class="hljs-keyword">true</span>
+
+str.match(regex); <span class="hljs-regexp">//</span> [<span class="hljs-string">"hello"</span>, <span class="hljs-string">"world"</span>];
+str.search(regex); <span class="hljs-regexp">//</span> <span class="hljs-number">0</span>
+str.replace(regex, <span class="hljs-string">"word"</span>); <span class="hljs-regexp">//</span> <span class="hljs-string">"word word"</span>
+str.split(<span class="hljs-regexp">/\s+/</span>); <span class="hljs-regexp">//</span> [<span class="hljs-string">"hello"</span>, <span class="hljs-string">"world"</span>]
+</code></pre>
+<h3 id="funciones">Funciones</h3>
+<pre><code class="lang-javascript">
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fn</span><span class="hljs-params">()</span> {</span>}; 
+<span class="hljs-keyword">var</span> fn = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>}; 
+
+fn(); <span class="hljs-comment">//cal a function</span>
+
+<span class="hljs-keyword">var</span> sum = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> {</span>
+    <span class="hljs-keyword">return</span> a + b;
+}
+</code></pre>
+<h3 id="excepciones">Excepciones</h3>
+<pre><code class="lang-js"><span class="hljs-keyword">throw</span> <span class="hljs-string">"Error2"</span>;
+<span class="hljs-keyword">throw</span> <span class="hljs-number">42</span>;
+<span class="hljs-keyword">throw</span> <span class="hljs-literal">true</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">UserException</span><span class="hljs-params">(message)</span> {</span>
+  <span class="hljs-keyword">this</span>.message = message;
+  <span class="hljs-keyword">this</span>.name = <span class="hljs-string">"UserException"</span>;
+}
+
+<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> UserException(<span class="hljs-string">"InvalidMonthNo"</span>);
+
+<span class="hljs-keyword">try</span> {
+} <span class="hljs-keyword">catch</span> (e) {
+}
+</code></pre>
+<h2 id="introducci-n-a-mocha">Introducción a mocha</h2>
+<p>Antes de hacer los ejercicios vamos a introducir Mocha. Mocha es un framework de testing que puede ejecutarse tanto en node como en el browser (opción que utilizaremos por ahora). Utilizaremos Mocha para comprobar que las soluciones a los ejercicios son correctas. Existen muchos otros frameworks como por ejemplo <a href="http://qunitjs.com/">QUnit</a> o <a href="http://pivotal.github.com/jasmine/">Jasmine</a>.</p>
+<p>Mocha es muy flexible y permite utilizar <a href="http://visionmedia.github.io/mocha/#assertions">varias librerias de assertions</a> en nuestro caso vamos a utilizar <a href="http://chaijs.com/">chai</a>.</p>
+<pre><code class="lang-js">├── spec
+│   ├── basic_spec<span class="hljs-preprocessor">.js</span>
+│   ├── lib
+│   │   ├── chai<span class="hljs-preprocessor">.js</span>
+│   │   └── mocha
+│   │       ├── mocha<span class="hljs-preprocessor">.css</span>
+│   │       └── mocha<span class="hljs-preprocessor">.js</span>
+│   └── runner<span class="hljs-preprocessor">.html</span>
+└── src
+    └── basic<span class="hljs-preprocessor">.js</span>
+</code></pre>
+<p>La estructura básica tiene dos carpeta, una <code>src</code> donde pondremos nuestro código y otra <code>spec</code> donde escribiremos los tests. Dentro de la carpeta spec está la carpeta de librerias donde tenemos mocha y chai. El fichero <code>basic_spec.js</code> es un test y el fichero <code>runner.html</code> va a ser el encargado de ejecutar los tests. Abre el fichero runner.html con el chrome para ejecutar los tests. Cada vez que quieras volver a ejecutar los tests lo único que tienes que hacer es refrescar la página.</p>
+<p>Una suite de test comienza con la llamada a la función <code>describe</code>. Cada uno de los test se definen llamando a la función <code>it</code>. Por ejemplo:</p>
+<pre><code class="lang-js">describe(<span class="hljs-string">'MiClass'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+    it(<span class="hljs-string">'should have an amazing feature'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+        <span class="hljs-comment">//assertions</span>
+    })
+})
+</code></pre>
+<p>En los bloques describe se especifican funcionalidades y en los bloques it se especifica qué comportamiento debería tener. Los bloques describe se pueden anidar.</p>
+<pre><code class="lang-js">describe(<span class="hljs-string">'MiClass'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+    describe(<span class="hljs-string">'amazing feature'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        it(<span class="hljs-string">"should works only if it's monday"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            <span class="hljs-comment">//assertions</span>
+        });
+    }
+})
+</code></pre>
+<p>Si queremos ejecutar un código antes de cada bloque <code>it</code> podemos utilizar la función <code>beforeEach</code>.</p>
+<pre><code class="lang-js">describe(<span class="hljs-string">'MiClass'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+    beforeEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+
+    })
+
+    it(<span class="hljs-string">"should return monday if it's monday"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-comment">//assertions</span>
+    });
+
+    it(<span class="hljs-string">"should return tuesday if it's tuesday"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        <span class="hljs-comment">//assertions</span>
+    });
+})
+</code></pre>
+<p>Para definir las assertions vamos a utilizar chai. Estos son algunos de los métodos disponibles, en la <a href="http://chaijs.com/api/bdd/">documentación</a> puedes consultar el resto.</p>
+<pre><code class="lang-js">expect(foo).<span class="hljs-keyword">to</span>.equal(<span class="hljs-string">'bar'</span>);
+expect(<span class="hljs-string">'hello'</span>).<span class="hljs-keyword">to</span>.equal(<span class="hljs-string">'hello'</span>);
+expect(foo).<span class="hljs-keyword">to</span>.deep.equal({ bar: <span class="hljs-string">'baz'</span> });
+expect(<span class="hljs-string">'test'</span>).<span class="hljs-keyword">to</span>.be.a(<span class="hljs-string">'string'</span>);
+expect([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]).<span class="hljs-keyword">to</span>.<span class="hljs-keyword">include</span>(<span class="hljs-number">2</span>);
+expect(<span class="hljs-keyword">true</span>).<span class="hljs-keyword">to</span>.be.<span class="hljs-keyword">true</span>;
+expect(undefined).<span class="hljs-keyword">to</span>.be.undefined;
+expect(fn).<span class="hljs-keyword">to</span>.throw(Error);
+</code></pre>
+<p>Esto es lo básico que nos hace falta para poder empezar a testear el código que vayamos haciendo.</p>
+<h2 id="ejercicios">Ejercicios</h2>
+<p>Los ejercicios van a consistir en una serie de tests para los que tendrás que escribir el código que hace pasar el test.</p>
+<pre><code class="lang-js">describe(<span class="hljs-string">"Basic test"</span>, function () {
+
+    <span class="hljs-keyword">it</span>(<span class="hljs-string">"test1 suma los números del 1 al 100"</span>, function () {
+        expect(test1()).<span class="hljs-keyword">to</span>.<span class="hljs-keyword">equal</span>(<span class="hljs-number">5050</span>);
+    });
+
+    <span class="hljs-keyword">it</span>(<span class="hljs-string">"test2 suma los números pares del 1 al 100"</span>, function () {
+        expect(test2()).<span class="hljs-keyword">to</span>.<span class="hljs-keyword">equal</span>(<span class="hljs-number">2550</span>);
+    });
+
+    <span class="hljs-keyword">it</span>(<span class="hljs-string">"test3 función con la concatenación de dos strings en mayúsculas"</span>, function () {
+        expect(test3(<span class="hljs-string">"hello"</span>, <span class="hljs-string">"world"</span>)).<span class="hljs-keyword">to</span>.<span class="hljs-keyword">equal</span>(<span class="hljs-string">"HELLO WORLD"</span>);
+    });
+
+    <span class="hljs-keyword">it</span>(<span class="hljs-string">"test4 crea un array con los números pares del 1 al 100"</span>, function () {
+        var <span class="hljs-constant">result</span> = test4();
+        expect(<span class="hljs-constant">result</span>.<span class="hljs-property">length</span>).<span class="hljs-keyword">to</span>.<span class="hljs-keyword">equal</span>(<span class="hljs-number">50</span>);
+        expect(<span class="hljs-constant">result</span>[<span class="hljs-number">0</span>]).<span class="hljs-keyword">to</span>.<span class="hljs-keyword">equal</span>(<span class="hljs-number">2</span>);
+        expect(<span class="hljs-constant">result</span>[<span class="hljs-number">1</span>]).<span class="hljs-keyword">to</span>.<span class="hljs-keyword">equal</span>(<span class="hljs-number">4</span>);
+        expect(<span class="hljs-constant">result</span>[<span class="hljs-number">49</span>]).<span class="hljs-keyword">to</span>.<span class="hljs-keyword">equal</span>(<span class="hljs-number">100</span>);
+    });
+
+    <span class="hljs-keyword">it</span>(<span class="hljs-string">"test5 elimina los elementos duplicados de un array"</span>, function () {
+        expect(test5([<span class="hljs-string">"a"</span>, <span class="hljs-string">"b"</span>, <span class="hljs-string">"a"</span>, <span class="hljs-string">"c"</span>, <span class="hljs-string">"b"</span>])).<span class="hljs-keyword">to</span>.deep.<span class="hljs-keyword">equal</span>([<span class="hljs-string">"a"</span>, <span class="hljs-string">"b"</span>, <span class="hljs-string">"c"</span>]);
+    });
+
+    <span class="hljs-keyword">it</span>(<span class="hljs-string">"test6 devuelve las claves y los valores de un objeto"</span>, function () {
+        var obj = {key1 : <span class="hljs-string">"value1"</span>, key2 : <span class="hljs-string">"value2"</span>};
+        var <span class="hljs-constant">result</span> = test6(obj);
+        expect(<span class="hljs-constant">result</span>.keys).<span class="hljs-keyword">to</span>.deep.<span class="hljs-keyword">equal</span>([<span class="hljs-string">"key1"</span>, <span class="hljs-string">"key2"</span>]);
+        expect(<span class="hljs-constant">result</span>.values).<span class="hljs-keyword">to</span>.deep.<span class="hljs-keyword">equal</span>([<span class="hljs-string">"value1"</span>, <span class="hljs-string">"value2"</span>]);
+    });
+
+    <span class="hljs-keyword">it</span>(<span class="hljs-string">"test7 crea una función que comprueba si es un email valido"</span>, function () {
+        expect(test7(<span class="hljs-string">"axelhzf@gmail.com"</span>)).<span class="hljs-keyword">to</span>.be.<span class="hljs-constant">true</span>;
+        expect(test7(<span class="hljs-string">"not an email"</span>)).<span class="hljs-keyword">to</span>.be.<span class="hljs-constant">false</span>;
+    });
+
+});
+</code></pre>
+<h2 id="referencias">Referencias</h2>
+<ul>
+<li><a href="http://bonsaiden.github.com/JavaScript-Garden/">JavaScript-Garden</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/JavaScript/Guide/Regular_Expressions">MDN: Regular Expressions</a></li>
+<li><a href="http://chaijs.com/api/bdd/">Chai</a></li>
+<li><a href="http://speakingjs.com/es5/">Speakingjs</a></li>
+</ul>
+
+  </div>
+  <footer><div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<script type="text/javascript">
+    var disqus_shortname = 'axelhzf';
+    // var disqus_developer = 1;
+    var disqus_script = 'embed.js';
+
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+    <p>Autor:<strong> Axel Hernández Ferrera</strong> (<a href="http://axelhzf.com" target="_blank">blog</a>, <a href="http://twitter.com/axelhzf" target="_blank">twitter</a>, <a href="http://github.com/axelhzf" target="_blank">github</a>)</p>
+  </footer><script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-31904298-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script>
+</body>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Node.js | js-training</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <header><a href="index.html" class="logo">JS<small>training</small></a></header>
+  <div class="content"><h1 id="node-js">Node.js</h1>
+<p><img src="images/node-resume.jpg" alt="Trending node"></p>
+<p>Node.js es una plataforma software que permite utilizar JavaScript en el lado del servidor, para ello internamente utiliza la máquina virtual V8, la misma que utiliza Google Chrome. Además viene con un conjunto de módulos que nos permiten realizar tareas básicas como trabajar con ficheros, sockets o http. Por lo tanto Node.js son dos cosas, un runtime y una librería. La primera versión de Node.js se publicó en 2011 y desde entonces se ha creado una comunidad de desarrolladores muy importante que han creado un gran ecosistema para desarrollar aplicaciones. </p>
+<p>Las aplicaciones Node.js están pensadas para maximimar el rendimiento y la eficiencia utilizando entrada y salida no bloqueantes y eventos asíncronos. Las aplicaciones utilizan un único hilo aunque internamente se utilizan varios hilos para trabajar con ficheros o eventos de red. Dada su naturaleza asíncrona los aplicaciones son muy utilizadas para realizar aplicaciones real time. </p>
+<h2 id="instalaci-n">Instalación</h2>
+<p>Para la instalación de node en Mac OSX o Windows puede descargar el instalador en la <a href="http://nodejs.org/">página oficial</a>.
+En el caso de linux, debemos añadir un repositorio de donde se descargará los paquetes. Puedes seguir <a href="https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager">estas instrucciones</a>.</p>
+<h2 id="hola-mundo">Hola Mundo</h2>
+<p>Crea un fichero hello.js</p>
+<pre><code class="lang-js">console.<span class="hljs-keyword">log</span>(<span class="hljs-string">'Hello world'</span>)
+</code></pre>
+<p>Para ejecutar la aplicación simplemente ejecuta el comando</p>
+<pre><code class="lang-sh"><span class="hljs-blockquote">&gt; node hello.js</span>
+</code></pre>
+<p>Node trae integrados algunos módulos, por ejemplo el módulo <code>http</code> que nos permite trabajar con peticiones http.
+Crea un fichero que se llame helloServer.js y copia este contenido</p>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">'http'</span>);
+http.createServer(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(req, res)</span> {</span>
+  res.writeHead(<span class="hljs-number">200</span>, {<span class="hljs-string">'Content-Type'</span>: <span class="hljs-string">'text/plain'</span>});
+  res.end(<span class="hljs-string">'Hello World\n'</span>);
+}).listen(<span class="hljs-number">1337</span>, <span class="hljs-string">"127.0.0.1"</span>);
+console.log(<span class="hljs-string">'Server running at http://127.0.0.1:1337/'</span>);
+</code></pre>
+<pre><code class="lang-sh"><span class="hljs-blockquote">&gt; node helloServer.js</span>
+</code></pre>
+<p>Para comprobar si funciona, abre en un navegador la url <a href="http://127.0.0.1:1337/">http://127.0.0.1:1337/</a></p>
+<p>A diferencia del primer ejemplo, esta vez el programa no termina, sino que se queda a la espera de nuevas peticiones. Como comentamos en la introducción, tenemos que tener en cuenta que nuestro programa se ejecuta en un úncio hilo, pero aún así, es capaz de responder a peticiones simultaneas.</p>
+<h2 id="non-blocking-i-o">Non-blocking I/O</h2>
+<p>Una de las razones que hizo al creador de Node.js inclinarse a utilizar JavaScript es que era un lenguaje que no contaba con una API de entrada y salida. Esto le permitió diseñar la API desde cero haciendola asíncrona por defecto, permitiendo que las aplicaicones escritas en Node.js sean muy eficientes.</p>
+<p>La entrada y salida tradicional es algo parecido a esto</p>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> fileContent = <span class="hljs-keyword">file</span>.<span class="hljs-keyword">read</span>(<span class="hljs-string">'file.txt'</span>);
+<span class="hljs-comment">// wait </span>
+process(fileContent);
+otherProcess();
+</code></pre>
+<p>El problema con la entrada y salida tradicional es la espera. ¿Por qué esperar a ejecutar el método <code>otherProcess</code> si no depende del contenido del fichero? Las operaciones de entrada y salida son muy costosas.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Latencia relativa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Register</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Cache</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>100</td>
+</tr>
+<tr>
+<td>Harddisk</td>
+<td>10 000 000</td>
+</tr>
+</tbody>
+</table>
+<p>Utilizando una entrada y salida no bloqueante, el código sería</p>
+<pre><code class="lang-js"><span class="hljs-keyword">file</span>.<span class="hljs-keyword">read</span>(<span class="hljs-string">'file.txt'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fileContenet)</span> <span class="hljs-comment">{
+    process(fileContent);
+}</span>);</span>
+otherProcess();
+</code></pre>
+<p>En este caso no hay necesidad de esperar a la lectura de disco para seguir ejecutando el código. A pesar de que el código sea asíncrono tenemos que tener en cuenta que nuestra aplicación se ejecuta en un único hilo</p>
+<pre><code class="lang-js">file.read(<span class="hljs-string">'file.txt'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-comment">// este código nunca se va a ejecutar</span>
+});
+
+<span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>) {
+    <span class="hljs-comment">// bloqueo del proceso</span>
+}
+</code></pre>
+<h2 id="commonjs-modules">CommonJS modules</h2>
+<p>CommonJS es el sistema de módulos que incorpora Node.js. Con el sistema de módulos podemos incluir otros ficheros, librerías del sistema o modulos desarrolladores por terceros.</p>
+<p>El código para crear un módulo es muy sencillo. Únicamente tenemos que especificar qué métodos queremos exportar.</p>
+<p>hello.js</p>
+<pre><code class="lang-js">exports.world = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'Hello World'</span>;
+};
+</code></pre>
+<p>main.js</p>
+<pre><code class="lang-js"><span class="hljs-reserved">var</span> hello = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./hello'</span>);
+<span class="hljs-built_in">console</span>.log(hello.world());
+</code></pre>
+<p>En el caso de que queramos exportar un objeto completo, podemos utilizar</p>
+<pre><code class="lang-js"><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span></span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'Hello World'</span>;
+};
+</code></pre>
+<p>main.js</p>
+<pre><code class="lang-js"><span class="hljs-reserved">var</span> hello = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./hello'</span>);
+<span class="hljs-built_in">console</span>.log(hello());
+</code></pre>
+<p>Para utilizar alguno de los módulos que trae Node por defecto, basta con usar require. En la <a href="http://nodejs.org/api/">documentación</a> tienes el listado de módulos disponibles.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">"fs"</span>);
+fs.writeFile(<span class="hljs-string">'message.txt'</span>, <span class="hljs-string">'Hello Node'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(err)</span> {</span>
+  <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">throw</span> err;
+  console.log(<span class="hljs-string">'It\'s saved!'</span>);
+});
+</code></pre>
+<p>Node.js viene con un gestor de paquetes llamado <a href="https://www.npmjs.org/">NPM</a> que nos permite gestionar librerías de terceros. El comando para instalar un paquete es</p>
+<pre><code class="lang-bash">npm <span class="hljs-keyword">install</span> nombrePaquete
+</code></pre>
+<p>Por ejemplo, si quisieramos instalar underscore</p>
+<pre><code class="lang-bash">npm <span class="hljs-keyword">install</span> underscore
+</code></pre>
+<p>Este comando se bajara el módulo con todas sus dependencias dentro de la carpeta <code>node_modules</code> y ya lo tendremos disponible para incluir desde nuestro código.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> _ = <span class="hljs-built_in">require</span>(<span class="hljs-string">"underscore"</span>);
+va result = _.map([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(num)</span>{</span> <span class="hljs-keyword">return</span> num * <span class="hljs-number">3</span>; });
+console.log(result);
+</code></pre>
+<p>Podemos definir los módulos en un fichero .json para que en todo momento sepamos qué modulos y qué versiones utiliza la aplicación. Para ello definimos un fichero <code>package.json</code></p>
+<pre><code class="lang-json">{
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"myModule"</span></span>,
+  "<span class="hljs-attribute">dependencies</span>": <span class="hljs-value">{}
+</span>}
+</code></pre>
+<p>La proxima vez que instalemos un módulo, utilizaremos la opción <code>--save</code> para añadir la dependencies al fichero package.json en la sección dependencies.</p>
+<pre><code><span class="hljs-comment">npm</span> <span class="hljs-comment">install</span> <span class="hljs-comment">underscore</span> <span class="hljs-literal">-</span><span class="hljs-literal">-</span><span class="hljs-comment">save</span>
+</code></pre><h2 id="ejercicio-node-fs">Ejercicio: node-fs</h2>
+<p>Escribe una función que devuelva la lista de ficheros de un directorio junto con tamaño, ordenados por nombre.</p>
+<h2 id="callback-hell">Callback hell</h2>
+<p>La naturaleza asíncrona de Node.js hace que trabajar con funciones asíncronas sea muy común. El uso constante de callbacks se puede complicar cuando queremos encadenar varias tareas una detras de otra y podemos terminar teniendo lo que se denomina un <a href="http://callbackhell.com/">Callback Hell</a>.</p>
+<pre><code class="lang-js">fs.readFile(<span class="hljs-string">'file1.txt'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(file1)</span> {</span>
+  fs.readFile(<span class="hljs-string">'file2.txt'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(file2)</span> {</span>
+    fs.readFile(<span class="hljs-string">'file3.txt'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(file3)</span> {</span>
+      fs.readFile(<span class="hljs-string">'file4.txt'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(file4)</span> {</span>
+        fs.readFile(<span class="hljs-string">'file5.txt'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(file5)</span> {</span>
+          process(file1, file2, file3, file4, file5);
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<p>Existen varias fórmulas para este problema. La primera y la más sencilla es no abusar de las funciones anónimas.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> process = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(file1, file2)</span> {</span>}
+<span class="hljs-keyword">var</span> readfile2 = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(cb)</span> {</span> fs.readFile(<span class="hljs-string">'file2.txt'</span>, process); }
+<span class="hljs-keyword">var</span> readfile1 = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(cb)</span> {</span> fs.readFile(<span class="hljs-string">'file1.txt'</span>, readfile2);}
+readfile1();
+</code></pre>
+<p>Otra posible solución es utilizar promisas</p>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> fs = <span class="hljs-keyword">require</span>(<span class="hljs-string">"fs"</span>);
+<span class="hljs-keyword">var</span> path = <span class="hljs-keyword">require</span>(<span class="hljs-string">"path"</span>);
+<span class="hljs-keyword">var</span> _ = <span class="hljs-keyword">require</span>(<span class="hljs-string">"underscore"</span>);
+
+<span class="hljs-keyword">var</span> Promise = <span class="hljs-keyword">require</span>(<span class="hljs-string">'es6-promise'</span>).Promise;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">readfile</span><span class="hljs-params">(file)</span> {</span>
+  <span class="hljs-keyword">var</span> promise = <span class="hljs-keyword">new</span> Promise(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(resolve, reject)</span> {</span>
+    fs.readFile(file, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(err, content)</span> {</span>
+      <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">return</span> reject(err);
+      resolve(content.toString());
+    })
+  });
+  <span class="hljs-keyword">return</span> promise;
+}
+
+
+Promise
+  .all([
+    readfile(<span class="hljs-string">"file1"</span>), 
+    readfile(<span class="hljs-string">"file2"</span>),
+    readfile(<span class="hljs-string">"file3"</span>)
+  ])
+  .then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> {</span>
+    console.log(result);
+  })
+  .<span class="hljs-keyword">catch</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(err)</span> {</span>
+    console.log(err);
+  });
+</code></pre>
+<p>Otra posible solución es utilizar la librería <a href="https://github.com/caolan/async">async</a> que provee una serie de utilidades para trabajar con funciones asíncronas.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">async</span>.map([<span class="hljs-string">'file1'</span>,<span class="hljs-string">'file2'</span>,<span class="hljs-string">'file3'</span>], fs.stat, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, results)</span><span class="hljs-comment">{
+
+}</span>);</span>
+</code></pre>
+<h2 id="ejerciocio-node-fs-async">Ejerciocio: node-fs-async</h2>
+<p>Escribe el mismo código del ejercicio anterior utilizando la librería async</p>
+<h2 id="express">Express</h2>
+<p>En uno de los ejemplos anteriores vimos como el módulo http nos permite crear un servidor web simple. Esta es la base para módulos como <a href="http://expressjs.com/">express</a> que añaden las funcionalidades básicas de cualquier framework web.</p>
+<p>Durante el desarrollo del material del curso, express lanzó una nueva versión, la versión 4. En el curso trabajaremos con la versión 3. En el cambio de versión hay algunas cosas que no son compatibles pero la <a href="https://github.com/visionmedia/express/wiki/Migrating-from-3.x-to-4.x">migración es sencilla</a>. Por lo tanto la documentación que seguiremos es la de la <a href="http://expressjs.com/3x/api.html">versión 3.x</a>.</p>
+<p>Para instalar una versión concreta de un paquete lo podemos hacer especificándolo en el fichero package.json o desde la consola utilizando el comando</p>
+<pre><code>npm install express<span class="hljs-variable">@3</span>.<span class="hljs-number">5.1</span>
+</code></pre><p>El mismo código de hola mundo del ejemplo anterior, en express sería este código</p>
+<pre><code><span class="hljs-keyword">var</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
+<span class="hljs-keyword">var</span> app = express();
+
+app.get(<span class="hljs-string">'/'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span>{</span>
+  res.send(<span class="hljs-string">'hello world'</span>);
+});
+
+app.listen(<span class="hljs-number">3000</span>);
+</code></pre><p>Para ejecutar la aplicación, simplemente</p>
+<pre><code>node app<span class="hljs-preprocessor">.js</span>
+</code></pre><p>Express utiliza el módulo <a href="https://github.com/visionmedia/debug">debug</a> internamente para hacer logging. En el caso de que queramos habilitar los logs podemos utilizar el comando</p>
+<pre><code><span class="hljs-attribute">DEBUG</span>=<span class="hljs-string">express:* node app.js</span>
+</code></pre><p>La arquitectura de express se basa en el concepto de middleware. Un middleware no es más que una función encargada de manejar peticiones. La aplicación configura una middleware por los que pasaran las peticiones entrantes. Los middlewares se pueden configurar de forma global o por path. El middleware más simple que podemos definir es el siguiente</p>
+<pre><code class="lang-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">uselessMiddleware</span><span class="hljs-params">(req, res, next)</span></span> { 
+  <span class="hljs-built_in">next</span>();
+}
+</code></pre>
+<p>Un middleware recibe como parámetro los objetos <code>req</code> y <code>res</code> que representan la request y la response. La función <code>next</code> indica que se ejecute el siguiente middleware dentro de la cadena. Dentro del middleware podemos manejar los objetos <code>req</code> y <code>res</code> para añadir funcionalidades. Por ejemplo, para mostrar un log por cada una de las peticiones</p>
+<pre><code class="lang-js">app.use(<span class="hljs-keyword">function</span>(<span class="hljs-built_in">request</span>, <span class="hljs-built_in">response</span>, <span class="hljs-keyword">next</span>) {
+  console.<span class="hljs-built_in">log</span>(<span class="hljs-string">"In comes a "</span> + <span class="hljs-built_in">request</span>.method + <span class="hljs-string">" to "</span> + <span class="hljs-built_in">request</span>.url);
+  <span class="hljs-keyword">next</span>();
+});
+</code></pre>
+<p>También podemos especificar un path como primer parámetro</p>
+<pre><code class="lang-js">app.<span class="hljs-keyword">use</span>(<span class="hljs-string">"/admin"</span>, middleware);
+</code></pre>
+<p>Express utiliza internamente <a href="http://www.senchalabs.org/connect/">connect</a> y expone todos sus middlewares. Por ejemplo, ya existe un <a href="http://www.senchalabs.org/connect/logger.html">middleware</a> de logging como el que acabamos de crear. Para utilizarlo simplemente</p>
+<pre><code class="lang-js">app<span class="hljs-preprocessor">.use</span>(express<span class="hljs-preprocessor">.logger</span>())<span class="hljs-comment">;</span>
+</code></pre>
+<p>Las rutas se comportan de manera similar a los middleware y están asociados a los verbos http(get, post, put, delete)</p>
+<pre><code class="lang-js">app.get(<span class="hljs-string">"/"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(req, res)</span> {</span>
+  res.send(<span class="hljs-string">"hello world"</span>);
+});
+app.put(<span class="hljs-regexp">/^\/commits\/(\w+)(?:\.\.(\w+))?$/</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(req, res)</span> {</span>
+
+});
+app.post(<span class="hljs-string">"/post/:id"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(req, res)</span> {</span>
+
+})
+</code></pre>
+<p>Las funcionalidades más básicas en un framework web son, parsear los parámetros de las peticiones y generar una respuesta</p>
+<pre><code class="lang-js">app.<span class="hljs-keyword">get</span>(<span class="hljs-string">"/users/:name"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(req, res)</span> {</span>
+  req.params.name <span class="hljs-comment">// GET /users/axel</span>
+  req.query.order <span class="hljs-comment">// GET /users/axel?order=desc</span>
+});
+
+app.<span class="hljs-keyword">use</span>(bodyParser());
+app.post(<span class="hljs-string">"/users"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+  req.body.users.name  <span class="hljs-comment">// POST user[name]=tobi&amp;user[email]=tobi@learnboost.com</span>
+  req.body.name <span class="hljs-comment">// POST { "name": "tobi" }</span>
+});
+
+
+req.param(<span class="hljs-string">""</span>) <span class="hljs-comment">// busca en req.params, req.body, req.query</span>
+
+res.redirect(<span class="hljs-string">'/foo/bar'</span>);
+res.send(<span class="hljs-keyword">new</span> Buffer(<span class="hljs-string">'whoop'</span>));
+res.send({ some: <span class="hljs-string">'json'</span> });
+res.send(<span class="hljs-string">'some html'</span>);
+res.send(<span class="hljs-number">404</span>, <span class="hljs-string">'Sorry, we cannot find that!'</span>);
+res.send(<span class="hljs-number">500</span>, { error: <span class="hljs-string">'something blew up'</span> });
+res.send(<span class="hljs-number">200</span>);
+res.json({user: <span class="hljs-string">'tobi'</span>})
+res.jsonp({ user: <span class="hljs-string">'tobi'</span> })
+res.render(<span class="hljs-string">'index'</span>, {name : <span class="hljs-string">"Tobi"</span>})
+</code></pre>
+<p>La ultima opción, <code>res.render</code> permite a express integrarse con sistema de plantillas. Podemos configurar el sistema de plantillas que vamos a utilizar con</p>
+<pre><code class="lang-js">app.engine(<span class="hljs-string">'jade'</span>, <span class="hljs-keyword">require</span>(<span class="hljs-string">'jade'</span>).__express);
+</code></pre>
+<h2 id="ejercicio-crea-la-api-rest-de-twitter">Ejercicio: Crea la api rest de twitter</h2>
+<p>En este ejercicio vamos a crear una API rest con funcionalidades parecidas a la de twitter.</p>
+<pre><code>GET /tweets
+
+[
+  {<span class="hljs-property">id</span>:<span class="hljs-number">2</span>, <span class="hljs-type">text</span>: <span class="hljs-string">"Hi"</span>},
+  {<span class="hljs-property">id</span>:<span class="hljs-number">1</span>, <span class="hljs-type">text</span>: <span class="hljs-string">"First tweet"</span>}
+]
+</code></pre><pre><code>GET /tweets/:<span class="hljs-property">id</span>
+
+{<span class="hljs-property">id</span>:<span class="hljs-number">2</span>, <span class="hljs-type">text</span>: <span class="hljs-string">"Hi"</span>}
+</code></pre><pre><code>POST /tweets
+
+request {<span class="hljs-keyword">text</span>: <span class="hljs-string">'Hi'</span>}
+response {id: <span class="hljs-number">20</span>, <span class="hljs-keyword">text</span>: <span class="hljs-string">'Hi'</span>}
+</code></pre><pre><code>GET /search?q=axel
+[
+  {<span class="hljs-property">id</span>:<span class="hljs-number">15</span>, {<span class="hljs-type">text</span>: <span class="hljs-string">"axel is a good teacher"</span>}}
+]
+</code></pre><p>Para simplificar un poco las cosas no vamos a utilizar una base de datos, sino que vamos a guardar los tweets en memoria. Para que puedas comprobar si el ejercicio está correcto cree unos tests de integración que atacan a la api directamente. Para ejecutar lo test, <code>npm test</code>.</p>
+<p>Una vez tengas lista la aplicación, prueba a desplegarlo en <a href="https://devcenter.heroku.com/articles/getting-started-with-nodejs">heroku</a> o <a href="https://www.nodejitsu.com/getting-started/">nodejitsu</a>.</p>
+<h2 id="auto-reload">Auto reload</h2>
+<p>A diferencia de otros framework web, como podría ser rails o play. Los cambios no se recargan en caliente. Esto no supone mucho problema, la aplicación se levanta muy rápido por lo que no perdemos tiempo reiniciando el servidor. El único tiempo que podemos perder es si realizamos la tarea a mano, por eso vamos a utilizar un módulo que realiza esta tarea de forma automática.</p>
+<pre><code class="lang-bash">npm install node<span class="hljs-attribute">-dev</span> <span class="hljs-subst">--</span>save<span class="hljs-attribute">-dev</span>
+</code></pre>
+<p>Para que el auto reload funcione tenemos que arrancar la aplicación con node-dev.</p>
+<pre><code class="lang-bash"><span class="hljs-variable">$ </span>node-dev app.js
+</code></pre>
+<p>Prueba a hacer algún cambio y comprueba cómo se actualizan.</p>
+<h2 id="debugging">Debugging</h2>
+<p>Depurar aplicaciones en JavaScript es bastante sencillo gracias a las herramientas de desarrollo de los navegadores. Depurar aplicaciones node no es tan sencillo.</p>
+<p>La opción más simple para depurar aplicaciones</p>
+<pre><code class="lang-js">console.<span class="hljs-keyword">log</span>(<span class="hljs-string">"log"</span>);
+</code></pre>
+<p>Ahora en serio, si queremos poner break points o inspeccionar el valor de las variables en caliente podemos utilizar un IDE como IntelliJIDEA que cuenta con <a href="http://www.jetbrains.com/idea/webhelp/running-and-debugging-node-js.html">debugger integrado</a>. En el caso de que estemos usando un simple editor de texto, podemos usar <a href="https://github.com/node-inspector/node-inspector">node-inspector</a></p>
+<pre><code>$ npm install <span class="hljs-attribute">-g</span> node<span class="hljs-attribute">-inspector</span>
+$ node<span class="hljs-attribute">-debug</span> app<span class="hljs-built_in">.</span>js
+</code></pre><h2 id="websockets">Websockets</h2>
+<p>WebSocket es un protocolo que permite comunicación bidireccional entre el cliente el servidor. Inicialmente fue pensada para la comunicación entre navegador y servidor web pero puede ser utilizado con cualquier cliente o servidor de aplicaciones. Esta es la tecnología que permite crear la web en tiempo real. El servidor podrá avisar directamente a los clientes cuando se produzcan eventos nuevos. Los navegadores modernos ya implementan este standard.</p>
+<p><a href="http://caniuse.com/websockets">http://caniuse.com/websockets</a></p>
+<p><a href="http://socket.io/#how-to-use">Socket.io</a> es una librería para construir aplicaciones en tiempo real con Node.js, Webscockets y fallbacks para los navegadores que no lo soportan. Los tispos de transporte que soporta son:</p>
+<ul>
+<li>WebSocket</li>
+<li>Adobe® Flash® Socket</li>
+<li>AJAX long polling</li>
+<li>AJAX multipart streaming</li>
+<li>Forever Iframe</li>
+<li>JSONP Polling</li>
+</ul>
+<p>Ejemplos de código</p>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> io = require(<span class="hljs-string">'socket.io'</span>);
+
+<span class="hljs-keyword">var</span> server = http.createServer(app);
+io.listen(server);
+server.listen(app.<span class="hljs-keyword">get</span>(<span class="hljs-string">'port'</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    console.log(<span class="hljs-string">'Express server listening on port '</span> + app.<span class="hljs-keyword">get</span>(<span class="hljs-string">'port'</span>));
+});
+</code></pre>
+<p>Servidor</p>
+<pre><code class="lang-js"><span class="hljs-built_in">io</span>.sockets.on(<span class="hljs-string">'connection'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(socket)</span></span> {
+  socket.emit(<span class="hljs-string">'news'</span>, { hello: <span class="hljs-string">'world'</span> });
+  socket.on(<span class="hljs-string">'my other event'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span></span> {
+    console.log(data);
+  });
+});
+</code></pre>
+<p>Cliente</p>
+<pre><code class="lang-js">var <span class="hljs-keyword">socket</span> = io.<span class="hljs-keyword">connect</span>(<span class="hljs-string">'http://localhost'</span>);
+<span class="hljs-keyword">socket</span>.on(<span class="hljs-string">'news'</span>, function (data) {
+    console.<span class="hljs-keyword">log</span>(data);
+    <span class="hljs-keyword">socket</span>.emit(<span class="hljs-string">'my other event'</span>, { <span class="hljs-keyword">my</span>: <span class="hljs-string">'data'</span> });
+});
+</code></pre>
+<h1 id="ejercicio-">Ejercicio:</h1>
+<ul>
+<li>Revisa el código del servidor de chat, que vimos en la sección de backbone</li>
+<li>Sigue los pasos de esta <a href="http://axelhzf.com/node-multiplayer-snake/#/36">presentación</a> para crear un videojuego multijugador en tiempo real</li>
+</ul>
+<h2 id="referencias">Referencias</h2>
+<ul>
+<li><a href="http://www.html5rocks.com/en/tutorials/websockets/basics/">http://www.html5rocks.com/en/tutorials/websockets/basics/</a></li>
+</ul>
+
+  </div>
+  <footer><div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<script type="text/javascript">
+    var disqus_shortname = 'axelhzf';
+    // var disqus_developer = 1;
+    var disqus_script = 'embed.js';
+
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+    <p>Autor:<strong> Axel Hernández Ferrera</strong> (<a href="http://axelhzf.com" target="_blank">blog</a>, <a href="http://twitter.com/axelhzf" target="_blank">twitter</a>, <a href="http://github.com/axelhzf" target="_blank">github</a>)</p>
+  </footer><script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-31904298-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script>
+</body>
